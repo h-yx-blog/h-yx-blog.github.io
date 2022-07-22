@@ -49,6 +49,10 @@ extra:
 
 # [Navigtion]
 nav:
+ - 本站介绍: 
+    - index.md
+    - 网站搭建: about/siteBuild.md
+    - 支持作者: about/support.md
  - Linux: 
     - Linux/index.md 
     - Linux常用命令: Linux/Linux/Linux命令.md
@@ -58,10 +62,7 @@ nav:
     - interview/index.md   
     - Java IO: interview/IO.md
  
- - 本站介绍: 
-    - index.md
-    - 网站搭建: about/siteBuild.md
-    - 支持作者: about/support.md
+
   
       
  - 开发中遇到的问题:
