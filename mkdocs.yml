@@ -31,7 +31,7 @@ theme:
   language: zh # 一些提示性的文字会变成中文
   icon:
     repo: fontawesome/brands/github
-edit_uri: edit/main/docs # 编辑按钮跳转的链接
+
 ## [top-right corner]
 repo_name: 'h-yx-blog/h-yx-blog.github.io'
 repo_url: 'https://github.com/h-yx-blog/h-yx-blog.github.io'
@@ -56,8 +56,7 @@ nav:
  
  - 面试题:
     - interview/index.md   
-    - 基础篇: interview/basic/基础篇.md
-    - 集合篇: interview/container/集合篇.md
+    - Java IO: interview/IO.md
  
  - 本站介绍: 
     - index.md
@@ -75,7 +74,7 @@ plugins:
       lang:
         - en
         - ja
-  - tags # 给单篇文章添加标签 https://squidfunk.github.io/mkdocs-material/setup/setting-up-tags/?h=tags
+  # - tags # 给单篇文章添加标签 https://squidfunk.github.io/mkdocs-material/setup/setting-up-tags/?h=tags
 markdown_extensions:
   - admonition
   - codehilite:
@@ -115,6 +114,3 @@ extra_javascript:
   - 'js/baidu-tongji.js'
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js # https://cdn.bytedance.com/?query=mathjax&version=3.2.0
-extra_css:
-  - mkdocs/css/no-footer.css # 不使用底部的翻页
-  - mkdocs/css/unordered-list-symbols.css # multiplt unordered list symbols
