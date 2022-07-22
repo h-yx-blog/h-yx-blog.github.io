@@ -6,9 +6,6 @@ on: # 在什么时候触发工作流
   pull_request: # 在main分支合并别人提的pr时
     branches:
       - main
-before_script:
-  - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple mkdocs && mkdocs --version
-  - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple mkdocs-Bootswatch
 
 
           
