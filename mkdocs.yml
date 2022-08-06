@@ -62,8 +62,11 @@ nav:
     - interview/index.md   
     - Java IO: interview/IO.md
  
-
-  
+ - 设计模式:
+    - designPattern/index.md
+    - 六大设计原则: designPattern/principle/六大设计原则.md
+    - 设计模式详解: designPattern/designPattern/设计模式详解.md
+    
       
  - 开发中遇到的问题:
    - 遇到的问题: developProblem/开发所遇问题.md
