@@ -7,7 +7,15 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Yuta Huang</copyright>
-        <lastBuildDate>Fri, 27 Dec 2024 01:50:08 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/yuta/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 27 Dec 2024 02:04:07 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/yuta/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Linux</title>
+        <link>https://h-yx-blog.github.io/yuta/p/linux/</link>
+        <pubDate>Fri, 27 Dec 2024 02:04:07 +0800</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/yuta/p/linux/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Java</title>
         <link>https://h-yx-blog.github.io/yuta/p/java/</link>
         <pubDate>Fri, 27 Dec 2024 01:50:08 +0800</pubDate>
