@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Python on Yuta&#39;s blog</title>
+        <link>https://h-yx-blog.github.io/categories/python/</link>
+        <description>Recent content in Python on Yuta&#39;s blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Yuta Huang</copyright>
+        <lastBuildDate>Fri, 27 Dec 2024 00:36:30 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/categories/python/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Python</title>
+        <link>https://h-yx-blog.github.io/p/python/</link>
+        <pubDate>Fri, 27 Dec 2024 00:36:30 +0800</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/p/python/</guid>
+        <description>&lt;h1 id=&#34;python入门语法&#34;&gt;Python入门语法
+&lt;/h1&gt;&lt;p&gt;1、基础语法&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
