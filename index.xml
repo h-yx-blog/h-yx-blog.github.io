@@ -212,12 +212,18 @@
 &lt;li&gt;英文字母全小写&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;在命名时不允许与关键字相同，python关键字如下&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/media/db6d2cd700b822823f711665dfb09300.tmp&#34;
-	
-	
-	
+&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/keyword.jpg&#34;
+	width=&#34;2155&#34;
+	height=&#34;291&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/keyword_hu973154495891885061.jpg 480w, https://h-yx-blog.github.io/p/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/keyword_hu17469374108956155457.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
+		alt=&#34;python关键字&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;740&#34;
+		data-flex-basis=&#34;1777px&#34;
 	
 &gt;&lt;/p&gt;
 &lt;h3 id=&#34;运算符&#34;&gt;运算符
