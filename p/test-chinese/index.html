@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://h-yx-blog.github.io/p/test-chinese/'>
 
-<link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"><meta property='og:title' content="Chinese Test">
+<link rel="stylesheet" href="/scss/style.min.4f240e72508d3d619e77aa18265b56ce9cc4493208ddf051bdc47a6df219e694.css"><meta property='og:title' content="Chinese Test">
 <meta property='og:description' content="这是一个副标题">
 <meta property='og:url' content='https://h-yx-blog.github.io/p/test-chinese/'>
 <meta property='og:site_name' content='Yuta&#39;s blog'>
@@ -73,7 +73,7 @@
         
         <div class="site-meta">
             <h1 class="site-name"><a href="/">Yuta&#39;s blog</a></h1>
-            <h2 class="site-description">我的开发日志</h2>
+            <h2 class="site-description"></h2>
         </div>
     </header><ol class="menu-social">
             
@@ -504,6 +504,57 @@
      
     
         
+    
+
+<script src="https://giscus.app/client.js"
+        data-repo="h-yx-blog/h-yx-blog.github.io"
+        data-repo-id="R_kgDONilc6g"
+        data-category="Announcements"
+        data-category-id="DIC_kwDONilc6s4ClkCI"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="noborder_dark"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
     
 
     <footer class="site-footer">
