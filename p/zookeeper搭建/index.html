@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Anaconda是一个环境管理工具，每一个环境可以理解为一个房间，每个环境存放着不同的包，互不干扰\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 创建环境：conda create -n 环境名字 python=3.10 复制虚拟环境：conda create -n 副本虚拟环境名 --clone 虚拟环境名 进入环境：activate 环境名字 （Linux环境下要用：conda activate 环境名字） 查看有哪些环境： conda env list 查看conda信息：conda info -v 安装包：conda install django=2.0 最后django=2.0是指包名和版本号 查看都有哪些包 conda list 更新包：conda update 包名 删除包：conda remove 包名 搜索包：conda search package-name，可以模糊搜索 环境切换： activate 环境名 删除环境：conda remove -n 环境名 --all 最后表示把环境里面的包也一起删除 ">
-<title>Anaconda基础使用</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="1.1 下载安装 1、环境准备\nZooKeeper服务器是用Java创建的，它运行在JVM之上。需要安装JDK 7或更高版本。\n2、上传\n将下载的ZooKeeper放到/opt/ZooKeeper目录下\n1 2 3 4 5 6 7 8 #上传zookeeper alt+p put f:/setup/apache-zookeeper-3.5.6-bin.tar.gz #打开 opt目录 cd /opt #创建zooKeeper目录 mkdir zooKeeper #将zookeeper安装包移动到 /opt/zooKeeper mv apache-zookeeper-3.5.6-bin.tar.gz /opt/zookeeper/ 3、解压\n将tar包解压到/opt/zookeeper目录下\n1 tar -zxvf apache-ZooKeeper-3.5.6-bin.tar.gz 1.2 配置启动 1、配置zoo.cfg\n进入到conf目录拷贝一个zoo_sample.cfg并完成配置\n1 2 3 4 #进入到conf目录 cd /opt/zooKeeper/apache-zooKeeper-3.5.6-bin/conf/ #拷贝 cp zoo_sample.cfg zoo.cfg 修改zoo.cfg\n1 2 3 4 5 6 #打开目录 cd /opt/zooKeeper/ #创建zooKeeper存储目录 mkdir zkdata #修改zoo.cfg vim /opt/zooKeeper/apache-zooKeeper-3.5.6-bin/conf/zoo.cfg ">
+<title>Zookeeper搭建</title>
 
-<link rel='canonical' href='https://h-yx-blog.github.io/p/anaconda%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8/'>
+<link rel='canonical' href='https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/'>
 
-<link rel="stylesheet" href="/scss/style.min.41d80fdd2e951cc26aced0647d31e0d0e72647ef4a9771fd8d41acc7a00935db.css"><meta property='og:title' content="Anaconda基础使用">
-<meta property='og:description' content="Anaconda是一个环境管理工具，每一个环境可以理解为一个房间，每个环境存放着不同的包，互不干扰\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 创建环境：conda create -n 环境名字 python=3.10 复制虚拟环境：conda create -n 副本虚拟环境名 --clone 虚拟环境名 进入环境：activate 环境名字 （Linux环境下要用：conda activate 环境名字） 查看有哪些环境： conda env list 查看conda信息：conda info -v 安装包：conda install django=2.0 最后django=2.0是指包名和版本号 查看都有哪些包 conda list 更新包：conda update 包名 删除包：conda remove 包名 搜索包：conda search package-name，可以模糊搜索 环境切换： activate 环境名 删除环境：conda remove -n 环境名 --all 最后表示把环境里面的包也一起删除 ">
-<meta property='og:url' content='https://h-yx-blog.github.io/p/anaconda%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8/'>
+<link rel="stylesheet" href="/scss/style.min.41d80fdd2e951cc26aced0647d31e0d0e72647ef4a9771fd8d41acc7a00935db.css"><meta property='og:title' content="Zookeeper搭建">
+<meta property='og:description' content="1.1 下载安装 1、环境准备\nZooKeeper服务器是用Java创建的，它运行在JVM之上。需要安装JDK 7或更高版本。\n2、上传\n将下载的ZooKeeper放到/opt/ZooKeeper目录下\n1 2 3 4 5 6 7 8 #上传zookeeper alt+p put f:/setup/apache-zookeeper-3.5.6-bin.tar.gz #打开 opt目录 cd /opt #创建zooKeeper目录 mkdir zooKeeper #将zookeeper安装包移动到 /opt/zooKeeper mv apache-zookeeper-3.5.6-bin.tar.gz /opt/zookeeper/ 3、解压\n将tar包解压到/opt/zookeeper目录下\n1 tar -zxvf apache-ZooKeeper-3.5.6-bin.tar.gz 1.2 配置启动 1、配置zoo.cfg\n进入到conf目录拷贝一个zoo_sample.cfg并完成配置\n1 2 3 4 #进入到conf目录 cd /opt/zooKeeper/apache-zooKeeper-3.5.6-bin/conf/ #拷贝 cp zoo_sample.cfg zoo.cfg 修改zoo.cfg\n1 2 3 4 5 6 #打开目录 cd /opt/zooKeeper/ #创建zooKeeper存储目录 mkdir zkdata #修改zoo.cfg vim /opt/zooKeeper/apache-zooKeeper-3.5.6-bin/conf/zoo.cfg ">
+<meta property='og:url' content='https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/'>
 <meta property='og:site_name' content='Yuta&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Anaconda' /><meta property='article:published_time' content='2024-12-28T11:20:54&#43;08:00'/><meta property='article:modified_time' content='2024-12-28T11:20:54&#43;08:00'/>
-<meta name="twitter:title" content="Anaconda基础使用">
-<meta name="twitter:description" content="Anaconda是一个环境管理工具，每一个环境可以理解为一个房间，每个环境存放着不同的包，互不干扰\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 创建环境：conda create -n 环境名字 python=3.10 复制虚拟环境：conda create -n 副本虚拟环境名 --clone 虚拟环境名 进入环境：activate 环境名字 （Linux环境下要用：conda activate 环境名字） 查看有哪些环境： conda env list 查看conda信息：conda info -v 安装包：conda install django=2.0 最后django=2.0是指包名和版本号 查看都有哪些包 conda list 更新包：conda update 包名 删除包：conda remove 包名 搜索包：conda search package-name，可以模糊搜索 环境切换： activate 环境名 删除环境：conda remove -n 环境名 --all 最后表示把环境里面的包也一起删除 ">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='大数据' /><meta property='article:tag' content='分布式' /><meta property='article:published_time' content='2025-01-04T13:28:19&#43;08:00'/><meta property='article:modified_time' content='2025-01-04T13:28:19&#43;08:00'/>
+<meta name="twitter:title" content="Zookeeper搭建">
+<meta name="twitter:description" content="1.1 下载安装 1、环境准备\nZooKeeper服务器是用Java创建的，它运行在JVM之上。需要安装JDK 7或更高版本。\n2、上传\n将下载的ZooKeeper放到/opt/ZooKeeper目录下\n1 2 3 4 5 6 7 8 #上传zookeeper alt+p put f:/setup/apache-zookeeper-3.5.6-bin.tar.gz #打开 opt目录 cd /opt #创建zooKeeper目录 mkdir zooKeeper #将zookeeper安装包移动到 /opt/zooKeeper mv apache-zookeeper-3.5.6-bin.tar.gz /opt/zookeeper/ 3、解压\n将tar包解压到/opt/zookeeper目录下\n1 tar -zxvf apache-ZooKeeper-3.5.6-bin.tar.gz 1.2 配置启动 1、配置zoo.cfg\n进入到conf目录拷贝一个zoo_sample.cfg并完成配置\n1 2 3 4 #进入到conf目录 cd /opt/zooKeeper/apache-zooKeeper-3.5.6-bin/conf/ #拷贝 cp zoo_sample.cfg zoo.cfg 修改zoo.cfg\n1 2 3 4 5 6 #打开目录 cd /opt/zooKeeper/ #创建zooKeeper存储目录 mkdir zkdata #修改zoo.cfg vim /opt/zooKeeper/apache-zooKeeper-3.5.6-bin/conf/zoo.cfg ">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -225,7 +225,43 @@
     </ol>
 </aside>
 
-    
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#11-下载安装">1.1 下载安装</a></li>
+        <li><a href="#12-配置启动">1.2 配置启动</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
 
             <main class="main full-width">
     <article class="main-article">
@@ -235,8 +271,8 @@
     
     <header class="article-category">
         
-            <a href="/categories/python/" style="background-color: #63B8FF; color: #fff;">
-                Python
+            <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" >
+                大数据
             </a>
         
     </header>
@@ -244,7 +280,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/anaconda%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8/">Anaconda基础使用</a>
+            <a href="/p/zookeeper%E6%90%AD%E5%BB%BA/">Zookeeper搭建</a>
         </h2>
     
         
@@ -266,7 +302,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">2024-12-28</time>
+                <time class="article-time--published">2025-01-04</time>
             </div>
         
 
@@ -296,60 +332,162 @@
     <section class="article-content">
     
     
-    <p>Anaconda是一个环境管理工具，每一个环境可以理解为一个房间，每个环境存放着不同的包，互不干扰</p>
+    <h2 id="11-下载安装">1.1 下载安装
+</h2><p><strong>1、环境准备</strong></p>
+<p>ZooKeeper服务器是用Java创建的，它运行在JVM之上。需要安装JDK 7或更高版本。</p>
+<p><strong>2、上传</strong></p>
+<p>将下载的ZooKeeper放到/opt/ZooKeeper目录下</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"> 创建环境：conda create -n 环境名字 python=3.10 
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> 复制虚拟环境：conda create -n 副本虚拟环境名 --clone 虚拟环境名
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> 进入环境：activate 环境名字      （Linux环境下要用：conda activate 环境名字）
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> 查看有哪些环境： conda env list
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> 查看conda信息：conda info -v
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> 安装包：conda install django=2.0  最后django=2.0是指包名和版本号
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> 查看都有哪些包 conda list
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> 更新包：conda update 包名
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> 删除包：conda remove 包名
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> 搜索包：conda search package-name，可以模糊搜索
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> 环境切换： activate 环境名
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> 删除环境：conda remove -n 环境名 --all   最后表示把环境里面的包也一起删除
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#上传zookeeper alt+p</span>
+</span></span><span class="line"><span class="cl">put f:/setup/apache-zookeeper-3.5.6-bin.tar.gz
+</span></span><span class="line"><span class="cl"><span class="c1">#打开 opt目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /opt
+</span></span><span class="line"><span class="cl"><span class="c1">#创建zooKeeper目录</span>
+</span></span><span class="line"><span class="cl">mkdir  zooKeeper
+</span></span><span class="line"><span class="cl"><span class="c1">#将zookeeper安装包移动到 /opt/zooKeeper</span>
+</span></span><span class="line"><span class="cl">mv apache-zookeeper-3.5.6-bin.tar.gz /opt/zookeeper/
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p><strong>3、解压</strong></p>
+<p>将tar包解压到/opt/zookeeper目录下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">tar -zxvf apache-ZooKeeper-3.5.6-bin.tar.gz 
+</span></span></code></pre></td></tr></table>
 </div>
+</div><h2 id="12-配置启动">1.2 配置启动
+</h2><p><strong>1、配置zoo.cfg</strong></p>
+<p>进入到conf目录拷贝一个zoo_sample.cfg并完成配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#进入到conf目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /opt/zooKeeper/apache-zooKeeper-3.5.6-bin/conf/
+</span></span><span class="line"><span class="cl"><span class="c1">#拷贝</span>
+</span></span><span class="line"><span class="cl">cp  zoo_sample.cfg  zoo.cfg
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改zoo.cfg</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#打开目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /opt/zooKeeper/
+</span></span><span class="line"><span class="cl"><span class="c1">#创建zooKeeper存储目录</span>
+</span></span><span class="line"><span class="cl">mkdir  zkdata
+</span></span><span class="line"><span class="cl"><span class="c1">#修改zoo.cfg</span>
+</span></span><span class="line"><span class="cl">vim /opt/zooKeeper/apache-zooKeeper-3.5.6-bin/conf/zoo.cfg
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/zookeeper%E6%90%AD%E5%BB%BA/1577548250377.png"
+	width="795"
+	height="490"
+	srcset="/p/zookeeper%E6%90%AD%E5%BB%BA/1577548250377_hu9367517139741905384.png 480w, /p/zookeeper%E6%90%AD%E5%BB%BA/1577548250377_hu2404252458632869620.png 1024w"
+	loading="lazy"
+	
+		alt="配置文件"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="162"
+		data-flex-basis="389px"
+	
+></p>
+<p>修改存储目录：dataDir=/opt/zookeeper/zkdata</p>
+<p><strong>2、启动ZooKeeper</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">cd</span> /opt/zooKeeper/apache-zooKeeper-3.5.6-bin/bin/
+</span></span><span class="line"><span class="cl"><span class="c1">#启动</span>
+</span></span><span class="line"><span class="cl"> ./zkServer.sh  start
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/zookeeper%E6%90%AD%E5%BB%BA/1577548052037.png"
+	width="868"
+	height="85"
+	srcset="/p/zookeeper%E6%90%AD%E5%BB%BA/1577548052037_hu16129778404085268344.png 480w, /p/zookeeper%E6%90%AD%E5%BB%BA/1577548052037_hu13280979696465174102.png 1024w"
+	loading="lazy"
+	
+		alt="启动zk"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="1021"
+		data-flex-basis="2450px"
+	
+></p>
+<p>看到上图表示ZooKeeper成功启动</p>
+<p><strong>3、查看ZooKeeper状态</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">./zkServer.sh status
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>zookeeper启动成功。standalone代表zk没有搭建集群，现在是单节点</p>
+<p><img src="/p/zookeeper%E6%90%AD%E5%BB%BA/1577548175232.png"
+	width="777"
+	height="99"
+	srcset="/p/zookeeper%E6%90%AD%E5%BB%BA/1577548175232_hu6211908879436042231.png 480w, /p/zookeeper%E6%90%AD%E5%BB%BA/1577548175232_hu7261801071744409349.png 1024w"
+	loading="lazy"
+	
+		alt="查看zk状态"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="784"
+		data-flex-basis="1883px"
+	
+></p>
+<p>zookeeper没有启动</p>
+<p><img src="/p/zookeeper%E6%90%AD%E5%BB%BA/1577548112773.png"
+	width="772"
+	height="115"
+	srcset="/p/zookeeper%E6%90%AD%E5%BB%BA/1577548112773_hu16258933638191476670.png 480w, /p/zookeeper%E6%90%AD%E5%BB%BA/1577548112773_hu11300061890499932015.png 1024w"
+	loading="lazy"
+	
+		alt="查看zk状态"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="671"
+		data-flex-basis="1611px"
+	
+></p>
+
 </section>
 
 
@@ -357,7 +495,9 @@
     
     <section class="article-tags">
         
-            <a href="/tags/anaconda/">Anaconda</a>
+            <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a>
+        
+            <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
         
     </section>
 
@@ -379,12 +519,25 @@
             
                 
 <article class="">
-    <a href="/p/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">
+    <a href="/p/zookeeper%E5%85%A5%E9%97%A8/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">Python基础语法</h2>
+            <h2 class="article-title">Zookeeper入门</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大数据基础</h2>
         </div>
     </a>
 </article>
