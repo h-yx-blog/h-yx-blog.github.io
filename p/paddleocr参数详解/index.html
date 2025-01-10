@@ -10,7 +10,7 @@
 <meta property='og:description' content="\u00a0# 一、ocr识别函数\n注意 1.\u00a0如果角度分类器未初始化 （use_angle_cls=False），则在正向过程中不会使用它。 2. 对于 PDF 文件，如果输入是图像列表并且指定了 page_num，则只会处理前 page_num 张图像。 3. 源码中preprocess_image 函数用于通过应用 Alpha 颜色替换、反转和二值化（如果指定）来预处理输入图像。如下为preprocess_image函数\n形参: 参数名\t含义\nimg：OCR 图像。它可以是一个 ndarray、img_path 或 ndarray 列表。\ndet：是否使用文本检测。如果为 False，则仅执行文本识别。默认值为 True。\nrec：使用文本识别与否。如果为 False，则仅执行文本检测。默认值为 True。\ncls：是否使用角度分类器。默认值为 True。如果为 True，则可以识别旋转 180 度的文本。如果没有文本旋转 180 度，请使用 cls=False 以获得更好的性能。\nbin：将图像二值化为黑白。默认值为 False。\ninv：反转图像颜色。默认值为 False\nalpha_color：设置 RGB 颜色元组以进行透明零件更换。默认值为纯白色。\nslice：\t对大图像使用滑动窗口推理。det 和 rec 都必须为 True。需要 slice[“horizontal_stride”]、slice[“vertical_stride”]、slice[“merge_x_thres”]、slice[“merge_y_thres”] 的 int 值（参见 doc/ doc_en/ slice_en. md）。默认值为 {}。\n">
 <meta property='og:url' content='https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/'>
 <meta property='og:site_name' content='Yuta&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-06T16:50:51&#43;08:00'/><meta property='article:modified_time' content='2025-01-06T16:50:51&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='OCR' /><meta property='article:tag' content='Paddle' /><meta property='article:published_time' content='2025-01-06T16:50:51&#43;08:00'/><meta property='article:modified_time' content='2025-01-06T16:50:51&#43;08:00'/>
 <meta name="twitter:title" content="PaddleOCR参数详解">
 <meta name="twitter:description" content="\u00a0# 一、ocr识别函数\n注意 1.\u00a0如果角度分类器未初始化 （use_angle_cls=False），则在正向过程中不会使用它。 2. 对于 PDF 文件，如果输入是图像列表并且指定了 page_num，则只会处理前 page_num 张图像。 3. 源码中preprocess_image 函数用于通过应用 Alpha 颜色替换、反转和二值化（如果指定）来预处理输入图像。如下为preprocess_image函数\n形参: 参数名\t含义\nimg：OCR 图像。它可以是一个 ndarray、img_path 或 ndarray 列表。\ndet：是否使用文本检测。如果为 False，则仅执行文本识别。默认值为 True。\nrec：使用文本识别与否。如果为 False，则仅执行文本检测。默认值为 True。\ncls：是否使用角度分类器。默认值为 True。如果为 True，则可以识别旋转 180 度的文本。如果没有文本旋转 180 度，请使用 cls=False 以获得更好的性能。\nbin：将图像二值化为黑白。默认值为 False。\ninv：反转图像颜色。默认值为 False\nalpha_color：设置 RGB 颜色元组以进行透明零件更换。默认值为纯白色。\nslice：\t对大图像使用滑动窗口推理。det 和 rec 都必须为 True。需要 slice[“horizontal_stride”]、slice[“vertical_stride”]、slice[“merge_x_thres”]、slice[“merge_y_thres”] 的 int 值（参见 doc/ doc_en/ slice_en. md）。默认值为 {}。\n">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -272,6 +272,18 @@
 
     <div class="article-details">
     
+    <header class="article-category">
+        
+            <a href="/categories/ocr/" >
+                OCR
+            </a>
+        
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" >
+                机器学习
+            </a>
+        
+    </header>
+    
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
@@ -413,6 +425,14 @@ PaddleOCR构造函数可传入的参数详情见：https://paddlepaddle.github.i
 
     <footer class="article-footer">
     
+    <section class="article-tags">
+        
+            <a href="/tags/ocr/">OCR</a>
+        
+            <a href="/tags/paddle/">Paddle</a>
+        
+    </section>
+
 
     </footer>
 
@@ -423,6 +443,28 @@ PaddleOCR构造函数可传入的参数详情见：https://paddlepaddle.github.i
     
 
     
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">PaddleOcr训练自定义数据</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
 
      
     

@@ -926,6 +926,77 @@
 		data-flex-basis=&#34;3670px&#34;
 	
 &gt;&lt;/p&gt;
+&lt;h1 id=&#34;四配置文件参详解&#34;&gt;四、配置文件参详解
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1.jpg&#34;
+	width=&#34;617&#34;
+	height=&#34;848&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1_hu11559752221943464028.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1_hu13661951627273544050.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;global&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;72&#34;
+		data-flex-basis=&#34;174px&#34;
+	
+&gt;
+&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2.jpg&#34;
+	width=&#34;699&#34;
+	height=&#34;567&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2_hu17234964813406675609.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2_hu17331686195687689940.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;optimizer&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;123&#34;
+		data-flex-basis=&#34;295px&#34;
+	
+&gt;
+&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3.jpg&#34;
+	width=&#34;617&#34;
+	height=&#34;844&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3_hu17923679158746640495.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3_hu13646199575404360953.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;architecture&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;73&#34;
+		data-flex-basis=&#34;175px&#34;
+	
+&gt;
+&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4.jpg&#34;
+	width=&#34;628&#34;
+	height=&#34;702&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4_hu15903525701242895360.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4_hu4447367203296040758.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;loss&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;89&#34;
+		data-flex-basis=&#34;214px&#34;
+	
+&gt;
+&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5.jpg&#34;
+	width=&#34;623&#34;
+	height=&#34;874&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5_hu17849360649130587617.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5_hu4061104182340545924.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;dataset&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;71&#34;
+		data-flex-basis=&#34;171px&#34;
+	
+&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;参考教程：&lt;br&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_52852432/article/details/131817619&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;

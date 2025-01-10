@@ -926,6 +926,77 @@
 		data-flex-basis=&#34;3670px&#34;
 	
 &gt;&lt;/p&gt;
+&lt;h1 id=&#34;四配置文件参详解&#34;&gt;四、配置文件参详解
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1.jpg&#34;
+	width=&#34;617&#34;
+	height=&#34;848&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1_hu11559752221943464028.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1_hu13661951627273544050.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;global&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;72&#34;
+		data-flex-basis=&#34;174px&#34;
+	
+&gt;
+&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2.jpg&#34;
+	width=&#34;699&#34;
+	height=&#34;567&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2_hu17234964813406675609.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2_hu17331686195687689940.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;optimizer&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;123&#34;
+		data-flex-basis=&#34;295px&#34;
+	
+&gt;
+&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3.jpg&#34;
+	width=&#34;617&#34;
+	height=&#34;844&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3_hu17923679158746640495.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3_hu13646199575404360953.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;architecture&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;73&#34;
+		data-flex-basis=&#34;175px&#34;
+	
+&gt;
+&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4.jpg&#34;
+	width=&#34;628&#34;
+	height=&#34;702&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4_hu15903525701242895360.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4_hu4447367203296040758.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;loss&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;89&#34;
+		data-flex-basis=&#34;214px&#34;
+	
+&gt;
+&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5.jpg&#34;
+	width=&#34;623&#34;
+	height=&#34;874&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5_hu17849360649130587617.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5_hu4061104182340545924.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;dataset&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;71&#34;
+		data-flex-basis=&#34;171px&#34;
+	
+&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;参考教程：&lt;br&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_52852432/article/details/131817619&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -937,6 +1008,94 @@
 &lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/m0_60657960/article/details/137072289&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://blog.csdn.net/m0_60657960/article/details/137072289&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
+</description>
+        </item>
+        <item>
+        <title>PaddleOCR参数详解</title>
+        <link>https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/</link>
+        <pubDate>Mon, 06 Jan 2025 16:50:51 +0800</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/</guid>
+        <description>&lt;p&gt; # 一、ocr识别函数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/ocr.jpg&#34;
+	width=&#34;591&#34;
+	height=&#34;231&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/ocr_hu8143978448985535058.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/ocr_hu17787863996154168829.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ocr&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;255&#34;
+		data-flex-basis=&#34;614px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;注意&#34;&gt;注意
+&lt;/h2&gt;&lt;p&gt;1. 如果角度分类器未初始化 （use_angle_cls=False），则在正向过程中不会使用它。
+2. 对于 PDF 文件，如果输入是图像列表并且指定了 page_num，则只会处理前 page_num 张图像。
+3. 源码中preprocess_image 函数用于通过应用 Alpha 颜色替换、反转和二值化（如果指定）来预处理输入图像。如下为preprocess_image函数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/preprocess.jpg&#34;
+	width=&#34;649&#34;
+	height=&#34;265&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/preprocess_hu2314519655047226143.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/preprocess_hu4911545622956701177.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;process_image&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;244&#34;
+		data-flex-basis=&#34;587px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;形参&#34;&gt;形参:
+&lt;/h2&gt;&lt;p&gt;参数名	含义&lt;/p&gt;
+&lt;p&gt;img：OCR 图像。它可以是一个 ndarray、img_path 或 ndarray 列表。&lt;/p&gt;
+&lt;p&gt;det：是否使用文本检测。如果为 False，则仅执行文本识别。默认值为 True。&lt;/p&gt;
+&lt;p&gt;rec：使用文本识别与否。如果为 False，则仅执行文本检测。默认值为 True。&lt;/p&gt;
+&lt;p&gt;cls：是否使用角度分类器。默认值为 True。如果为 True，则可以识别旋转 180 度的文本。如果没有文本旋转 180 度，请使用 cls=False 以获得更好的性能。&lt;/p&gt;
+&lt;p&gt;bin：将图像二值化为黑白。默认值为 False。&lt;/p&gt;
+&lt;p&gt;inv：反转图像颜色。默认值为 False&lt;/p&gt;
+&lt;p&gt;alpha_color：设置 RGB 颜色元组以进行透明零件更换。默认值为纯白色。&lt;/p&gt;
+&lt;p&gt;slice：	对大图像使用滑动窗口推理。det 和 rec 都必须为 True。需要 slice[“horizontal_stride”]、slice[“vertical_stride”]、slice[“merge_x_thres”]、slice[“merge_y_thres”] 的 int 值（参见 doc/ doc_en/ slice_en. md）。默认值为 {}。&lt;/p&gt;
+&lt;h2 id=&#34;返回值&#34;&gt;返回值:
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;如果 det 和 rec 均为 True，则返回每个图像的 OCR 结果列表。每个 OCR 结果都是每个检测到的文本区域的边界框和已识别文本的列表。&lt;/li&gt;
+&lt;li&gt;如果 det 为 True 且 rec 为 False，则返回每个图像检测到的边界框列表。&lt;/li&gt;
+&lt;li&gt;如果 det 为 False 且 rec 为 True，则返回每个图像的已识别文本列表。&lt;/li&gt;
+&lt;li&gt;如果 det 和 rec 均为 False，则返回每个图像的角度分类结果列表。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;异常&#34;&gt;异常:
+&lt;/h2&gt;&lt;p&gt;AssertionError – 如果输入图像不是 ndarray、list、str 或 bytes 类型。
+SystemExit – 如果 det 为 True，并且输入是图像列表&lt;/p&gt;
+&lt;h1 id=&#34;二paddleocr构造函数&#34;&gt;二、PaddleOCR构造函数
+&lt;/h1&gt;&lt;p&gt;PaddleOCR继承的父类如下
+&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/construc.jpg&#34;
+	width=&#34;961&#34;
+	height=&#34;481&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/construc_hu3519835409375362406.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/construc_hu13228570759909700299.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;父类.jpg&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;199&#34;
+		data-flex-basis=&#34;479px&#34;
+	
+&gt;
+PaddleOCR构造函数可传入的参数详情见：https://paddlepaddle.github.io/PaddleOCR/latest/ppocr/blog/inference_args.html&lt;/p&gt;
+&lt;p&gt;主要有以下类型的参数，每一种类型都有若干参数&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;全局信息&lt;/li&gt;
+&lt;li&gt;预测引擎相关&lt;/li&gt;
+&lt;li&gt;文本检测模型相关&lt;/li&gt;
+&lt;li&gt;文本识别模型相关&lt;/li&gt;
+&lt;li&gt;端到端文本检测与识别模型相关&lt;/li&gt;
+&lt;li&gt;方向分类器模型相关&lt;/li&gt;
+&lt;li&gt;算法相关&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         </item>
         
