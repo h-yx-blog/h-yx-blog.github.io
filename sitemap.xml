@@ -3,19 +3,37 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://h-yx-blog.github.io/</loc>
-    <lastmod>2025-01-05T21:31:55+08:00</lastmod>
+    <lastmod>2025-01-10T15:19:17+08:00</lastmod>
+  </url><url>
+    <loc>https://h-yx-blog.github.io/categories/</loc>
+    <lastmod>2025-01-10T15:19:17+08:00</lastmod>
+  </url><url>
+    <loc>https://h-yx-blog.github.io/tags/ocr/</loc>
+    <lastmod>2025-01-10T15:19:17+08:00</lastmod>
+  </url><url>
+    <loc>https://h-yx-blog.github.io/categories/ocr/</loc>
+    <lastmod>2025-01-10T15:19:17+08:00</lastmod>
+  </url><url>
+    <loc>https://h-yx-blog.github.io/tags/paddle/</loc>
+    <lastmod>2025-01-10T15:19:17+08:00</lastmod>
+  </url><url>
+    <loc>https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/</loc>
+    <lastmod>2025-01-10T15:19:17+08:00</lastmod>
+  </url><url>
+    <loc>https://h-yx-blog.github.io/post/</loc>
+    <lastmod>2025-01-10T15:19:17+08:00</lastmod>
+  </url><url>
+    <loc>https://h-yx-blog.github.io/tags/</loc>
+    <lastmod>2025-01-10T15:19:17+08:00</lastmod>
+  </url><url>
+    <loc>https://h-yx-blog.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2025-01-10T15:19:17+08:00</lastmod>
+  </url><url>
+    <loc>https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/</loc>
+    <lastmod>2025-01-06T16:50:51+08:00</lastmod>
   </url><url>
     <loc>https://h-yx-blog.github.io/p/kafka%E5%85%A5%E9%97%A8%E5%8F%8A%E5%BA%94%E7%94%A8/</loc>
     <lastmod>2025-01-05T21:31:55+08:00</lastmod>
-  </url><url>
-    <loc>https://h-yx-blog.github.io/post/</loc>
-    <lastmod>2025-01-05T21:31:55+08:00</lastmod>
-  </url><url>
-    <loc>https://h-yx-blog.github.io/categories/</loc>
-    <lastmod>2025-01-04T21:10:52+08:00</lastmod>
-  </url><url>
-    <loc>https://h-yx-blog.github.io/tags/</loc>
-    <lastmod>2025-01-04T21:10:52+08:00</lastmod>
   </url><url>
     <loc>https://h-yx-blog.github.io/p/zookeeper%E5%85%A5%E9%97%A8/</loc>
     <lastmod>2025-01-04T21:10:52+08:00</lastmod>
