@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>文生图 on Yuta&#39;s blog</title>
+        <link>https://h-yx-blog.github.io/tags/%E6%96%87%E7%94%9F%E5%9B%BE/</link>
+        <description>Recent content in 文生图 on Yuta&#39;s blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Yuta Huang</copyright>
+        <lastBuildDate>Sun, 09 Feb 2025 10:08:24 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/tags/%E6%96%87%E7%94%9F%E5%9B%BE/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>DeepSeek Janus Pro</title>
+        <link>https://h-yx-blog.github.io/p/deepseek-janus-pro/</link>
+        <pubDate>Sun, 09 Feb 2025 10:08:24 +0800</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/p/deepseek-janus-pro/</guid>
+        <description>&lt;h1 id=&#34;一介绍&#34;&gt;一.介绍
+&lt;/h1&gt;&lt;p&gt;Janus 是一种新颖的自回归框架，它统一了多模态理解和生成。它通过将视觉编码解耦为单独的路径来解决以前方法的局限性，同时仍然使用单一、统一的 transformer 架构进行处理。解耦不仅缓解了视觉编码器在理解和生成中的角色冲突，还增强了框架的灵活性。Janus 超越了以前的统一模型，并达到或超过特定于任务的模型的性能。Janus 的简单性、高度灵活性和有效性使其成为下一代统一多模态模型的有力候选者。&lt;/p&gt;
+&lt;h1 id=&#34;二关键技术&#34;&gt;二.关键技术
+&lt;/h1&gt;&lt;p&gt;Janus-Pro 是 DeepSeek 的 Janus 多模态模型的高级版本，设计用于出色地理解和生成涉及文本和图像的内容，&lt;strong&gt;可以同时进行多模态理解和图像生成任务。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Janus-Pro 仍然保持了 Janus 首创的解耦视觉编码这一核心架构原则。这种将不同任务的视觉处理方法分离开来的做法，对于提高模型的整体性能至关重要。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优化训练策略 ：Janus-Pro 采用更有效的训练策略，注重更好地利用数据和资源。&lt;/li&gt;
+&lt;li&gt;扩展的训练数据集：该模型结合了真实数据源和合成数据，增强了其稳健性和适应性。&lt;/li&gt;
+&lt;li&gt;更大的模型规模：Janus-Pro 的参数规模从 10 亿 (1B) 到 70 亿 (7B)，性能和稳定性都得到了提高，尤其是在文本到图像生成和多模态理解等任务中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;三创新&#34;&gt;三.创新
+&lt;/h1&gt;&lt;p&gt;核心创新是将&lt;strong&gt;多模态理解和生成&lt;/strong&gt;，使用&lt;strong&gt;两种不同的任务解耦编码器&lt;/strong&gt;来完成理解和生成任务。让这两种任务可以在同一模型中高效完成。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;解耦视觉编码器&lt;/strong&gt;：
+Janus-Pro 架构的核心是解耦视觉编码的理念，即根据手头的任务使用不同的编码方法处理图像。
+这种多任务处理的效果，主要源于 Janus 系列针对不同任务使用的两个视觉编码器：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;理解编码器：用于提取图像中的语义特征，以便进行图像理解任务（如图像问答、视觉分类等）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;生成编码器：将图像转换为离散表示（例如，使用 VQ 编码器），用于文本到图像生成任务。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;文生图对比&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;&lt;strong&gt;特性&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;Janus Pro&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;Flux&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;训练成本&lt;/td&gt;
+          &lt;td&gt;相对较低的预算&lt;/td&gt;
+          &lt;td&gt;未明确说明，可能更高&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;社区支持&lt;/td&gt;
+          &lt;td&gt;开源，在 Hugging Face 上可用&lt;/td&gt;
+          &lt;td&gt;拥有强大的社区支持和优化&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;性能&lt;/td&gt;
+          &lt;td&gt;擅长指令执行，多模态任务&lt;/td&gt;
+          &lt;td&gt;高质量图像且生成速度快&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;图像分辨率&lt;/td&gt;
+          &lt;td&gt;输入：384 x 384 像素，输出：最高 768 x 768&lt;/td&gt;
+          &lt;td&gt;可生成高达 1024 x 1024 像素&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;主要关注点&lt;/td&gt;
+          &lt;td&gt;多模态任务，文本-图像交互&lt;/td&gt;
+          &lt;td&gt;高质量图像生成&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1 id=&#34;四评估结果&#34;&gt;四.评估结果
+&lt;/h1&gt;&lt;p&gt;①在 GenEval 中，Janus-Pro-7B 的得分为 0.80，超过了 DALL-E 3 和 Stable Diffusion 3 Medium 等模型。&lt;/p&gt;
+&lt;p&gt;②在 DPG-Bench 上，Janus-Pro 获得了 84.19 分，再次超过了 DALL-E 3 和 Stable Diffusion 3 Medium 等竞争对手。
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/result.jpg&#34;
+	width=&#34;851&#34;
+	height=&#34;659&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/result_hu_d9d177b7098ed4e7.jpg 480w, https://h-yx-blog.github.io/p/deepseek-janus-pro/result_hu_eb76ea1fe37ccc5b.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;评估结果对比&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;129&#34;
+		data-flex-basis=&#34;309px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;五局限性&#34;&gt;五.局限性
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;分辨率限制：该模型的输入分辨率上限为 384x384，这可能会妨碍需要精细细节的任务（如光学字符识别 (OCR)）的性能。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;图像质量：同样的分辨率限制和 VQ tokenizer 使用的压缩技术会导致图像缺乏精细度，尤其是面部小区域。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;六-本地部署&#34;&gt;六. 本地部署
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#创建conda环境&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;conda&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;create&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;deepseek&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;janus&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;python&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;3.10&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#激活conda环境&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;conda&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;activate&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;deepseek&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;janus&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#克隆Janus项目&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;git&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;clone&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;https&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;github&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;com&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;deepseek&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ai&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Janus&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;git&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#进入janus目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Janus&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#安装Janus依赖&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;pip&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;install&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;e&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#安装Gradio （UI界面）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;pip&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;install&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;gradio&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#启动 （代码中默认是Janus pro 7B的模型，可以手动修改）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;python&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;demo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;app_januspro&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;py&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;看到以下界面即已经成功部署
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/deploy.jpg&#34;
+	width=&#34;1667&#34;
+	height=&#34;1123&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/deploy_hu_67b5360133567b06.jpg 480w, https://h-yx-blog.github.io/p/deepseek-janus-pro/deploy_hu_cfd9310ad4a15f54.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;148&#34;
+		data-flex-basis=&#34;356px&#34;
+	
+&gt;
+测试结果
+①文生图测试如下
+文生图功能似乎对中文理解似乎不行，只能使用英文  （使用中文提问时，无论怎么提问，总是生成如下图片）
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/texttopage.jpg&#34;
+	width=&#34;1985&#34;
+	height=&#34;881&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/texttopage_hu_92886cbb83546bf5.jpg 480w, https://h-yx-blog.github.io/p/deepseek-janus-pro/texttopage_hu_1843926421f64584.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;中文文生图&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;225&#34;
+		data-flex-basis=&#34;540px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;英文提问如下
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/texttopagebyen.jpg&#34;
+	width=&#34;1921&#34;
+	height=&#34;917&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/texttopagebyen_hu_68158571c0830003.jpg 480w, https://h-yx-blog.github.io/p/deepseek-janus-pro/texttopagebyen_hu_b5180c3b01f3c5bc.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;英文文生图&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;209&#34;
+		data-flex-basis=&#34;502px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;②图片理解测试如下
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/lijie.jpg&#34;
+	width=&#34;1991&#34;
+	height=&#34;741&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/lijie_hu_eb00f814b357bbca.jpg 480w, https://h-yx-blog.github.io/p/deepseek-janus-pro/lijie_hu_b8c6fe76cd47d451.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;268&#34;
+		data-flex-basis=&#34;644px&#34;
+	
+&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

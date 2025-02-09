@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="本文主要针对Java新应用开发时，数据库设计及使用的一些共识规范，用于团队数据库设计的统一规划和管理。\n以MySQL作为示例介绍，内容分四个方面进行规范描述：建表，索引使用，SQL语句设计，以及ORM对象关系映射。\n一、建表规范 （1）表名、字段名必须使用小写字母或数字，除非数字本身具有共识含义，否则不建议使用，尤其禁止出现数字开头。\n（2）表达是与否的字段，数据类型应设定：unsigned tinyint，即非负数的短字节整型，其中1表示是，0表示否。\n（3）注意禁止使用数据库的保留字段是共识，比如asc,desc,select,match，定义好字段后，应该设置虚拟数据尝试常规的增删改查。\n（4）小数类型为 decimal，当数据范围超过 decimal 的范围，建议将数据拆成整数和小数分开存储，禁止使用 float 和 double，因为其存在精度丢失的问题。\n（5）字段设置索引时，表示方式应遵循以下命名，主键索引为 pk_字段名，唯一索引为 uk_字段名，普通索引则为 idx_字段名\n（6）表的命名应该富有含义，且呈现分类分层，如factory_produce_order，factory_produce_device\n（7）如果存储的字符串长度确定且相等，可以使用 char 定长字符串类型，而不使用varchar\n（8）表应必备创建时间create_time和更新时间update_time，数据为datetime类型，用来表达数据初次创建和最近更新的时间。\n（9）varchar 是可变长字符串，不预先分配存储空间，长度不要超过 5000，如果存储长度大于此值，定义字段类型为 text，独立出来一张表，用主键来对应，避免影响其它字段索引效率。\n（10）当单表行数超过 500 万行或者单表内容超过 2GB，就应该要考虑业务分表。\n二、索引使用规范 （1）唯一索引的设置，业务上具有唯一特性的字段或多个字段的组合，必须建成唯一索引。在应用层做了非常完善的校验控制，只要没有唯一索引，长久必然有脏数据产生。\n（2）多表关联查询时，需要 join 字段的数据类型必须绝对一致，保证被关联的字段需要有索引。\n（3）在 varchar 字段上建立索引时，当业务没必要对全字段建立索引，可以指定索引长度，根据实际文本区分度决定索引长度即可。\n（4）如果有 order by 的场景，请注意利用索引的有序性。order by 最后的字段是组合索引的一部分，并且放在索引组合顺序的最后，例：where a=? and b=? order by c; 索引：a_b_c\n（5）建组合索引的时候，区分度最高的在最左边。例：如果 where a=? and b=? ，a 列的几乎接近于唯一值，那么只需要单建 idx_a 索引即可。\n存在非等号和等号混合判断条件时，在建索引时，请把等号条件的列前置。如：where a&gt;?and b=? 那么即使 a 的区分度更高，也必须把 b 放在索引的最前列。\n三、SQL语句规范 （1）不要使用 count(列名)或 count(常量)来替代 count()，count()是 SQL92 定义的标准统计行数的语法，跟数据库无关，跟 NULL 和非 NULL 无关。count(*)会统计值为 NULL 的行，而 count(列名)不会统计此列为 NULL 值的行。\n">
+<title>数据库设计规范</title>
+
+<link rel='canonical' href='https://h-yx-blog.github.io/p/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/'>
+
+<link rel="stylesheet" href="/scss/style.min.41d80fdd2e951cc26aced0647d31e0d0e72647ef4a9771fd8d41acc7a00935db.css"><meta property='og:title' content="数据库设计规范">
+<meta property='og:description' content="本文主要针对Java新应用开发时，数据库设计及使用的一些共识规范，用于团队数据库设计的统一规划和管理。\n以MySQL作为示例介绍，内容分四个方面进行规范描述：建表，索引使用，SQL语句设计，以及ORM对象关系映射。\n一、建表规范 （1）表名、字段名必须使用小写字母或数字，除非数字本身具有共识含义，否则不建议使用，尤其禁止出现数字开头。\n（2）表达是与否的字段，数据类型应设定：unsigned tinyint，即非负数的短字节整型，其中1表示是，0表示否。\n（3）注意禁止使用数据库的保留字段是共识，比如asc,desc,select,match，定义好字段后，应该设置虚拟数据尝试常规的增删改查。\n（4）小数类型为 decimal，当数据范围超过 decimal 的范围，建议将数据拆成整数和小数分开存储，禁止使用 float 和 double，因为其存在精度丢失的问题。\n（5）字段设置索引时，表示方式应遵循以下命名，主键索引为 pk_字段名，唯一索引为 uk_字段名，普通索引则为 idx_字段名\n（6）表的命名应该富有含义，且呈现分类分层，如factory_produce_order，factory_produce_device\n（7）如果存储的字符串长度确定且相等，可以使用 char 定长字符串类型，而不使用varchar\n（8）表应必备创建时间create_time和更新时间update_time，数据为datetime类型，用来表达数据初次创建和最近更新的时间。\n（9）varchar 是可变长字符串，不预先分配存储空间，长度不要超过 5000，如果存储长度大于此值，定义字段类型为 text，独立出来一张表，用主键来对应，避免影响其它字段索引效率。\n（10）当单表行数超过 500 万行或者单表内容超过 2GB，就应该要考虑业务分表。\n二、索引使用规范 （1）唯一索引的设置，业务上具有唯一特性的字段或多个字段的组合，必须建成唯一索引。在应用层做了非常完善的校验控制，只要没有唯一索引，长久必然有脏数据产生。\n（2）多表关联查询时，需要 join 字段的数据类型必须绝对一致，保证被关联的字段需要有索引。\n（3）在 varchar 字段上建立索引时，当业务没必要对全字段建立索引，可以指定索引长度，根据实际文本区分度决定索引长度即可。\n（4）如果有 order by 的场景，请注意利用索引的有序性。order by 最后的字段是组合索引的一部分，并且放在索引组合顺序的最后，例：where a=? and b=? order by c; 索引：a_b_c\n（5）建组合索引的时候，区分度最高的在最左边。例：如果 where a=? and b=? ，a 列的几乎接近于唯一值，那么只需要单建 idx_a 索引即可。\n存在非等号和等号混合判断条件时，在建索引时，请把等号条件的列前置。如：where a&gt;?and b=? 那么即使 a 的区分度更高，也必须把 b 放在索引的最前列。\n三、SQL语句规范 （1）不要使用 count(列名)或 count(常量)来替代 count()，count()是 SQL92 定义的标准统计行数的语法，跟数据库无关，跟 NULL 和非 NULL 无关。count(*)会统计值为 NULL 的行，而 count(列名)不会统计此列为 NULL 值的行。\n">
+<meta property='og:url' content='https://h-yx-blog.github.io/p/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/'>
+<meta property='og:site_name' content='Yuta&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-24T10:59:15&#43;08:00'/><meta property='article:modified_time' content='2025-01-24T10:59:15&#43;08:00'/>
+<meta name="twitter:title" content="数据库设计规范">
+<meta name="twitter:description" content="本文主要针对Java新应用开发时，数据库设计及使用的一些共识规范，用于团队数据库设计的统一规划和管理。\n以MySQL作为示例介绍，内容分四个方面进行规范描述：建表，索引使用，SQL语句设计，以及ORM对象关系映射。\n一、建表规范 （1）表名、字段名必须使用小写字母或数字，除非数字本身具有共识含义，否则不建议使用，尤其禁止出现数字开头。\n（2）表达是与否的字段，数据类型应设定：unsigned tinyint，即非负数的短字节整型，其中1表示是，0表示否。\n（3）注意禁止使用数据库的保留字段是共识，比如asc,desc,select,match，定义好字段后，应该设置虚拟数据尝试常规的增删改查。\n（4）小数类型为 decimal，当数据范围超过 decimal 的范围，建议将数据拆成整数和小数分开存储，禁止使用 float 和 double，因为其存在精度丢失的问题。\n（5）字段设置索引时，表示方式应遵循以下命名，主键索引为 pk_字段名，唯一索引为 uk_字段名，普通索引则为 idx_字段名\n（6）表的命名应该富有含义，且呈现分类分层，如factory_produce_order，factory_produce_device\n（7）如果存储的字符串长度确定且相等，可以使用 char 定长字符串类型，而不使用varchar\n（8）表应必备创建时间create_time和更新时间update_time，数据为datetime类型，用来表达数据初次创建和最近更新的时间。\n（9）varchar 是可变长字符串，不预先分配存储空间，长度不要超过 5000，如果存储长度大于此值，定义字段类型为 text，独立出来一张表，用主键来对应，避免影响其它字段索引效率。\n（10）当单表行数超过 500 万行或者单表内容超过 2GB，就应该要考虑业务分表。\n二、索引使用规范 （1）唯一索引的设置，业务上具有唯一特性的字段或多个字段的组合，必须建成唯一索引。在应用层做了非常完善的校验控制，只要没有唯一索引，长久必然有脏数据产生。\n（2）多表关联查询时，需要 join 字段的数据类型必须绝对一致，保证被关联的字段需要有索引。\n（3）在 varchar 字段上建立索引时，当业务没必要对全字段建立索引，可以指定索引长度，根据实际文本区分度决定索引长度即可。\n（4）如果有 order by 的场景，请注意利用索引的有序性。order by 最后的字段是组合索引的一部分，并且放在索引组合顺序的最后，例：where a=? and b=? order by c; 索引：a_b_c\n（5）建组合索引的时候，区分度最高的在最左边。例：如果 where a=? and b=? ，a 列的几乎接近于唯一值，那么只需要单建 idx_a 索引即可。\n存在非等号和等号混合判断条件时，在建索引时，请把等号条件的列前置。如：where a&gt;?and b=? 那么即使 a 的区分度更高，也必须把 b 放在索引的最前列。\n三、SQL语句规范 （1）不要使用 count(列名)或 count(常量)来替代 count()，count()是 SQL92 定义的标准统计行数的语法，跟数据库无关，跟 NULL 和非 NULL 无关。count(*)会统计值为 NULL 的行，而 count(列名)不会统计此列为 NULL 值的行。\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_9d08b070b84885af.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Yuta&#39;s blog</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/h-yx-blog'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/">数据库设计规范</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-01-24</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>本文主要针对Java新应用开发时，数据库设计及使用的一些共识规范，用于团队数据库设计的统一规划和管理。</p>
+<p>以MySQL作为示例介绍，内容分四个方面进行规范描述：建表，索引使用，SQL语句设计，以及ORM对象关系映射。</p>
+<p>一、建表规范
+（1）表名、字段名必须使用小写字母或数字，除非数字本身具有共识含义，否则不建议使用，尤其禁止出现数字开头。</p>
+<p>（2）表达是与否的字段，数据类型应设定：unsigned tinyint，即非负数的短字节整型，其中1表示是，0表示否。</p>
+<p>（3）注意禁止使用数据库的保留字段是共识，比如asc,desc,select,match，定义好字段后，应该设置虚拟数据尝试常规的增删改查。</p>
+<p>（4）小数类型为 decimal，当数据范围超过 decimal 的范围，建议将数据拆成整数和小数分开存储，禁止使用 float 和 double，因为其存在精度丢失的问题。</p>
+<p>（5）字段设置索引时，表示方式应遵循以下命名，主键索引为 pk_字段名，唯一索引为 uk_字段名，普通索引则为 idx_字段名</p>
+<p>（6）表的命名应该富有含义，且呈现分类分层，如factory_produce_order，factory_produce_device</p>
+<p>（7）如果存储的字符串长度确定且相等，可以使用 char 定长字符串类型，而不使用varchar</p>
+<p>（8）表应必备创建时间create_time和更新时间update_time，数据为datetime类型，用来表达数据初次创建和最近更新的时间。</p>
+<p>（9）varchar 是可变长字符串，不预先分配存储空间，长度不要超过 5000，如果存储长度大于此值，定义字段类型为 text，独立出来一张表，用主键来对应，避免影响其它字段索引效率。</p>
+<p>（10）当单表行数超过 500 万行或者单表内容超过 2GB，就应该要考虑业务分表。</p>
+<p>二、索引使用规范
+（1）唯一索引的设置，业务上具有唯一特性的字段或多个字段的组合，必须建成唯一索引。在应用层做了非常完善的校验控制，只要没有唯一索引，长久必然有脏数据产生。</p>
+<p>（2）多表关联查询时，需要 join 字段的数据类型必须绝对一致，保证被关联的字段需要有索引。</p>
+<p>（3）在 varchar 字段上建立索引时，当业务没必要对全字段建立索引，可以指定索引长度，根据实际文本区分度决定索引长度即可。</p>
+<p>（4）如果有 order by 的场景，请注意利用索引的有序性。order by 最后的字段是组合索引的一部分，并且放在索引组合顺序的最后，例：where a=? and b=? order by c; 索引：a_b_c</p>
+<p>（5）建组合索引的时候，区分度最高的在最左边。例：如果 where a=? and b=? ，a 列的几乎接近于唯一值，那么只需要单建 idx_a 索引即可。</p>
+<p>存在非等号和等号混合判断条件时，在建索引时，请把等号条件的列前置。如：where a&gt;?and b=? 那么即使 a 的区分度更高，也必须把 b 放在索引的最前列。</p>
+<p>三、SQL语句规范
+（1）不要使用 count(列名)或 count(常量)来替代 count(<em>)，count(</em>)是 SQL92 定义的标准统计行数的语法，跟数据库无关，跟 NULL 和非 NULL 无关。count(*)会统计值为 NULL 的行，而 count(列名)不会统计此列为 NULL 值的行。</p>
+<p>（2）count(distinct col) 计算该列除 NULL 之外的不重复行数，注意 count(distinctcol1, col2) 如果其中一列全为 NULL，那么即使另一列有不同的值，也返回为 0</p>
+<p>（3）进行数据项的删除和修改时，要先 查询，避免出现误操作，确认无误才能执行更新语句。</p>
+<p>（4）不得使用外键与级联，一切外键概念必须在应用层解决，外键与级联更新适用于单机低并发，不适合分布式、高并发集群，因为级联更新是强阻塞，外键则严重影响数据库的插入速度</p>
+<p>（5）in 业务操作要尽量避免，当要使用时应控制 in 后边的集合元素数量，在 1000 个之内</p>
+<p>四、ORM对象关系映射
+（1）在表查询中，一律不要使用 * 作为查询的字段列表，需要哪些字段必须明确写明</p>
+<p>（2）xml 配置参数使用：#{}，#param# 不要使用${} 此种方式容易出现 SQL 注入</p>
+<p>（3）减少对整个pojo类目标更新，应该只更新改动的字段，若都进行全字段的更新（update table set c1=value1,c2=value2,c3=value3），会容易出错、效率低、增加 binlog 存储</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+<script src="https://giscus.app/client.js"
+        data-repo="h-yx-blog/h-yx-blog.github.io"
+        data-repo-id="R_kgDONilc6g"
+        data-category="Announcements"
+        data-category-id="DIC_kwDONilc6s4ClkCI"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="noborder_dark"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2024 - 
+        
+        2025 Yuta Huang
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

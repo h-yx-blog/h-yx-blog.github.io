@@ -148,8 +148,7 @@ dataversion：数据版本号 &lt;br&gt;
 aclversion：权限版本号 &lt;br&gt;
 ephemeralOwner：用于临时节点，代表临时节点的事务ID，如果为持久节点则为0 &lt;br&gt;
 dataLength：节点存储的数据的长度 &lt;br&gt;
-numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h1 id=&#34;三springboot集成zk客户端&#34;&gt;三、SpringBoot集成zk客户端
 &lt;/h1&gt;&lt;p&gt;常见的ZooKeeper Java API ：&lt;/p&gt;
 &lt;ul&gt;
@@ -954,8 +953,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;参考文章 &lt;br&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_41112238/article/details/105240421&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://blog.csdn.net/qq_41112238/article/details/105240421&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+    &gt;https://blog.csdn.net/qq_41112238/article/details/105240421&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
 </description>
         </item>
         <item>
@@ -1040,7 +1038,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548250377.png&#34;
 	width=&#34;795&#34;
 	height=&#34;490&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548250377_hu9367517139741905384.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548250377_hu2404252458632869620.png 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548250377_hu_ce1bbe63af893db6.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548250377_hu_fe8c8afd6418ce2f.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;配置文件&#34;
@@ -1068,7 +1066,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548052037.png&#34;
 	width=&#34;868&#34;
 	height=&#34;85&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548052037_hu16129778404085268344.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548052037_hu13280979696465174102.png 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548052037_hu_c5b0314ae7d0820f.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548052037_hu_2f44eeeb9b6e97cc.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;启动zk&#34;
@@ -1093,7 +1091,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548175232.png&#34;
 	width=&#34;777&#34;
 	height=&#34;99&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548175232_hu6211908879436042231.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548175232_hu7261801071744409349.png 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548175232_hu_20af1d6d7db353d0.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548175232_hu_6aa5bd6e4c1c9c80.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;查看zk状态&#34;
@@ -1108,7 +1106,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548112773.png&#34;
 	width=&#34;772&#34;
 	height=&#34;115&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548112773_hu16258933638191476670.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548112773_hu11300061890499932015.png 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548112773_hu_99e38d41d6bc195f.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548112773_hu_bbf36863ff1fdf9c.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;查看zk状态&#34;

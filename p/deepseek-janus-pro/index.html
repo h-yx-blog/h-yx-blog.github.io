@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一.介绍 Janus 是一种新颖的自回归框架，它统一了多模态理解和生成。它通过将视觉编码解耦为单独的路径来解决以前方法的局限性，同时仍然使用单一、统一的 transformer 架构进行处理。解耦不仅缓解了视觉编码器在理解和生成中的角色冲突，还增强了框架的灵活性。Janus 超越了以前的统一模型，并达到或超过特定于任务的模型的性能。Janus 的简单性、高度灵活性和有效性使其成为下一代统一多模态模型的有力候选者。\n二.关键技术 Janus-Pro 是 DeepSeek 的 Janus 多模态模型的高级版本，设计用于出色地理解和生成涉及文本和图像的内容，可以同时进行多模态理解和图像生成任务。\nJanus-Pro 仍然保持了 Janus 首创的解耦视觉编码这一核心架构原则。这种将不同任务的视觉处理方法分离开来的做法，对于提高模型的整体性能至关重要。\n优化训练策略 ：Janus-Pro 采用更有效的训练策略，注重更好地利用数据和资源。 扩展的训练数据集：该模型结合了真实数据源和合成数据，增强了其稳健性和适应性。 更大的模型规模：Janus-Pro 的参数规模从 10 亿 (1B) 到 70 亿 (7B)，性能和稳定性都得到了提高，尤其是在文本到图像生成和多模态理解等任务中。 三.创新 核心创新是将多模态理解和生成，使用两种不同的任务解耦编码器来完成理解和生成任务。让这两种任务可以在同一模型中高效完成。\n解耦视觉编码器： Janus-Pro 架构的核心是解耦视觉编码的理念，即根据手头的任务使用不同的编码方法处理图像。 这种多任务处理的效果，主要源于 Janus 系列针对不同任务使用的两个视觉编码器：\n理解编码器：用于提取图像中的语义特征，以便进行图像理解任务（如图像问答、视觉分类等）。\n生成编码器：将图像转换为离散表示（例如，使用 VQ 编码器），用于文本到图像生成任务。\n文生图对比\n特性 Janus Pro Flux 训练成本 相对较低的预算 未明确说明，可能更高 社区支持 开源，在 Hugging Face 上可用 拥有强大的社区支持和优化 性能 擅长指令执行，多模态任务 高质量图像且生成速度快 图像分辨率 输入：384 x 384 像素，输出：最高 768 x 768 可生成高达 1024 x 1024 像素 主要关注点 多模态任务，文本-图像交互 高质量图像生成 四.评估结果 ①在 GenEval 中，Janus-Pro-7B 的得分为 0.80，超过了 DALL-E 3 和 Stable Diffusion 3 Medium 等模型。\n">
+<title>DeepSeek Janus Pro</title>
+
+<link rel='canonical' href='https://h-yx-blog.github.io/p/deepseek-janus-pro/'>
+
+<link rel="stylesheet" href="/scss/style.min.41d80fdd2e951cc26aced0647d31e0d0e72647ef4a9771fd8d41acc7a00935db.css"><meta property='og:title' content="DeepSeek Janus Pro">
+<meta property='og:description' content="一.介绍 Janus 是一种新颖的自回归框架，它统一了多模态理解和生成。它通过将视觉编码解耦为单独的路径来解决以前方法的局限性，同时仍然使用单一、统一的 transformer 架构进行处理。解耦不仅缓解了视觉编码器在理解和生成中的角色冲突，还增强了框架的灵活性。Janus 超越了以前的统一模型，并达到或超过特定于任务的模型的性能。Janus 的简单性、高度灵活性和有效性使其成为下一代统一多模态模型的有力候选者。\n二.关键技术 Janus-Pro 是 DeepSeek 的 Janus 多模态模型的高级版本，设计用于出色地理解和生成涉及文本和图像的内容，可以同时进行多模态理解和图像生成任务。\nJanus-Pro 仍然保持了 Janus 首创的解耦视觉编码这一核心架构原则。这种将不同任务的视觉处理方法分离开来的做法，对于提高模型的整体性能至关重要。\n优化训练策略 ：Janus-Pro 采用更有效的训练策略，注重更好地利用数据和资源。 扩展的训练数据集：该模型结合了真实数据源和合成数据，增强了其稳健性和适应性。 更大的模型规模：Janus-Pro 的参数规模从 10 亿 (1B) 到 70 亿 (7B)，性能和稳定性都得到了提高，尤其是在文本到图像生成和多模态理解等任务中。 三.创新 核心创新是将多模态理解和生成，使用两种不同的任务解耦编码器来完成理解和生成任务。让这两种任务可以在同一模型中高效完成。\n解耦视觉编码器： Janus-Pro 架构的核心是解耦视觉编码的理念，即根据手头的任务使用不同的编码方法处理图像。 这种多任务处理的效果，主要源于 Janus 系列针对不同任务使用的两个视觉编码器：\n理解编码器：用于提取图像中的语义特征，以便进行图像理解任务（如图像问答、视觉分类等）。\n生成编码器：将图像转换为离散表示（例如，使用 VQ 编码器），用于文本到图像生成任务。\n文生图对比\n特性 Janus Pro Flux 训练成本 相对较低的预算 未明确说明，可能更高 社区支持 开源，在 Hugging Face 上可用 拥有强大的社区支持和优化 性能 擅长指令执行，多模态任务 高质量图像且生成速度快 图像分辨率 输入：384 x 384 像素，输出：最高 768 x 768 可生成高达 1024 x 1024 像素 主要关注点 多模态任务，文本-图像交互 高质量图像生成 四.评估结果 ①在 GenEval 中，Janus-Pro-7B 的得分为 0.80，超过了 DALL-E 3 和 Stable Diffusion 3 Medium 等模型。\n">
+<meta property='og:url' content='https://h-yx-blog.github.io/p/deepseek-janus-pro/'>
+<meta property='og:site_name' content='Yuta&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='大模型' /><meta property='article:tag' content='AIGC' /><meta property='article:tag' content='AI' /><meta property='article:tag' content='DeepSeek-Janus Pro' /><meta property='article:tag' content='文生图' /><meta property='article:published_time' content='2025-02-09T10:08:24&#43;08:00'/><meta property='article:modified_time' content='2025-02-09T10:08:24&#43;08:00'/>
+<meta name="twitter:title" content="DeepSeek Janus Pro">
+<meta name="twitter:description" content="一.介绍 Janus 是一种新颖的自回归框架，它统一了多模态理解和生成。它通过将视觉编码解耦为单独的路径来解决以前方法的局限性，同时仍然使用单一、统一的 transformer 架构进行处理。解耦不仅缓解了视觉编码器在理解和生成中的角色冲突，还增强了框架的灵活性。Janus 超越了以前的统一模型，并达到或超过特定于任务的模型的性能。Janus 的简单性、高度灵活性和有效性使其成为下一代统一多模态模型的有力候选者。\n二.关键技术 Janus-Pro 是 DeepSeek 的 Janus 多模态模型的高级版本，设计用于出色地理解和生成涉及文本和图像的内容，可以同时进行多模态理解和图像生成任务。\nJanus-Pro 仍然保持了 Janus 首创的解耦视觉编码这一核心架构原则。这种将不同任务的视觉处理方法分离开来的做法，对于提高模型的整体性能至关重要。\n优化训练策略 ：Janus-Pro 采用更有效的训练策略，注重更好地利用数据和资源。 扩展的训练数据集：该模型结合了真实数据源和合成数据，增强了其稳健性和适应性。 更大的模型规模：Janus-Pro 的参数规模从 10 亿 (1B) 到 70 亿 (7B)，性能和稳定性都得到了提高，尤其是在文本到图像生成和多模态理解等任务中。 三.创新 核心创新是将多模态理解和生成，使用两种不同的任务解耦编码器来完成理解和生成任务。让这两种任务可以在同一模型中高效完成。\n解耦视觉编码器： Janus-Pro 架构的核心是解耦视觉编码的理念，即根据手头的任务使用不同的编码方法处理图像。 这种多任务处理的效果，主要源于 Janus 系列针对不同任务使用的两个视觉编码器：\n理解编码器：用于提取图像中的语义特征，以便进行图像理解任务（如图像问答、视觉分类等）。\n生成编码器：将图像转换为离散表示（例如，使用 VQ 编码器），用于文本到图像生成任务。\n文生图对比\n特性 Janus Pro Flux 训练成本 相对较低的预算 未明确说明，可能更高 社区支持 开源，在 Hugging Face 上可用 拥有强大的社区支持和优化 性能 擅长指令执行，多模态任务 高质量图像且生成速度快 图像分辨率 输入：384 x 384 像素，输出：最高 768 x 768 可生成高达 1024 x 1024 像素 主要关注点 多模态任务，文本-图像交互 高质量图像生成 四.评估结果 ①在 GenEval 中，Janus-Pro-7B 的得分为 0.80，超过了 DALL-E 3 和 Stable Diffusion 3 Medium 等模型。\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_9d08b070b84885af.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Yuta&#39;s blog</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/h-yx-blog'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#一介绍">一.介绍</a></li>
+    <li><a href="#二关键技术">二.关键技术</a></li>
+    <li><a href="#三创新">三.创新</a></li>
+    <li><a href="#四评估结果">四.评估结果</a></li>
+    <li><a href="#五局限性">五.局限性</a></li>
+    <li><a href="#六-本地部署">六. 本地部署</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" >
+                大模型
+            </a>
+        
+            <a href="/categories/deepseek/" >
+                DeepSeek
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/deepseek-janus-pro/">DeepSeek Janus Pro</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-02-09</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="一介绍">一.介绍
+</h1><p>Janus 是一种新颖的自回归框架，它统一了多模态理解和生成。它通过将视觉编码解耦为单独的路径来解决以前方法的局限性，同时仍然使用单一、统一的 transformer 架构进行处理。解耦不仅缓解了视觉编码器在理解和生成中的角色冲突，还增强了框架的灵活性。Janus 超越了以前的统一模型，并达到或超过特定于任务的模型的性能。Janus 的简单性、高度灵活性和有效性使其成为下一代统一多模态模型的有力候选者。</p>
+<h1 id="二关键技术">二.关键技术
+</h1><p>Janus-Pro 是 DeepSeek 的 Janus 多模态模型的高级版本，设计用于出色地理解和生成涉及文本和图像的内容，<strong>可以同时进行多模态理解和图像生成任务。</strong></p>
+<p>Janus-Pro 仍然保持了 Janus 首创的解耦视觉编码这一核心架构原则。这种将不同任务的视觉处理方法分离开来的做法，对于提高模型的整体性能至关重要。</p>
+<ul>
+<li>优化训练策略 ：Janus-Pro 采用更有效的训练策略，注重更好地利用数据和资源。</li>
+<li>扩展的训练数据集：该模型结合了真实数据源和合成数据，增强了其稳健性和适应性。</li>
+<li>更大的模型规模：Janus-Pro 的参数规模从 10 亿 (1B) 到 70 亿 (7B)，性能和稳定性都得到了提高，尤其是在文本到图像生成和多模态理解等任务中。</li>
+</ul>
+<h1 id="三创新">三.创新
+</h1><p>核心创新是将<strong>多模态理解和生成</strong>，使用<strong>两种不同的任务解耦编码器</strong>来完成理解和生成任务。让这两种任务可以在同一模型中高效完成。</p>
+<p><strong>解耦视觉编码器</strong>：
+Janus-Pro 架构的核心是解耦视觉编码的理念，即根据手头的任务使用不同的编码方法处理图像。
+这种多任务处理的效果，主要源于 Janus 系列针对不同任务使用的两个视觉编码器：</p>
+<ul>
+<li>
+<p>理解编码器：用于提取图像中的语义特征，以便进行图像理解任务（如图像问答、视觉分类等）。</p>
+</li>
+<li>
+<p>生成编码器：将图像转换为离散表示（例如，使用 VQ 编码器），用于文本到图像生成任务。</p>
+</li>
+</ul>
+<p><strong>文生图对比</strong></p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th><strong>特性</strong></th>
+          <th><strong>Janus Pro</strong></th>
+          <th><strong>Flux</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>训练成本</td>
+          <td>相对较低的预算</td>
+          <td>未明确说明，可能更高</td>
+      </tr>
+      <tr>
+          <td>社区支持</td>
+          <td>开源，在 Hugging Face 上可用</td>
+          <td>拥有强大的社区支持和优化</td>
+      </tr>
+      <tr>
+          <td>性能</td>
+          <td>擅长指令执行，多模态任务</td>
+          <td>高质量图像且生成速度快</td>
+      </tr>
+      <tr>
+          <td>图像分辨率</td>
+          <td>输入：384 x 384 像素，输出：最高 768 x 768</td>
+          <td>可生成高达 1024 x 1024 像素</td>
+      </tr>
+      <tr>
+          <td>主要关注点</td>
+          <td>多模态任务，文本-图像交互</td>
+          <td>高质量图像生成</td>
+      </tr>
+  </tbody>
+</table></div>
+<h1 id="四评估结果">四.评估结果
+</h1><p>①在 GenEval 中，Janus-Pro-7B 的得分为 0.80，超过了 DALL-E 3 和 Stable Diffusion 3 Medium 等模型。</p>
+<p>②在 DPG-Bench 上，Janus-Pro 获得了 84.19 分，再次超过了 DALL-E 3 和 Stable Diffusion 3 Medium 等竞争对手。
+<img src="/p/deepseek-janus-pro/result.jpg"
+	width="851"
+	height="659"
+	srcset="/p/deepseek-janus-pro/result_hu_d9d177b7098ed4e7.jpg 480w, /p/deepseek-janus-pro/result_hu_eb76ea1fe37ccc5b.jpg 1024w"
+	loading="lazy"
+	
+		alt="评估结果对比"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="129"
+		data-flex-basis="309px"
+	
+></p>
+<h1 id="五局限性">五.局限性
+</h1><ul>
+<li>
+<p>分辨率限制：该模型的输入分辨率上限为 384x384，这可能会妨碍需要精细细节的任务（如光学字符识别 (OCR)）的性能。</p>
+</li>
+<li>
+<p>图像质量：同样的分辨率限制和 VQ tokenizer 使用的压缩技术会导致图像缺乏精细度，尤其是面部小区域。</p>
+</li>
+</ul>
+<h1 id="六-本地部署">六. 本地部署
+</h1><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1">#创建conda环境</span>
+</span></span><span class="line"><span class="cl"><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">deepseek</span><span class="o">-</span><span class="n">janus</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.10</span> <span class="o">-</span><span class="n">y</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#激活conda环境</span>
+</span></span><span class="line"><span class="cl"><span class="n">conda</span> <span class="n">activate</span> <span class="n">deepseek</span><span class="o">-</span><span class="n">janus</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="c1">#克隆Janus项目</span>
+</span></span><span class="line"><span class="cl"><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">deepseek</span><span class="o">-</span><span class="n">ai</span><span class="o">/</span><span class="n">Janus</span><span class="o">.</span><span class="n">git</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#进入janus目录</span>
+</span></span><span class="line"><span class="cl"><span class="n">cd</span> <span class="n">Janus</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#安装Janus依赖</span>
+</span></span><span class="line"><span class="cl"><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#安装Gradio （UI界面）</span>
+</span></span><span class="line"><span class="cl"><span class="n">pip</span> <span class="n">install</span> <span class="n">gradio</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#启动 （代码中默认是Janus pro 7B的模型，可以手动修改）</span>
+</span></span><span class="line"><span class="cl"><span class="n">python</span> <span class="n">demo</span><span class="o">/</span><span class="n">app_januspro</span><span class="o">.</span><span class="n">py</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>看到以下界面即已经成功部署
+<img src="/p/deepseek-janus-pro/deploy.jpg"
+	width="1667"
+	height="1123"
+	srcset="/p/deepseek-janus-pro/deploy_hu_67b5360133567b06.jpg 480w, /p/deepseek-janus-pro/deploy_hu_cfd9310ad4a15f54.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="148"
+		data-flex-basis="356px"
+	
+>
+测试结果
+①文生图测试如下
+文生图功能似乎对中文理解似乎不行，只能使用英文  （使用中文提问时，无论怎么提问，总是生成如下图片）
+<img src="/p/deepseek-janus-pro/texttopage.jpg"
+	width="1985"
+	height="881"
+	srcset="/p/deepseek-janus-pro/texttopage_hu_92886cbb83546bf5.jpg 480w, /p/deepseek-janus-pro/texttopage_hu_1843926421f64584.jpg 1024w"
+	loading="lazy"
+	
+		alt="中文文生图"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="225"
+		data-flex-basis="540px"
+	
+></p>
+<p>英文提问如下
+<img src="/p/deepseek-janus-pro/texttopagebyen.jpg"
+	width="1921"
+	height="917"
+	srcset="/p/deepseek-janus-pro/texttopagebyen_hu_68158571c0830003.jpg 480w, /p/deepseek-janus-pro/texttopagebyen_hu_b5180c3b01f3c5bc.jpg 1024w"
+	loading="lazy"
+	
+		alt="英文文生图"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="209"
+		data-flex-basis="502px"
+	
+></p>
+<p>②图片理解测试如下
+<img src="/p/deepseek-janus-pro/lijie.jpg"
+	width="1991"
+	height="741"
+	srcset="/p/deepseek-janus-pro/lijie_hu_eb00f814b357bbca.jpg 480w, /p/deepseek-janus-pro/lijie_hu_b8c6fe76cd47d451.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="268"
+		data-flex-basis="644px"
+	
+></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a>
+        
+            <a href="/tags/aigc/">AIGC</a>
+        
+            <a href="/tags/ai/">AI</a>
+        
+            <a href="/tags/deepseek-janus-pro/">DeepSeek-Janus Pro</a>
+        
+            <a href="/tags/%E6%96%87%E7%94%9F%E5%9B%BE/">文生图</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/deepseek-r1/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">DeepSeek R1</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">DeepSeek技术调研及api接入</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+<script src="https://giscus.app/client.js"
+        data-repo="h-yx-blog/h-yx-blog.github.io"
+        data-repo-id="R_kgDONilc6g"
+        data-category="Announcements"
+        data-category-id="DIC_kwDONilc6s4ClkCI"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="noborder_dark"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2024 - 
+        
+        2025 Yuta Huang
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

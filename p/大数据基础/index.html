@@ -58,7 +58,7 @@
                     
                     
                         
-                        <img src="/img/avatar_hu6042347468814061871.png" width="300"
+                        <img src="/img/avatar_hu_9d08b070b84885af.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -356,7 +356,7 @@
 </h2><p><img src="/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/process.jpg"
 	width="1089"
 	height="617"
-	srcset="/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/process_hu7440470465267177649.jpg 480w, /p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/process_hu12102598982732704565.jpg 1024w"
+	srcset="/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/process_hu_fe08af3f8db3a28d.jpg 480w, /p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/process_hu_e67898a1c02c567b.jpg 1024w"
 	loading="lazy"
 	
 		alt="大数据处理流程"
@@ -370,19 +370,16 @@
 上图是一个简化的大数据处理流程图，大数据处理的主要流程包括数据收集、数据存储、数据处理、数据应用等主要环节。下面我们逐一对各个环节所需要的技术栈进行讲解：</p>
 <h3 id="11-数据收集">1.1 数据收集
 </h3><blockquote>
-<p>大数据处理的第一步，第一种是通过 Sqoop 或者 Cannal 等工具进行定时抽取或者实时同步；第二种是各种埋点日志，通过 Flume 进行实时收集。</p>
-</blockquote>
+<p>大数据处理的第一步，第一种是通过 Sqoop 或者 Cannal 等工具进行定时抽取或者实时同步；第二种是各种埋点日志，通过 Flume 进行实时收集。</p></blockquote>
 <p>大数据处理的第一步是数据的收集。现在的中大型项目通常采用微服务架构进行分布式部署，所以数据的采集需要在多台服务器上进行，且采集过程不能影响正常业务的开展。基于这种需求，就衍生了多种日志收集工具，如 Flume 、Logstash、Kibana 等，它们都能通过简单的配置完成复杂的数据收集和数据聚合。</p>
 <h3 id="12-数据存储">1.2 数据存储
 </h3><blockquote>
-<p>大数据处理的第二步，将数据存储到 HDFS 中，实时日志流情况下通过 Kafka 输出给后面的流式计算引擎。</p>
-</blockquote>
+<p>大数据处理的第二步，将数据存储到 HDFS 中，实时日志流情况下通过 Kafka 输出给后面的流式计算引擎。</p></blockquote>
 <p>收集到数据后，下一个问题就是：数据该如何进行存储？通常最为熟知是 MySQL、Oracle 等传统的关系型数据库，它们的优点是能够快速存储结构化的数据，并支持随机访问。但大数据的数据结构通常是半结构化（如日志数据）、甚至是非结构化的（如视频、音频数据），为了解决海量半结构化和非结构化数据的存储，衍生了 Hadoop HDFS 、KFS、GFS 等分布式文件系统，它们都能够支持结构化、半结构和非结构化数据的存储，并可以通过增加机器进行横向扩展。</p>
 <p>分布式文件系统完美地解决了海量数据存储的问题，但是一个优秀的数据存储系统需要同时考虑数据存储和访问两方面的问题，比如你希望能够对数据进行随机访问，这是传统的关系型数据库所擅长的，但却不是分布式文件系统所擅长的，那么有没有一种存储方案能够同时兼具分布式文件系统和关系型数据库的优点，基于这种需求，就产生了 HBase、MongoDB。</p>
 <h3 id="13-数据分析">1.3 数据分析
 </h3><blockquote>
-<p>大数据的核心环节，包括离线处理和流处理两种方式，对应的计算引擎包括 MapReduce、Spark、Flink 等，处理完的结果会保存到已经提前设计好的数据仓库中，或者 HBase、Redis、RDBMS 等各种存储系统上。</p>
-</blockquote>
+<p>大数据的核心环节，包括离线处理和流处理两种方式，对应的计算引擎包括 MapReduce、Spark、Flink 等，处理完的结果会保存到已经提前设计好的数据仓库中，或者 HBase、Redis、RDBMS 等各种存储系统上。</p></blockquote>
 <p>大数据处理最重要的环节就是数据分析，数据分析通常分为两种：批处理和流处理。</p>
 <p>批处理：对一段时间内海量的离线数据进行统一的处理，对应的处理框架有 Hadoop MapReduce、Spark、Flink 等；
 流处理：对运动中的数据进行处理，即在接收数据的同时就对其进行处理，对应的处理框架有 Storm、Spark Streaming、Flink Streaming 等。
@@ -390,8 +387,7 @@
 <p>上面的框架都是需要通过编程来进行数据分析，那么如果你不是一个后台工程师，是不是就不能进行数据的分析了？当然不是，大数据是一个非常完善的生态圈，有需求就有解决方案。为了能够让熟悉 SQL 的人员也能够进行数据的分析，查询分析框架应运而生，常用的有 Hive 、Spark SQL 、Flink SQL、 Pig、Phoenix 等。这些框架都能够使用标准的 SQL 或者 类 SQL 语法灵活地进行数据的查询分析。这些 SQL 经过解析优化后转换为对应的作业程序来运行，如 Hive 本质上就是将 SQL 转换为 MapReduce 作业，Spark SQL 将 SQL 转换为一系列的 RDDs 和转换关系（transformations），Phoenix 将 SQL 查询转换为一个或多个 HBase Scan。</p>
 <h3 id="14-数据应用">1.4 数据应用
 </h3><blockquote>
-<p>应用场景：数据可视化、业务决策、推荐算法优化、机器学习&hellip;</p>
-</blockquote>
+<p>应用场景：数据可视化、业务决策、推荐算法优化、机器学习&hellip;</p></blockquote>
 <p>数据分析完成后，接下来就是数据应用的范畴，这取决于你实际的业务需求。比如你可以将数据进行可视化展现，或者将数据用于优化你的推荐算法，这种运用现在很普遍，比如短视频个性化推荐、电商商品推荐、头条新闻推荐等。当然你也可以将数据用于训练你的机器学习模型，这些都属于其他领域的范畴，都有着对应的框架和技术栈进行处理，这里就不一一赘述。</p>
 <h3 id="15-其他框架">1.5 其他框架
 </h3><p>上面是一个标准的大数据处理流程所用到的技术框架。但是实际的大数据处理流程比上面复杂很多，针对大数据处理中的各种复杂问题分别衍生了各类框架：</p>
@@ -430,7 +426,7 @@
 <img src="/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/storage.jpg"
 	width="1647"
 	height="973"
-	srcset="/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/storage_hu12367426843831453899.jpg 480w, /p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/storage_hu10270789870229935134.jpg 1024w"
+	srcset="/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/storage_hu_e876cb719bdb0c19.jpg 480w, /p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/storage_hu_3900b33e8cc2015e.jpg 1024w"
 	loading="lazy"
 	
 		alt="行式存储和列式存储"
@@ -469,8 +465,7 @@
     >https://github.com/heibaiying</a>
 <br>
 <a class="link" href="https://javabetter.cn/xuexiluxian/bigdata.html#%E5%85%B3%E4%BA%8E%E5%A4%A7%E6%95%B0%E6%8D%AE"  target="_blank" rel="noopener"
-    >https://javabetter.cn/xuexiluxian/bigdata.html#%E5%85%B3%E4%BA%8E%E5%A4%A7%E6%95%B0%E6%8D%AE</a></p>
-</blockquote>
+    >https://javabetter.cn/xuexiluxian/bigdata.html#%E5%85%B3%E4%BA%8E%E5%A4%A7%E6%95%B0%E6%8D%AE</a></p></blockquote>
 
 </section>
 

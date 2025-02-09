@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>DeepSeek on Yuta&#39;s blog</title>
+        <link>https://h-yx-blog.github.io/tags/deepseek/</link>
+        <description>Recent content in DeepSeek on Yuta&#39;s blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Yuta Huang</copyright>
+        <lastBuildDate>Sun, 09 Feb 2025 09:55:44 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/tags/deepseek/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>DeepSeek技术调研及api接入</title>
+        <link>https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/</link>
+        <pubDate>Sun, 09 Feb 2025 09:55:44 +0800</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/</guid>
+        <description>&lt;h1 id=&#34;一-简介&#34;&gt;一. 简介
+&lt;/h1&gt;&lt;p&gt;1.1  介绍：DeepSeek 是一家专注于人工智能技术研发的公司，致力于打造高性能、低成本的 AI 模型。它的目标是让 AI 技术更加普惠，让更多人能够用上强大的 AI 工具。&lt;/p&gt;
+&lt;p&gt;1.2 为什么DeepSeek-V3重要&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;开源精神：DeepSeek-V3 不仅开源了模型权重，还提供了本地部署的支持，让开发者可以自由定制和优化模型。&lt;/li&gt;
+&lt;li&gt;普惠 AI：DeepSeek-V3 的价格非常亲民，相比国外模型（如 GPT-4o），它的使用成本更低，适合中小企业和个人开发者。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;二-收费情况&#34;&gt;二. 收费情况
+&lt;/h1&gt;&lt;p&gt;2.1 API收费情况
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/shoufei.jpg&#34;
+	width=&#34;1241&#34;
+	height=&#34;305&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/shoufei_hu_c6652b261f61e108.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/shoufei_hu_b16bd673f08d026a.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;API收费&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;406&#34;
+		data-flex-basis=&#34;976px&#34;
+	
+&gt;
+1.如未指定 max_tokens，默认最大输出长度为 4K。请调整 max_tokens 以支持更长的输出。&lt;/p&gt;
+&lt;p&gt;2.表格中展示了优惠前与优惠后的价格。即日起至北京时间 2025-02-08 24:00，所有用户均可享受 DeepSeek-V3 API 的价格优惠。 在此之后，模型价格将恢复至原价。&lt;/p&gt;
+&lt;p&gt;在大模型 API 的使用场景中，用户的输入有相当比例是重复的。举例说，用户的 prompt 往往有一些重复引用的部分；再举例说，多轮对话中，每一轮都要将前几轮的内容重复输入。&lt;/p&gt;
+&lt;p&gt;为此，&lt;strong&gt;DeepSeek 启用上下文硬盘缓存技术，把预计未来会重复使用的内容，缓存在分布式的硬盘阵列中。如果输入存在重复，则重复的部分只需要从缓存读取，无需计算。该技术不仅降低服务的延迟，还大幅削减最终的使用成本。&lt;/strong&gt; 缓存命中的部分，DeepSeek 收费 0.1元 每百万 tokens。至此，大模型的价格再降低一个数量级&lt;/p&gt;
+&lt;p&gt;Token 是模型用来表示自然语言文本的基本单位，也是我们的计费单元，可以直观的理解为“字”或“词”；通常 1 个中文词语、1 个英文单词、1 个数字或 1 个符号计为 1 个 token。&lt;/p&gt;
+&lt;p&gt;一般情况下模型中 token 和字数的换算比例大致如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1 个英文字符 ≈ 0.3 个 token。&lt;/li&gt;
+&lt;li&gt;1 个中文字符 ≈ 0.6 个 token。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;2.2 并发&lt;/p&gt;
+&lt;p&gt;DeepSeek API 不限制用户并发量&lt;/p&gt;
+&lt;p&gt;但请注意，当DeepSeek服务器承受高流量压力时，您的请求发出后，可能需要等待一段时间才能获取服务器的响应。在这段时间里，您的 HTTP 请求会保持连接，并持续收到如下格式的返回内容：&lt;/p&gt;
+&lt;p&gt;非流式请求：持续返回空行
+流式请求：持续返回 SSE keep-alive 注释（: keep-alive）&lt;/p&gt;
+&lt;p&gt;这些内容不影响 OpenAI SDK 对响应的 JSON body 的解析。如果使用者自己解析 HTTP 响应，请注意处理这些空行或注释。&lt;/p&gt;
+&lt;h1 id=&#34;三-接入方式&#34;&gt;三. 接入方式
+&lt;/h1&gt;&lt;p&gt;3.1 API接入&lt;/p&gt;
+&lt;p&gt;对话API ：https://api.deepseek.com/chat/completions&lt;/p&gt;
+&lt;p&gt;请求头  Authorization ： Bearer  &lt;Token&gt;&lt;/p&gt;
+&lt;p&gt;请求体， messages参数和model参数是必填的，参数示例如下&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;messages&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;#34;content&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;You are a helpful assistant&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;#34;role&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;system&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;#34;content&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;帮我翻译我是一个机器人，你是一个真人&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;#34;role&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;user&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;],&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;model&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;deepseek-chat&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;请求参数详情
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/requestparams.jpg&#34;
+	width=&#34;975&#34;
+	height=&#34;477&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/requestparams_hu_bb678193e04964c1.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/requestparams_hu_fa5878730f9e407.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;请求参数详情&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;204&#34;
+		data-flex-basis=&#34;490px&#34;
+	
+&gt;
+响应示例
+①非流式
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/notstream.jpg&#34;
+	width=&#34;1077&#34;
+	height=&#34;1039&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/notstream_hu_51879ee0f409b84d.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/notstream_hu_ad1bd89d9756a144.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;非流式&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;103&#34;
+		data-flex-basis=&#34;248px&#34;
+	
+&gt;
+②流式
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/stream.jpg&#34;
+	width=&#34;1775&#34;
+	height=&#34;1123&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/stream_hu_1f137809796d31ca.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/stream_hu_41df2ab473689015.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;流式&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;158&#34;
+		data-flex-basis=&#34;379px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;3.2 错误码
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/errorcode.jpg&#34;
+	width=&#34;825&#34;
+	height=&#34;545&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/errorcode_hu_5201d972753f9de9.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/errorcode_hu_bfddc3eeb81658cf.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;错误码&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;151&#34;
+		data-flex-basis=&#34;363px&#34;
+	
+&gt;
+3.3 与其他大模型的对比
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/compareapi.jpg&#34;
+	width=&#34;1837&#34;
+	height=&#34;405&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/compareapi_hu_784c09bd74238a66.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/compareapi_hu_c9d6f3884da01b5.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;对比其他大模型&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;453&#34;
+		data-flex-basis=&#34;1088px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;四对比&#34;&gt;四.对比
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;知识类任务：MMLU，MMLU-Pro， GPQA, SimpleQA&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;长文本：DROP，FRAMES ，LongBench v2&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;代码：算法类（Codeforces），工程类（SWE-Bench Verified）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;数学：AIME 2024, MATH
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/compare.jpg&#34;
+	width=&#34;3521&#34;
+	height=&#34;2763&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/compare_hu_25a9169e0ef097eb.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/compare_hu_7a78adec988daaac.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;对比&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;127&#34;
+		data-flex-basis=&#34;305px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;DeepSeek-V3 多项评测成绩超越了 Qwen2.5-72B 和 Llama-3.1-405B 等其他开源模型，并在性能上和世界顶尖的闭源模型 GPT-4o 以及 Claude-3.5-Sonnet 不分伯仲。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;百科知识： DeepSeek-V3 在知识类任务的水平接近当前表现最好的模型 Claude-3.5-Sonnet-1022。
+长文本： 在长文本测评中，DeepSeek-V3 平均表现超越其他模型。&lt;/li&gt;
+&lt;li&gt;代码： DeepSeek-V3 在算法类代码场景远远领先于市面上已有的全部非 o1 类模型；并在工程类代码场景（SWE-Bench Verified）逼近 Claude-3.5-Sonnet-1022。&lt;/li&gt;
+&lt;li&gt;数学： 在美国数学竞赛和全国高中数学联赛上，DeepSeek-V3 大幅超过了所有开源闭源模型。&lt;/li&gt;
+&lt;li&gt;中文能力： DeepSeek-V3 与 Qwen2.5-72B 在教育类测评 C-Eval 和代词消歧等评测集上表现相近，但在事实知识 C-SimpleQA 上更为领先。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;DeepSeek-V3支持本地部署，GPT-4o和Kimi均不支持本地部署
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/comparegpt.jpg&#34;
+	width=&#34;1135&#34;
+	height=&#34;511&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/comparegpt_hu_6c14446cc1bed6db.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/comparegpt_hu_5757ac454e55c868.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;对比gpt4o&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;222&#34;
+		data-flex-basis=&#34;533px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;五-创新点&#34;&gt;五. 创新点
+&lt;/h1&gt;&lt;p&gt;使用上下文硬盘缓存技术，将预计未来会重复使用的内容进行缓存，如果输入存在重复，则重复的部分只需要从缓存读取，无需计算。该技术不仅降低服务的延迟，还大幅削减最终的使用成本。&lt;/p&gt;
+&lt;p&gt;注意，只有当两个请求的前缀内容相同时（从第 0 个 token 开始相同），才算重复。中间开始的重复不能被缓存命中。&lt;/p&gt;
+&lt;p&gt;使用场景：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;具有长预设提示词的问答助手类应用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;具有长角色设定与多轮对话的角色扮演类应用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;针对固定文本集合进行频繁询问的数据分析类应用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;代码仓库级别的代码分析与排障工具&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过 Few-shot 提升模型输出效果
+注意：&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;缓存系统以 64 tokens 为一个存储单元，不足 64 tokens 的内容不会被缓存&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;缓存系统是“尽力而为”，不保证 100% 缓存命中&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;缓存不再使用后会自动被清空，时间一般为几个小时到几天&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;六-总结&#34;&gt;六. 总结
+&lt;/h1&gt;&lt;p&gt;DeepSeek-V3 是一款性能强大、价格亲民、开源支持的国产 AI 模型。它在知识问答、长文本处理、代码生成、数学能力等方面都展现出了与国际顶尖模型（如 GPT-4o）不相上下的实力。同时，它的低成本和开源特性让它成为普惠 AI 的典范。 未来，随着 DeepSeek-V3 的不断优化和功能扩展，它有望在更多领域发挥重要作用，成为国产 AI 技术的标杆。无论是企业还是个人开发者，都可以通过 DeepSeek-V3 享受到高性能、低成本的 AI 服务。 &lt;/p&gt;
+&lt;p&gt;未来发展方向&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;多模态支持&lt;/strong&gt; ：DeepSeek 计划在未来为 V3 模型添加多模态功能（如图像、音频处理），进一步提升模型的实用性。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;深度思考能力&lt;/strong&gt; ：DeepSeek 将继续优化模型的推理和思考能力，使其能够处理更复杂的任务。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

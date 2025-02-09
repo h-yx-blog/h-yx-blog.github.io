@@ -7,7 +7,662 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Yuta Huang</copyright>
-        <lastBuildDate>Fri, 10 Jan 2025 15:19:17 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 09 Feb 2025 10:08:24 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>DeepSeek Janus Pro</title>
+        <link>https://h-yx-blog.github.io/p/deepseek-janus-pro/</link>
+        <pubDate>Sun, 09 Feb 2025 10:08:24 +0800</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/p/deepseek-janus-pro/</guid>
+        <description>&lt;h1 id=&#34;一介绍&#34;&gt;一.介绍
+&lt;/h1&gt;&lt;p&gt;Janus 是一种新颖的自回归框架，它统一了多模态理解和生成。它通过将视觉编码解耦为单独的路径来解决以前方法的局限性，同时仍然使用单一、统一的 transformer 架构进行处理。解耦不仅缓解了视觉编码器在理解和生成中的角色冲突，还增强了框架的灵活性。Janus 超越了以前的统一模型，并达到或超过特定于任务的模型的性能。Janus 的简单性、高度灵活性和有效性使其成为下一代统一多模态模型的有力候选者。&lt;/p&gt;
+&lt;h1 id=&#34;二关键技术&#34;&gt;二.关键技术
+&lt;/h1&gt;&lt;p&gt;Janus-Pro 是 DeepSeek 的 Janus 多模态模型的高级版本，设计用于出色地理解和生成涉及文本和图像的内容，&lt;strong&gt;可以同时进行多模态理解和图像生成任务。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Janus-Pro 仍然保持了 Janus 首创的解耦视觉编码这一核心架构原则。这种将不同任务的视觉处理方法分离开来的做法，对于提高模型的整体性能至关重要。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优化训练策略 ：Janus-Pro 采用更有效的训练策略，注重更好地利用数据和资源。&lt;/li&gt;
+&lt;li&gt;扩展的训练数据集：该模型结合了真实数据源和合成数据，增强了其稳健性和适应性。&lt;/li&gt;
+&lt;li&gt;更大的模型规模：Janus-Pro 的参数规模从 10 亿 (1B) 到 70 亿 (7B)，性能和稳定性都得到了提高，尤其是在文本到图像生成和多模态理解等任务中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;三创新&#34;&gt;三.创新
+&lt;/h1&gt;&lt;p&gt;核心创新是将&lt;strong&gt;多模态理解和生成&lt;/strong&gt;，使用&lt;strong&gt;两种不同的任务解耦编码器&lt;/strong&gt;来完成理解和生成任务。让这两种任务可以在同一模型中高效完成。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;解耦视觉编码器&lt;/strong&gt;：
+Janus-Pro 架构的核心是解耦视觉编码的理念，即根据手头的任务使用不同的编码方法处理图像。
+这种多任务处理的效果，主要源于 Janus 系列针对不同任务使用的两个视觉编码器：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;理解编码器：用于提取图像中的语义特征，以便进行图像理解任务（如图像问答、视觉分类等）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;生成编码器：将图像转换为离散表示（例如，使用 VQ 编码器），用于文本到图像生成任务。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;文生图对比&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;&lt;strong&gt;特性&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;Janus Pro&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;Flux&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;训练成本&lt;/td&gt;
+          &lt;td&gt;相对较低的预算&lt;/td&gt;
+          &lt;td&gt;未明确说明，可能更高&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;社区支持&lt;/td&gt;
+          &lt;td&gt;开源，在 Hugging Face 上可用&lt;/td&gt;
+          &lt;td&gt;拥有强大的社区支持和优化&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;性能&lt;/td&gt;
+          &lt;td&gt;擅长指令执行，多模态任务&lt;/td&gt;
+          &lt;td&gt;高质量图像且生成速度快&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;图像分辨率&lt;/td&gt;
+          &lt;td&gt;输入：384 x 384 像素，输出：最高 768 x 768&lt;/td&gt;
+          &lt;td&gt;可生成高达 1024 x 1024 像素&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;主要关注点&lt;/td&gt;
+          &lt;td&gt;多模态任务，文本-图像交互&lt;/td&gt;
+          &lt;td&gt;高质量图像生成&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1 id=&#34;四评估结果&#34;&gt;四.评估结果
+&lt;/h1&gt;&lt;p&gt;①在 GenEval 中，Janus-Pro-7B 的得分为 0.80，超过了 DALL-E 3 和 Stable Diffusion 3 Medium 等模型。&lt;/p&gt;
+&lt;p&gt;②在 DPG-Bench 上，Janus-Pro 获得了 84.19 分，再次超过了 DALL-E 3 和 Stable Diffusion 3 Medium 等竞争对手。
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/result.jpg&#34;
+	width=&#34;851&#34;
+	height=&#34;659&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/result_hu_d9d177b7098ed4e7.jpg 480w, https://h-yx-blog.github.io/p/deepseek-janus-pro/result_hu_eb76ea1fe37ccc5b.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;评估结果对比&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;129&#34;
+		data-flex-basis=&#34;309px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;五局限性&#34;&gt;五.局限性
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;分辨率限制：该模型的输入分辨率上限为 384x384，这可能会妨碍需要精细细节的任务（如光学字符识别 (OCR)）的性能。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;图像质量：同样的分辨率限制和 VQ tokenizer 使用的压缩技术会导致图像缺乏精细度，尤其是面部小区域。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;六-本地部署&#34;&gt;六. 本地部署
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#创建conda环境&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;conda&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;create&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;deepseek&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;janus&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;python&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;3.10&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#激活conda环境&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;conda&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;activate&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;deepseek&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;janus&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#克隆Janus项目&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;git&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;clone&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;https&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;github&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;com&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;deepseek&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ai&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Janus&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;git&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#进入janus目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Janus&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#安装Janus依赖&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;pip&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;install&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;e&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#安装Gradio （UI界面）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;pip&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;install&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;gradio&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#启动 （代码中默认是Janus pro 7B的模型，可以手动修改）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;python&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;demo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;app_januspro&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;py&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;看到以下界面即已经成功部署
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/deploy.jpg&#34;
+	width=&#34;1667&#34;
+	height=&#34;1123&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/deploy_hu_67b5360133567b06.jpg 480w, https://h-yx-blog.github.io/p/deepseek-janus-pro/deploy_hu_cfd9310ad4a15f54.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;148&#34;
+		data-flex-basis=&#34;356px&#34;
+	
+&gt;
+测试结果
+①文生图测试如下
+文生图功能似乎对中文理解似乎不行，只能使用英文  （使用中文提问时，无论怎么提问，总是生成如下图片）
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/texttopage.jpg&#34;
+	width=&#34;1985&#34;
+	height=&#34;881&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/texttopage_hu_92886cbb83546bf5.jpg 480w, https://h-yx-blog.github.io/p/deepseek-janus-pro/texttopage_hu_1843926421f64584.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;中文文生图&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;225&#34;
+		data-flex-basis=&#34;540px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;英文提问如下
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/texttopagebyen.jpg&#34;
+	width=&#34;1921&#34;
+	height=&#34;917&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/texttopagebyen_hu_68158571c0830003.jpg 480w, https://h-yx-blog.github.io/p/deepseek-janus-pro/texttopagebyen_hu_b5180c3b01f3c5bc.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;英文文生图&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;209&#34;
+		data-flex-basis=&#34;502px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;②图片理解测试如下
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/lijie.jpg&#34;
+	width=&#34;1991&#34;
+	height=&#34;741&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-janus-pro/lijie_hu_eb00f814b357bbca.jpg 480w, https://h-yx-blog.github.io/p/deepseek-janus-pro/lijie_hu_b8c6fe76cd47d451.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;268&#34;
+		data-flex-basis=&#34;644px&#34;
+	
+&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>DeepSeek R1</title>
+        <link>https://h-yx-blog.github.io/p/deepseek-r1/</link>
+        <pubDate>Sun, 09 Feb 2025 10:08:24 +0800</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/p/deepseek-r1/</guid>
+        <description>&lt;h1 id=&#34;一-介绍&#34;&gt;一. 介绍
+&lt;/h1&gt;&lt;p&gt;1.1 DeepSeek-R1 通过强化学习（Reinforcement Learning：简称RL）提升大型语言模型（LLM）的推理能力。这项研究在如何仅依靠强化学习而不是过分依赖监督式微调的情况下，增强LLM解决复杂问题的能力上，取得了重要进展。&lt;/p&gt;
+&lt;p&gt;1.2 DeepSeek-R1系列包含两大核心成员：&lt;/p&gt;
+&lt;p&gt;①DeepSeek-R1-Zero&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;参数规模：6710亿（MoE架构，每个token激活370亿参数）&lt;/li&gt;
+&lt;li&gt;训练特点：完全基于强化学习的端到端训练&lt;/li&gt;
+&lt;li&gt;核心优势：展现出自我验证、长链推理等涌现能力&lt;/li&gt;
+&lt;li&gt;典型表现：AIME 2024基准测试71%准确率&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;②DeepSeek-R1&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;参数规模：与Zero版保持相同体量&lt;/li&gt;
+&lt;li&gt;训练创新：多阶段混合训练策略&lt;/li&gt;
+&lt;li&gt;核心改进：监督微调冷启动 + 强化学习优化&lt;/li&gt;
+&lt;li&gt;性能提升：AIME 2024准确率提升至79.8%&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;1.3 对比R1 Zero和R1&lt;/p&gt;
+&lt;p&gt;① R1 Zero和R1的主要区别&lt;/p&gt;
+&lt;p&gt;DeepSeek-R1-Zero是团队初步尝试仅用纯强化学习而不进行任何监督式微调的实验。他们从基础模型出发，直接运用强化学习，让模型通过不断试错来发展其推理能力。这种方法虽然取得了较好的成果（在 AIME 2024 测试中达到了 71% 的准确率），但在可读性和语言连贯性上存在明显不足。该模型拥有 6710 亿个参数，使用了混合专家（MoE）架构，其中每个词触发的参数约为 370 亿。此模型展现了一些新兴的推理行为，例如自我核查、反思和长链推理（CoT）。&lt;/p&gt;
+&lt;p&gt;与之对比，DeepSeek-R1采用了更复杂的多阶段训练方法。它不仅仅采用强化学习，而是先在一小组精心挑选的示例（称为“冷启动数据”）上进行监督式微调，然后再应用强化学习。这种方法克服了 DeepSeek-R1-Zero 的局限，同时取得了更优的表现。这个模型同样维持了 6710 亿的参数数量，但在回答的可读性和条理性上有所提高。&lt;/p&gt;
+&lt;p&gt;② R1 Zero和R1的共同点
+DeepSeek-R1-Zero 和 DeepSeek-R1 基于 DeepSeek-V3-Base 进行训练。&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;&lt;strong&gt;Model&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;Total Params&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;Activated Params&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;Context Length&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;DeepSeek-R1-Zero&lt;/td&gt;
+          &lt;td&gt;671B&lt;/td&gt;
+          &lt;td&gt;37B&lt;/td&gt;
+          &lt;td&gt;128K&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;DeepSeek-R1&lt;/td&gt;
+          &lt;td&gt;671B&lt;/td&gt;
+          &lt;td&gt;37B&lt;/td&gt;
+          &lt;td&gt;128K&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;训练方法概述：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;强化学习&lt;/strong&gt; ：不同于传统依赖监督学习的模型，DeepSeek-R1 大规模采用了强化学习。此训练方法利用群体相对策略优化（GRPO），重点提升精度和格式化奖励，以增强推理能力，无需依赖大量标注数据。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;蒸馏技术&lt;/strong&gt; ：为普及高效能模型，DeepSeek 也推出了 R1 的蒸馏版本，参数规模从15亿到700亿不等。这些模型采用了如Qwen和Llama等架构，表明即使是较小和更高效的模型也能包含复杂的推理能力。蒸馏过程通过使用 DeepSeek-R1 生成的合成推理数据对这些小型模型进行微调，以较低的计算成本保持高性能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;二优点&#34;&gt;二.优点
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;性能与 OpenAI-o1 相当&lt;/li&gt;
+&lt;li&gt;完全开源的模型和技术报告&lt;/li&gt;
+&lt;li&gt;MIT 许可：自由蒸馏和商业化！&lt;/li&gt;
+&lt;li&gt;从 DeepSeek-R1 提炼出来，6 个小模型完全开源（32B &amp;amp; 70B 型号与 OpenAI-o1-mini 相当）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;三-技术亮点&#34;&gt;三. 技术亮点
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;以最少的标记数据显著提高性能&lt;/li&gt;
+&lt;li&gt;组相对策略优化（GRPO）：兼顾格式与准确性的奖励机制&lt;/li&gt;
+&lt;li&gt;知识蒸馏技术：支持从1.5B到70B的参数规模适配&lt;/li&gt;
+&lt;li&gt;多架构兼容：基于Qwen/Llama等主流架构的轻量化版本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;四api&#34;&gt;四.API
+&lt;/h1&gt;&lt;p&gt;成本优势：缓存命中时输入token成本$0.14/M，较同类产品降低30%&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;&lt;strong&gt;模型&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;上下文长度&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;最大输出长度&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;输入价格（缓存命中）&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;输入价格（缓存未命中）&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;输出价格&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;deepseek-reasoner（即deppseek R1）&lt;/td&gt;
+          &lt;td&gt;64K&lt;/td&gt;
+          &lt;td&gt;8K&lt;/td&gt;
+          &lt;td&gt;0.14 美元/百万tokens&lt;/td&gt;
+          &lt;td&gt;0.55 美元/百万tokens&lt;/td&gt;
+          &lt;td&gt;2.19 美元/百万tokens&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1 id=&#34;五本地部署&#34;&gt;五.本地部署
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;推荐配置：NVIDIA GPU（推荐使用具有大量视频内存（VRAM）的 GPU，如：RTX 3090或更高） + 32GB内存 + 50GB存储空间&lt;/li&gt;
+&lt;li&gt;最低配置：CPU（支持AVX2指令集） + 8GB内存 + 12GB存储
+（能耗注意：32B+ 模型需高功率电源（1000W+）和散热系统。）
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-r1/deploy.jpg&#34;
+	width=&#34;1517&#34;
+	height=&#34;459&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-r1/deploy_hu_77329b18801eef2a.jpg 480w, https://h-yx-blog.github.io/p/deepseek-r1/deploy_hu_316908321735051e.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;本地部署&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;330&#34;
+		data-flex-basis=&#34;793px&#34;
+	
+&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;建议在使用 DeepSeek-R1 系列模型时遵循以下配置
+①将temperature 设置在 0.5-0.7 （推荐 0.6） 的范围内，以防止无休止的重复或不连贯的输出。&lt;/p&gt;
+&lt;p&gt;②避免添加系统提示符;所有说明都应包含在用户提示符中。&lt;/p&gt;
+&lt;p&gt;③对于数学问题，建议在提示中包含一条指令，例如：“请逐步推理，并将您的最终答案放在 \boxed{} 中。&lt;/p&gt;
+&lt;p&gt;④在评估模型性能时，建议进行多次测试并平均结果。&lt;/p&gt;
+&lt;h1 id=&#34;六-deepseek-r1评估结果&#34;&gt;六. DeepSeek-R1评估结果
+&lt;/h1&gt;&lt;p&gt;DeepSeek-R1各方面的评估结果如下&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-r1/result.jpg&#34;
+	width=&#34;720&#34;
+	height=&#34;720&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-r1/result_hu_a89aecc479b790b6.jpg 480w, https://h-yx-blog.github.io/p/deepseek-r1/result_hu_5970b5d2e4c2e7d7.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;结果对比&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;100&#34;
+		data-flex-basis=&#34;240px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;DeepSeek-R1在数学、代码和推理任务，性能可与 OpenAI-o1 相媲美
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-r1/resulttwo.jpg&#34;
+	width=&#34;895&#34;
+	height=&#34;533&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-r1/resulttwo_hu_d8f61149d3ccdfba.jpg 480w, https://h-yx-blog.github.io/p/deepseek-r1/resulttwo_hu_b3a84b0de6a37aa4.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;结果对比&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;167&#34;
+		data-flex-basis=&#34;403px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;蒸馏小模型32B 和 70B 模型在多项能力上实现了对标 OpenAI o1-mini 的效果。
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-r1/resultthree.jpg&#34;
+	width=&#34;1171&#34;
+	height=&#34;563&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-r1/resultthree_hu_d14261896c250f08.jpg 480w, https://h-yx-blog.github.io/p/deepseek-r1/resultthree_hu_1ad36f21ad07e101.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;结果对比&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;207&#34;
+		data-flex-basis=&#34;499px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;七局限性及未来发展&#34;&gt;七.局限性及未来发展
+&lt;/h1&gt;&lt;p&gt;若干改进领域：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模型在处理需要特定输出格式的任务时偶尔会遇到困难。&lt;/li&gt;
+&lt;li&gt;软件工程相关任务的性能还有提升空间。&lt;/li&gt;
+&lt;li&gt;在多语言环境下，语言混合带来了挑战。&lt;/li&gt;
+&lt;li&gt;少样本提示通常会导致性能下降。
+未来的研究将致力于解决这些问题，并拓展模型在函数调用、多轮交互和复杂角色扮演场景等领域的能力。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>DeepSeek技术调研及api接入</title>
+        <link>https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/</link>
+        <pubDate>Sun, 09 Feb 2025 09:55:44 +0800</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/</guid>
+        <description>&lt;h1 id=&#34;一-简介&#34;&gt;一. 简介
+&lt;/h1&gt;&lt;p&gt;1.1  介绍：DeepSeek 是一家专注于人工智能技术研发的公司，致力于打造高性能、低成本的 AI 模型。它的目标是让 AI 技术更加普惠，让更多人能够用上强大的 AI 工具。&lt;/p&gt;
+&lt;p&gt;1.2 为什么DeepSeek-V3重要&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;开源精神：DeepSeek-V3 不仅开源了模型权重，还提供了本地部署的支持，让开发者可以自由定制和优化模型。&lt;/li&gt;
+&lt;li&gt;普惠 AI：DeepSeek-V3 的价格非常亲民，相比国外模型（如 GPT-4o），它的使用成本更低，适合中小企业和个人开发者。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;二-收费情况&#34;&gt;二. 收费情况
+&lt;/h1&gt;&lt;p&gt;2.1 API收费情况
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/shoufei.jpg&#34;
+	width=&#34;1241&#34;
+	height=&#34;305&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/shoufei_hu_c6652b261f61e108.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/shoufei_hu_b16bd673f08d026a.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;API收费&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;406&#34;
+		data-flex-basis=&#34;976px&#34;
+	
+&gt;
+1.如未指定 max_tokens，默认最大输出长度为 4K。请调整 max_tokens 以支持更长的输出。&lt;/p&gt;
+&lt;p&gt;2.表格中展示了优惠前与优惠后的价格。即日起至北京时间 2025-02-08 24:00，所有用户均可享受 DeepSeek-V3 API 的价格优惠。 在此之后，模型价格将恢复至原价。&lt;/p&gt;
+&lt;p&gt;在大模型 API 的使用场景中，用户的输入有相当比例是重复的。举例说，用户的 prompt 往往有一些重复引用的部分；再举例说，多轮对话中，每一轮都要将前几轮的内容重复输入。&lt;/p&gt;
+&lt;p&gt;为此，&lt;strong&gt;DeepSeek 启用上下文硬盘缓存技术，把预计未来会重复使用的内容，缓存在分布式的硬盘阵列中。如果输入存在重复，则重复的部分只需要从缓存读取，无需计算。该技术不仅降低服务的延迟，还大幅削减最终的使用成本。&lt;/strong&gt; 缓存命中的部分，DeepSeek 收费 0.1元 每百万 tokens。至此，大模型的价格再降低一个数量级&lt;/p&gt;
+&lt;p&gt;Token 是模型用来表示自然语言文本的基本单位，也是我们的计费单元，可以直观的理解为“字”或“词”；通常 1 个中文词语、1 个英文单词、1 个数字或 1 个符号计为 1 个 token。&lt;/p&gt;
+&lt;p&gt;一般情况下模型中 token 和字数的换算比例大致如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1 个英文字符 ≈ 0.3 个 token。&lt;/li&gt;
+&lt;li&gt;1 个中文字符 ≈ 0.6 个 token。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;2.2 并发&lt;/p&gt;
+&lt;p&gt;DeepSeek API 不限制用户并发量&lt;/p&gt;
+&lt;p&gt;但请注意，当DeepSeek服务器承受高流量压力时，您的请求发出后，可能需要等待一段时间才能获取服务器的响应。在这段时间里，您的 HTTP 请求会保持连接，并持续收到如下格式的返回内容：&lt;/p&gt;
+&lt;p&gt;非流式请求：持续返回空行
+流式请求：持续返回 SSE keep-alive 注释（: keep-alive）&lt;/p&gt;
+&lt;p&gt;这些内容不影响 OpenAI SDK 对响应的 JSON body 的解析。如果使用者自己解析 HTTP 响应，请注意处理这些空行或注释。&lt;/p&gt;
+&lt;h1 id=&#34;三-接入方式&#34;&gt;三. 接入方式
+&lt;/h1&gt;&lt;p&gt;3.1 API接入&lt;/p&gt;
+&lt;p&gt;对话API ：https://api.deepseek.com/chat/completions&lt;/p&gt;
+&lt;p&gt;请求头  Authorization ： Bearer  &lt;Token&gt;&lt;/p&gt;
+&lt;p&gt;请求体， messages参数和model参数是必填的，参数示例如下&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;messages&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;#34;content&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;You are a helpful assistant&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;#34;role&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;system&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;#34;content&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;帮我翻译我是一个机器人，你是一个真人&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;#34;role&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;user&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;],&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;model&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;deepseek-chat&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;请求参数详情
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/requestparams.jpg&#34;
+	width=&#34;975&#34;
+	height=&#34;477&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/requestparams_hu_bb678193e04964c1.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/requestparams_hu_fa5878730f9e407.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;请求参数详情&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;204&#34;
+		data-flex-basis=&#34;490px&#34;
+	
+&gt;
+响应示例
+①非流式
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/notstream.jpg&#34;
+	width=&#34;1077&#34;
+	height=&#34;1039&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/notstream_hu_51879ee0f409b84d.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/notstream_hu_ad1bd89d9756a144.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;非流式&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;103&#34;
+		data-flex-basis=&#34;248px&#34;
+	
+&gt;
+②流式
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/stream.jpg&#34;
+	width=&#34;1775&#34;
+	height=&#34;1123&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/stream_hu_1f137809796d31ca.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/stream_hu_41df2ab473689015.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;流式&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;158&#34;
+		data-flex-basis=&#34;379px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;3.2 错误码
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/errorcode.jpg&#34;
+	width=&#34;825&#34;
+	height=&#34;545&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/errorcode_hu_5201d972753f9de9.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/errorcode_hu_bfddc3eeb81658cf.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;错误码&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;151&#34;
+		data-flex-basis=&#34;363px&#34;
+	
+&gt;
+3.3 与其他大模型的对比
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/compareapi.jpg&#34;
+	width=&#34;1837&#34;
+	height=&#34;405&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/compareapi_hu_784c09bd74238a66.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/compareapi_hu_c9d6f3884da01b5.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;对比其他大模型&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;453&#34;
+		data-flex-basis=&#34;1088px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;四对比&#34;&gt;四.对比
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;知识类任务：MMLU，MMLU-Pro， GPQA, SimpleQA&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;长文本：DROP，FRAMES ，LongBench v2&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;代码：算法类（Codeforces），工程类（SWE-Bench Verified）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;数学：AIME 2024, MATH
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/compare.jpg&#34;
+	width=&#34;3521&#34;
+	height=&#34;2763&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/compare_hu_25a9169e0ef097eb.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/compare_hu_7a78adec988daaac.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;对比&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;127&#34;
+		data-flex-basis=&#34;305px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;DeepSeek-V3 多项评测成绩超越了 Qwen2.5-72B 和 Llama-3.1-405B 等其他开源模型，并在性能上和世界顶尖的闭源模型 GPT-4o 以及 Claude-3.5-Sonnet 不分伯仲。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;百科知识： DeepSeek-V3 在知识类任务的水平接近当前表现最好的模型 Claude-3.5-Sonnet-1022。
+长文本： 在长文本测评中，DeepSeek-V3 平均表现超越其他模型。&lt;/li&gt;
+&lt;li&gt;代码： DeepSeek-V3 在算法类代码场景远远领先于市面上已有的全部非 o1 类模型；并在工程类代码场景（SWE-Bench Verified）逼近 Claude-3.5-Sonnet-1022。&lt;/li&gt;
+&lt;li&gt;数学： 在美国数学竞赛和全国高中数学联赛上，DeepSeek-V3 大幅超过了所有开源闭源模型。&lt;/li&gt;
+&lt;li&gt;中文能力： DeepSeek-V3 与 Qwen2.5-72B 在教育类测评 C-Eval 和代词消歧等评测集上表现相近，但在事实知识 C-SimpleQA 上更为领先。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;DeepSeek-V3支持本地部署，GPT-4o和Kimi均不支持本地部署
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/comparegpt.jpg&#34;
+	width=&#34;1135&#34;
+	height=&#34;511&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/comparegpt_hu_6c14446cc1bed6db.jpg 480w, https://h-yx-blog.github.io/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/comparegpt_hu_5757ac454e55c868.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;对比gpt4o&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;222&#34;
+		data-flex-basis=&#34;533px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;五-创新点&#34;&gt;五. 创新点
+&lt;/h1&gt;&lt;p&gt;使用上下文硬盘缓存技术，将预计未来会重复使用的内容进行缓存，如果输入存在重复，则重复的部分只需要从缓存读取，无需计算。该技术不仅降低服务的延迟，还大幅削减最终的使用成本。&lt;/p&gt;
+&lt;p&gt;注意，只有当两个请求的前缀内容相同时（从第 0 个 token 开始相同），才算重复。中间开始的重复不能被缓存命中。&lt;/p&gt;
+&lt;p&gt;使用场景：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;具有长预设提示词的问答助手类应用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;具有长角色设定与多轮对话的角色扮演类应用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;针对固定文本集合进行频繁询问的数据分析类应用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;代码仓库级别的代码分析与排障工具&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过 Few-shot 提升模型输出效果
+注意：&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;缓存系统以 64 tokens 为一个存储单元，不足 64 tokens 的内容不会被缓存&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;缓存系统是“尽力而为”，不保证 100% 缓存命中&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;缓存不再使用后会自动被清空，时间一般为几个小时到几天&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;六-总结&#34;&gt;六. 总结
+&lt;/h1&gt;&lt;p&gt;DeepSeek-V3 是一款性能强大、价格亲民、开源支持的国产 AI 模型。它在知识问答、长文本处理、代码生成、数学能力等方面都展现出了与国际顶尖模型（如 GPT-4o）不相上下的实力。同时，它的低成本和开源特性让它成为普惠 AI 的典范。 未来，随着 DeepSeek-V3 的不断优化和功能扩展，它有望在更多领域发挥重要作用，成为国产 AI 技术的标杆。无论是企业还是个人开发者，都可以通过 DeepSeek-V3 享受到高性能、低成本的 AI 服务。 &lt;/p&gt;
+&lt;p&gt;未来发展方向&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;多模态支持&lt;/strong&gt; ：DeepSeek 计划在未来为 V3 模型添加多模态功能（如图像、音频处理），进一步提升模型的实用性。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;深度思考能力&lt;/strong&gt; ：DeepSeek 将继续优化模型的推理和思考能力，使其能够处理更复杂的任务。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>数据库设计规范</title>
+        <link>https://h-yx-blog.github.io/p/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/</link>
+        <pubDate>Fri, 24 Jan 2025 10:59:15 +0800</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/p/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/</guid>
+        <description>&lt;p&gt;本文主要针对Java新应用开发时，数据库设计及使用的一些共识规范，用于团队数据库设计的统一规划和管理。&lt;/p&gt;
+&lt;p&gt;以MySQL作为示例介绍，内容分四个方面进行规范描述：建表，索引使用，SQL语句设计，以及ORM对象关系映射。&lt;/p&gt;
+&lt;p&gt;一、建表规范
+（1）表名、字段名必须使用小写字母或数字，除非数字本身具有共识含义，否则不建议使用，尤其禁止出现数字开头。&lt;/p&gt;
+&lt;p&gt;（2）表达是与否的字段，数据类型应设定：unsigned tinyint，即非负数的短字节整型，其中1表示是，0表示否。&lt;/p&gt;
+&lt;p&gt;（3）注意禁止使用数据库的保留字段是共识，比如asc,desc,select,match，定义好字段后，应该设置虚拟数据尝试常规的增删改查。&lt;/p&gt;
+&lt;p&gt;（4）小数类型为 decimal，当数据范围超过 decimal 的范围，建议将数据拆成整数和小数分开存储，禁止使用 float 和 double，因为其存在精度丢失的问题。&lt;/p&gt;
+&lt;p&gt;（5）字段设置索引时，表示方式应遵循以下命名，主键索引为 pk_字段名，唯一索引为 uk_字段名，普通索引则为 idx_字段名&lt;/p&gt;
+&lt;p&gt;（6）表的命名应该富有含义，且呈现分类分层，如factory_produce_order，factory_produce_device&lt;/p&gt;
+&lt;p&gt;（7）如果存储的字符串长度确定且相等，可以使用 char 定长字符串类型，而不使用varchar&lt;/p&gt;
+&lt;p&gt;（8）表应必备创建时间create_time和更新时间update_time，数据为datetime类型，用来表达数据初次创建和最近更新的时间。&lt;/p&gt;
+&lt;p&gt;（9）varchar 是可变长字符串，不预先分配存储空间，长度不要超过 5000，如果存储长度大于此值，定义字段类型为 text，独立出来一张表，用主键来对应，避免影响其它字段索引效率。&lt;/p&gt;
+&lt;p&gt;（10）当单表行数超过 500 万行或者单表内容超过 2GB，就应该要考虑业务分表。&lt;/p&gt;
+&lt;p&gt;二、索引使用规范
+（1）唯一索引的设置，业务上具有唯一特性的字段或多个字段的组合，必须建成唯一索引。在应用层做了非常完善的校验控制，只要没有唯一索引，长久必然有脏数据产生。&lt;/p&gt;
+&lt;p&gt;（2）多表关联查询时，需要 join 字段的数据类型必须绝对一致，保证被关联的字段需要有索引。&lt;/p&gt;
+&lt;p&gt;（3）在 varchar 字段上建立索引时，当业务没必要对全字段建立索引，可以指定索引长度，根据实际文本区分度决定索引长度即可。&lt;/p&gt;
+&lt;p&gt;（4）如果有 order by 的场景，请注意利用索引的有序性。order by 最后的字段是组合索引的一部分，并且放在索引组合顺序的最后，例：where a=? and b=? order by c; 索引：a_b_c&lt;/p&gt;
+&lt;p&gt;（5）建组合索引的时候，区分度最高的在最左边。例：如果 where a=? and b=? ，a 列的几乎接近于唯一值，那么只需要单建 idx_a 索引即可。&lt;/p&gt;
+&lt;p&gt;存在非等号和等号混合判断条件时，在建索引时，请把等号条件的列前置。如：where a&amp;gt;?and b=? 那么即使 a 的区分度更高，也必须把 b 放在索引的最前列。&lt;/p&gt;
+&lt;p&gt;三、SQL语句规范
+（1）不要使用 count(列名)或 count(常量)来替代 count(&lt;em&gt;)，count(&lt;/em&gt;)是 SQL92 定义的标准统计行数的语法，跟数据库无关，跟 NULL 和非 NULL 无关。count(*)会统计值为 NULL 的行，而 count(列名)不会统计此列为 NULL 值的行。&lt;/p&gt;
+&lt;p&gt;（2）count(distinct col) 计算该列除 NULL 之外的不重复行数，注意 count(distinctcol1, col2) 如果其中一列全为 NULL，那么即使另一列有不同的值，也返回为 0&lt;/p&gt;
+&lt;p&gt;（3）进行数据项的删除和修改时，要先 查询，避免出现误操作，确认无误才能执行更新语句。&lt;/p&gt;
+&lt;p&gt;（4）不得使用外键与级联，一切外键概念必须在应用层解决，外键与级联更新适用于单机低并发，不适合分布式、高并发集群，因为级联更新是强阻塞，外键则严重影响数据库的插入速度&lt;/p&gt;
+&lt;p&gt;（5）in 业务操作要尽量避免，当要使用时应控制 in 后边的集合元素数量，在 1000 个之内&lt;/p&gt;
+&lt;p&gt;四、ORM对象关系映射
+（1）在表查询中，一律不要使用 * 作为查询的字段列表，需要哪些字段必须明确写明&lt;/p&gt;
+&lt;p&gt;（2）xml 配置参数使用：#{}，#param# 不要使用${} 此种方式容易出现 SQL 注入&lt;/p&gt;
+&lt;p&gt;（3）减少对整个pojo类目标更新，应该只更新改动的字段，若都进行全字段的更新（update table set c1=value1,c2=value2,c3=value3），会容易出错、效率低、增加 binlog 存储&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>PaddleOcr训练自定义数据</title>
         <link>https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/</link>
         <pubDate>Fri, 10 Jan 2025 15:19:17 +0800</pubDate>
@@ -37,7 +692,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/1.jpg&#34;
 	width=&#34;241&#34;
 	height=&#34;300&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/1_hu8853070776951935755.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/1_hu1688134278879811277.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/1_hu_bd59c34bdff8c8ce.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/1_hu_ee39b196860efe0.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;1.jpg&#34;
@@ -52,7 +707,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/2.jpg&#34;
 	width=&#34;1391&#34;
 	height=&#34;935&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/2_hu886837055993332772.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/2_hu10161121646658045129.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/2_hu_37edd65fca0b6253.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/2_hu_5be5a9b90a5e82b.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;2.jpg&#34;
@@ -67,7 +722,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.jpg&#34;
 	width=&#34;2567&#34;
 	height=&#34;1407&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3_hu10651370361116871148.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3_hu11499741584452523852.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3_hu_64bd58ccbcac58e8.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3_hu_9eb2fd4f1bf3bb69.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;3.jpg&#34;
@@ -83,7 +738,7 @@
 &lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.jpg&#34;
 	width=&#34;845&#34;
 	height=&#34;365&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4_hu14616966254887253470.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4_hu1613332416361158325.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4_hu_a1ce120468490e70.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4_hu_d854ef8f78b4be7b.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;4.jpg&#34;
@@ -98,7 +753,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/5.jpg&#34;
 	width=&#34;1815&#34;
 	height=&#34;639&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/5_hu4992900045065767091.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/5_hu15295313626060691370.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/5_hu_9a43d820b4f7cde8.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/5_hu_a0587ef259a3ea9e.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;5.jpg&#34;
@@ -122,7 +777,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/6.jpg&#34;
 	width=&#34;767&#34;
 	height=&#34;325&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/6_hu15148313389635645366.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/6_hu17670730774841399837.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/6_hu_46cbe6e28e70c1f1.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/6_hu_9fd29a59d061593b.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;6.jpg&#34;
@@ -135,7 +790,8 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;此时文字检测和文字识别的数据集就都制作好了。&lt;/p&gt;
 &lt;h1 id=&#34;三数据训练&#34;&gt;三、数据训练
-&lt;/h1&gt;&lt;p&gt;前置步骤：拉取官方PaddleOCR源码到本&lt;/p&gt;
+&lt;/h1&gt;&lt;p&gt;官方文档：https://github.com/PaddlePaddle/PaddleOCR/blob/bb77fcef6fdfc029f92d7876b714554389053699/doc/doc_ch/recognition.md&lt;/p&gt;
+&lt;p&gt;前置步骤：拉取官方PaddleOCR源码到本&lt;/p&gt;
 &lt;h2 id=&#34;31-检测模型训练&#34;&gt;3.1 检测模型训练
 &lt;/h2&gt;&lt;p&gt;前置步骤：拉取官方PaddleOCR源码到本地
 步骤一：下载官方模型训练文件（注意：是下载训练模型，而不是推理模型）
@@ -143,7 +799,7 @@
 &lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3-1.jpg&#34;
 	width=&#34;1839&#34;
 	height=&#34;1087&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3-1_hu16891591802856738073.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3-1_hu16579292127213790991.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3-1_hu_e204dd8b3bcc0037.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3-1_hu_1c9bf0353603dde0.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;3-1.jpg&#34;
@@ -159,7 +815,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.1.jpg&#34;
 	width=&#34;585&#34;
 	height=&#34;691&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.1_hu8581527761371065512.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.1_hu18132549313481417609.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.1_hu_6b8554af5f03a324.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.1_hu_dc00980b3897ecb3.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;3.2.1&#34;
@@ -174,7 +830,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.2.jpg&#34;
 	width=&#34;1589&#34;
 	height=&#34;391&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.2_hu8782383285704198392.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.2_hu10900655891388734460.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.2_hu_e93f153b3de994ad.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.2_hu_44f4f378c189caed.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;3.2.2&#34;
@@ -188,7 +844,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.3.jpg&#34;
 	width=&#34;1739&#34;
 	height=&#34;559&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.3_hu13963432454460970641.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.3_hu4200886556956095158.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.3_hu_b412d863b8e26eb6.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.3_hu_956e0e6f408da77.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;3.2.3&#34;
@@ -203,7 +859,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.4.jpg&#34;
 	width=&#34;1247&#34;
 	height=&#34;1101&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.4_hu1598776867084094531.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.4_hu13489527750041752141.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.4_hu_6e27a137c432ea69.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.4_hu_c367770d7d9088b7.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;3.2.4&#34;
@@ -509,7 +1165,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.3.jpg&#34;
 	width=&#34;1597&#34;
 	height=&#34;693&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.3_hu14693264914307168810.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.3_hu14745738853146500910.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.3_hu_7cfeafa9326b10ce.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.3_hu_845450e28dfbdcf2.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;3.3&#34;
@@ -536,7 +1192,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.4.jpg&#34;
 	width=&#34;805&#34;
 	height=&#34;220&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.4_hu12745624228013649527.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.4_hu5171229000466367734.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.4_hu_7fd366cbb04f726a.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.4_hu_6ddcd4a4ae9c5766.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;3.4&#34;
@@ -553,7 +1209,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec.jpg&#34;
 	width=&#34;1625&#34;
 	height=&#34;989&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_hu7684366632849927431.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_hu6911979983914465627.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_hu_87d881f7017836e9.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_hu_8b71c459ba487856.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;rec&#34;
@@ -875,7 +1531,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_step3.jpg&#34;
 	width=&#34;1287&#34;
 	height=&#34;653&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_step3_hu12590794111885231223.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_step3_hu259899322223157312.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_step3_hu_d535e06d98151e82.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_step3_hu_ea4afb0f74c4a75.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;训练结果&#34;
@@ -900,7 +1556,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_res.jpg&#34;
 	width=&#34;1579&#34;
 	height=&#34;205&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_res_hu13277701176731576173.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_res_hu3707887058629048538.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_res_hu_b73f7f7dbbf06888.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_res_hu_653b3cbe77629dd5.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;识别结果&#34;
@@ -915,7 +1571,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_ori.jpg&#34;
 	width=&#34;3365&#34;
 	height=&#34;220&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_ori_hu1065074120747992884.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_ori_hu2411539129193362524.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_ori_hu_a8b30e86a6e19450.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/rec_ori_hu_dc7fb9edd4ce877f.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;原图&#34;
@@ -930,7 +1586,7 @@
 &lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1.jpg&#34;
 	width=&#34;617&#34;
 	height=&#34;848&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1_hu11559752221943464028.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1_hu13661951627273544050.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1_hu_955f7a9f1f03634d.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1_hu_8d510a024f1a135c.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;global&#34;
@@ -944,7 +1600,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2.jpg&#34;
 	width=&#34;699&#34;
 	height=&#34;567&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2_hu17234964813406675609.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2_hu17331686195687689940.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2_hu_92c8e43685cb07db.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2_hu_215acbaa345870da.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;optimizer&#34;
@@ -958,7 +1614,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3.jpg&#34;
 	width=&#34;617&#34;
 	height=&#34;844&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3_hu17923679158746640495.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3_hu13646199575404360953.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3_hu_461d8f8c6d160baa.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3_hu_c4cd30ba933682bc.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;architecture&#34;
@@ -972,7 +1628,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4.jpg&#34;
 	width=&#34;628&#34;
 	height=&#34;702&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4_hu15903525701242895360.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4_hu4447367203296040758.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4_hu_14d41a0ea6031abb.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4_hu_9cc4ee7ea9b9ddf.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;loss&#34;
@@ -986,7 +1642,7 @@
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5.jpg&#34;
 	width=&#34;623&#34;
 	height=&#34;874&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5_hu17849360649130587617.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5_hu4061104182340545924.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5_hu_5e15b2a2c13e3286.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5_hu_148fcd70420a7bc0.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;dataset&#34;
@@ -1007,7 +1663,22 @@
 &lt;br&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/m0_60657960/article/details/137072289&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://blog.csdn.net/m0_60657960/article/details/137072289&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/weixin_41819299/article/details/127914305&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://blog.csdn.net/weixin_41819299/article/details/127914305&lt;/a&gt;&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_43479628/article/details/141400126&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://blog.csdn.net/qq_43479628/article/details/141400126&lt;/a&gt;&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://cloud.baidu.com/article/3360301&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://cloud.baidu.com/article/3360301&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;可能遇到的问题&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/PaddlePaddle/PaddleOCR/issues/13437&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/PaddlePaddle/PaddleOCR/issues/13437&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/PaddlePaddle/PaddleOCR/issues/6684&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/PaddlePaddle/PaddleOCR/issues/6684&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/PaddlePaddle/PaddleOCR/issues/2470&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/PaddlePaddle/PaddleOCR/issues/2470&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
 </description>
         </item>
         <item>
@@ -1020,7 +1691,7 @@
 &lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/ocr.jpg&#34;
 	width=&#34;591&#34;
 	height=&#34;231&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/ocr_hu8143978448985535058.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/ocr_hu17787863996154168829.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/ocr_hu_549b057248ae00b.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/ocr_hu_105fdd06246604eb.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;ocr&#34;
@@ -1038,7 +1709,7 @@
 &lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/preprocess.jpg&#34;
 	width=&#34;649&#34;
 	height=&#34;265&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/preprocess_hu2314519655047226143.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/preprocess_hu4911545622956701177.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/preprocess_hu_13c316b4a3d6b871.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/preprocess_hu_29f59ed2d8d7bd23.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;process_image&#34;
@@ -1074,7 +1745,7 @@ SystemExit – 如果 det 为 True，并且输入是图像列表&lt;/p&gt;
 &lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/construc.jpg&#34;
 	width=&#34;961&#34;
 	height=&#34;481&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/construc_hu3519835409375362406.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/construc_hu13228570759909700299.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/construc_hu_61a4aa52606928fa.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/construc_hu_c60866151a1f7e45.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;父类.jpg&#34;
@@ -1247,8 +1918,7 @@ dataversion：数据版本号 &lt;br&gt;
 aclversion：权限版本号 &lt;br&gt;
 ephemeralOwner：用于临时节点，代表临时节点的事务ID，如果为持久节点则为0 &lt;br&gt;
 dataLength：节点存储的数据的长度 &lt;br&gt;
-numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h1 id=&#34;三springboot集成zk客户端&#34;&gt;三、SpringBoot集成zk客户端
 &lt;/h1&gt;&lt;p&gt;常见的ZooKeeper Java API ：&lt;/p&gt;
 &lt;ul&gt;
@@ -2053,8 +2723,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;参考文章 &lt;br&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_41112238/article/details/105240421&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://blog.csdn.net/qq_41112238/article/details/105240421&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+    &gt;https://blog.csdn.net/qq_41112238/article/details/105240421&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
 </description>
         </item>
         <item>
@@ -2139,7 +2808,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548250377.png&#34;
 	width=&#34;795&#34;
 	height=&#34;490&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548250377_hu9367517139741905384.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548250377_hu2404252458632869620.png 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548250377_hu_ce1bbe63af893db6.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548250377_hu_fe8c8afd6418ce2f.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;配置文件&#34;
@@ -2167,7 +2836,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548052037.png&#34;
 	width=&#34;868&#34;
 	height=&#34;85&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548052037_hu16129778404085268344.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548052037_hu13280979696465174102.png 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548052037_hu_c5b0314ae7d0820f.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548052037_hu_2f44eeeb9b6e97cc.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;启动zk&#34;
@@ -2192,7 +2861,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548175232.png&#34;
 	width=&#34;777&#34;
 	height=&#34;99&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548175232_hu6211908879436042231.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548175232_hu7261801071744409349.png 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548175232_hu_20af1d6d7db353d0.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548175232_hu_6aa5bd6e4c1c9c80.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;查看zk状态&#34;
@@ -2207,7 +2876,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548112773.png&#34;
 	width=&#34;772&#34;
 	height=&#34;115&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548112773_hu16258933638191476670.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548112773_hu11300061890499932015.png 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548112773_hu_99e38d41d6bc195f.png 480w, https://h-yx-blog.github.io/p/zookeeper%E6%90%AD%E5%BB%BA/1577548112773_hu_bbf36863ff1fdf9c.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;查看zk状态&#34;
@@ -2231,7 +2900,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/process.jpg&#34;
 	width=&#34;1089&#34;
 	height=&#34;617&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/process_hu7440470465267177649.jpg 480w, https://h-yx-blog.github.io/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/process_hu12102598982732704565.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/process_hu_fe08af3f8db3a28d.jpg 480w, https://h-yx-blog.github.io/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/process_hu_e67898a1c02c567b.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;大数据处理流程&#34;
@@ -2245,19 +2914,16 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 上图是一个简化的大数据处理流程图，大数据处理的主要流程包括数据收集、数据存储、数据处理、数据应用等主要环节。下面我们逐一对各个环节所需要的技术栈进行讲解：&lt;/p&gt;
 &lt;h3 id=&#34;11-数据收集&#34;&gt;1.1 数据收集
 &lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;大数据处理的第一步，第一种是通过 Sqoop 或者 Cannal 等工具进行定时抽取或者实时同步；第二种是各种埋点日志，通过 Flume 进行实时收集。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;大数据处理的第一步，第一种是通过 Sqoop 或者 Cannal 等工具进行定时抽取或者实时同步；第二种是各种埋点日志，通过 Flume 进行实时收集。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;大数据处理的第一步是数据的收集。现在的中大型项目通常采用微服务架构进行分布式部署，所以数据的采集需要在多台服务器上进行，且采集过程不能影响正常业务的开展。基于这种需求，就衍生了多种日志收集工具，如 Flume 、Logstash、Kibana 等，它们都能通过简单的配置完成复杂的数据收集和数据聚合。&lt;/p&gt;
 &lt;h3 id=&#34;12-数据存储&#34;&gt;1.2 数据存储
 &lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;大数据处理的第二步，将数据存储到 HDFS 中，实时日志流情况下通过 Kafka 输出给后面的流式计算引擎。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;大数据处理的第二步，将数据存储到 HDFS 中，实时日志流情况下通过 Kafka 输出给后面的流式计算引擎。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;收集到数据后，下一个问题就是：数据该如何进行存储？通常最为熟知是 MySQL、Oracle 等传统的关系型数据库，它们的优点是能够快速存储结构化的数据，并支持随机访问。但大数据的数据结构通常是半结构化（如日志数据）、甚至是非结构化的（如视频、音频数据），为了解决海量半结构化和非结构化数据的存储，衍生了 Hadoop HDFS 、KFS、GFS 等分布式文件系统，它们都能够支持结构化、半结构和非结构化数据的存储，并可以通过增加机器进行横向扩展。&lt;/p&gt;
 &lt;p&gt;分布式文件系统完美地解决了海量数据存储的问题，但是一个优秀的数据存储系统需要同时考虑数据存储和访问两方面的问题，比如你希望能够对数据进行随机访问，这是传统的关系型数据库所擅长的，但却不是分布式文件系统所擅长的，那么有没有一种存储方案能够同时兼具分布式文件系统和关系型数据库的优点，基于这种需求，就产生了 HBase、MongoDB。&lt;/p&gt;
 &lt;h3 id=&#34;13-数据分析&#34;&gt;1.3 数据分析
 &lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;大数据的核心环节，包括离线处理和流处理两种方式，对应的计算引擎包括 MapReduce、Spark、Flink 等，处理完的结果会保存到已经提前设计好的数据仓库中，或者 HBase、Redis、RDBMS 等各种存储系统上。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;大数据的核心环节，包括离线处理和流处理两种方式，对应的计算引擎包括 MapReduce、Spark、Flink 等，处理完的结果会保存到已经提前设计好的数据仓库中，或者 HBase、Redis、RDBMS 等各种存储系统上。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;大数据处理最重要的环节就是数据分析，数据分析通常分为两种：批处理和流处理。&lt;/p&gt;
 &lt;p&gt;批处理：对一段时间内海量的离线数据进行统一的处理，对应的处理框架有 Hadoop MapReduce、Spark、Flink 等；
 流处理：对运动中的数据进行处理，即在接收数据的同时就对其进行处理，对应的处理框架有 Storm、Spark Streaming、Flink Streaming 等。
@@ -2265,8 +2931,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;上面的框架都是需要通过编程来进行数据分析，那么如果你不是一个后台工程师，是不是就不能进行数据的分析了？当然不是，大数据是一个非常完善的生态圈，有需求就有解决方案。为了能够让熟悉 SQL 的人员也能够进行数据的分析，查询分析框架应运而生，常用的有 Hive 、Spark SQL 、Flink SQL、 Pig、Phoenix 等。这些框架都能够使用标准的 SQL 或者 类 SQL 语法灵活地进行数据的查询分析。这些 SQL 经过解析优化后转换为对应的作业程序来运行，如 Hive 本质上就是将 SQL 转换为 MapReduce 作业，Spark SQL 将 SQL 转换为一系列的 RDDs 和转换关系（transformations），Phoenix 将 SQL 查询转换为一个或多个 HBase Scan。&lt;/p&gt;
 &lt;h3 id=&#34;14-数据应用&#34;&gt;1.4 数据应用
 &lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;应用场景：数据可视化、业务决策、推荐算法优化、机器学习&amp;hellip;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;应用场景：数据可视化、业务决策、推荐算法优化、机器学习&amp;hellip;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;数据分析完成后，接下来就是数据应用的范畴，这取决于你实际的业务需求。比如你可以将数据进行可视化展现，或者将数据用于优化你的推荐算法，这种运用现在很普遍，比如短视频个性化推荐、电商商品推荐、头条新闻推荐等。当然你也可以将数据用于训练你的机器学习模型，这些都属于其他领域的范畴，都有着对应的框架和技术栈进行处理，这里就不一一赘述。&lt;/p&gt;
 &lt;h3 id=&#34;15-其他框架&#34;&gt;1.5 其他框架
 &lt;/h3&gt;&lt;p&gt;上面是一个标准的大数据处理流程所用到的技术框架。但是实际的大数据处理流程比上面复杂很多，针对大数据处理中的各种复杂问题分别衍生了各类框架：&lt;/p&gt;
@@ -2305,7 +2970,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/storage.jpg&#34;
 	width=&#34;1647&#34;
 	height=&#34;973&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/storage_hu12367426843831453899.jpg 480w, https://h-yx-blog.github.io/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/storage_hu10270789870229935134.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/storage_hu_e876cb719bdb0c19.jpg 480w, https://h-yx-blog.github.io/p/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/storage_hu_3900b33e8cc2015e.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;行式存储和列式存储&#34;
@@ -2344,8 +3009,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
     &gt;https://github.com/heibaiying&lt;/a&gt;
 &lt;br&gt;
 &lt;a class=&#34;link&#34; href=&#34;https://javabetter.cn/xuexiluxian/bigdata.html#%E5%85%B3%E4%BA%8E%E5%A4%A7%E6%95%B0%E6%8D%AE&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://javabetter.cn/xuexiluxian/bigdata.html#%E5%85%B3%E4%BA%8E%E5%A4%A7%E6%95%B0%E6%8D%AE&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+    &gt;https://javabetter.cn/xuexiluxian/bigdata.html#%E5%85%B3%E4%BA%8E%E5%A4%A7%E6%95%B0%E6%8D%AE&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
 </description>
         </item>
         <item>
@@ -2564,7 +3228,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/keyword.jpg&#34;
 	width=&#34;2155&#34;
 	height=&#34;291&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/keyword_hu973154495891885061.jpg 480w, https://h-yx-blog.github.io/p/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/keyword_hu17469374108956155457.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/keyword_hu_c44ab42867fec76f.jpg 480w, https://h-yx-blog.github.io/p/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/keyword_hu_6521fc6e87adf674.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;python关键字&#34;
@@ -3202,7 +3866,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/index.jpg&#34;
 	width=&#34;1287&#34;
 	height=&#34;449&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/index_hu8307886968060777680.jpg 480w, https://h-yx-blog.github.io/p/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/index_hu8773820318539993480.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/index_hu_d995d38f3c3eee78.jpg 480w, https://h-yx-blog.github.io/p/python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/index_hu_5f78513c93c601e0.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;索引&#34;
@@ -4675,13 +5339,12 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 不告而别的你 就算为了我着想&lt;br&gt;
 这么沉痛的呵护 我怎么能翱翔&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.youtube.com/watch?v=3aypp_YlBzI&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;最暖的憂傷 - 田馥甄&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+    &gt;最暖的憂傷 - 田馥甄&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;图片&#34;&gt;图片
 &lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/test-chinese/florian-klauer-nptLmg6jqDo-unsplash.jpg&#34;
 	width=&#34;667&#34;
 	height=&#34;1000&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/test-chinese/florian-klauer-nptLmg6jqDo-unsplash_hu13768363498926278726.jpg 480w, https://h-yx-blog.github.io/p/test-chinese/florian-klauer-nptLmg6jqDo-unsplash_hu13380208884366868750.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/test-chinese/florian-klauer-nptLmg6jqDo-unsplash_hu_e98fca2b4272416e.jpg 480w, https://h-yx-blog.github.io/p/test-chinese/florian-klauer-nptLmg6jqDo-unsplash_hu_e3d37c9ded115b12.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;Photo by Florian Klauer on Unsplash&#34;
@@ -4694,7 +5357,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &gt;  &lt;img src=&#34;https://h-yx-blog.github.io/p/test-chinese/luca-bravo-alS7ewQ41M8-unsplash.jpg&#34;
 	width=&#34;1000&#34;
 	height=&#34;667&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/test-chinese/luca-bravo-alS7ewQ41M8-unsplash_hu1712544344331247820.jpg 480w, https://h-yx-blog.github.io/p/test-chinese/luca-bravo-alS7ewQ41M8-unsplash_hu12475395149584884402.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/test-chinese/luca-bravo-alS7ewQ41M8-unsplash_hu_e13c58d5189f892c.jpg 480w, https://h-yx-blog.github.io/p/test-chinese/luca-bravo-alS7ewQ41M8-unsplash_hu_8fc948b7ee525251.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;Photo by Luca Bravo on Unsplash&#34;
@@ -4708,7 +5371,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/test-chinese/helena-hertz-wWZzXlDpMog-unsplash.jpg&#34;
 	width=&#34;1000&#34;
 	height=&#34;750&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/test-chinese/helena-hertz-wWZzXlDpMog-unsplash_hu8363585391189779282.jpg 480w, https://h-yx-blog.github.io/p/test-chinese/helena-hertz-wWZzXlDpMog-unsplash_hu15102473124145023839.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/test-chinese/helena-hertz-wWZzXlDpMog-unsplash_hu_503c0ebcc5245e10.jpg 480w, https://h-yx-blog.github.io/p/test-chinese/helena-hertz-wWZzXlDpMog-unsplash_hu_48c98de55fb3c999.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;Photo by Helena Hertz on Unsplash&#34;
@@ -4721,7 +5384,7 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &gt;  &lt;img src=&#34;https://h-yx-blog.github.io/p/test-chinese/hudai-gayiran-3Od_VKcDEAA-unsplash.jpg&#34;
 	width=&#34;667&#34;
 	height=&#34;1000&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/test-chinese/hudai-gayiran-3Od_VKcDEAA-unsplash_hu15886963791847885497.jpg 480w, https://h-yx-blog.github.io/p/test-chinese/hudai-gayiran-3Od_VKcDEAA-unsplash_hu11726476772237334826.jpg 1024w&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/test-chinese/hudai-gayiran-3Od_VKcDEAA-unsplash_hu_f81a3588c5c4a663.jpg 480w, https://h-yx-blog.github.io/p/test-chinese/hudai-gayiran-3Od_VKcDEAA-unsplash_hu_1c52ba2a4ad7b9a0.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;Photo by Hudai Gayiran on Unsplash&#34;
@@ -4779,13 +5442,11 @@ numChildren：当前节点的子节点个数 &lt;br&gt;&lt;/p&gt;
 &lt;h4 id=&#34;blockquote-without-attribution&#34;&gt;Blockquote without attribution
 &lt;/h4&gt;&lt;blockquote&gt;
 &lt;p&gt;Tiam, ad mint andaepu dandae nostion secatur sequo quae.
-&lt;strong&gt;Note&lt;/strong&gt; that you can use &lt;em&gt;Markdown syntax&lt;/em&gt; within a blockquote.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;strong&gt;Note&lt;/strong&gt; that you can use &lt;em&gt;Markdown syntax&lt;/em&gt; within a blockquote.&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h4 id=&#34;blockquote-with-attribution&#34;&gt;Blockquote with attribution
 &lt;/h4&gt;&lt;blockquote&gt;
 &lt;p&gt;Don&amp;rsquo;t communicate by sharing memory, share memory by communicating.&lt;br&gt;
-— &lt;cite&gt;Rob Pike&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/cite&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+— &lt;cite&gt;Rob Pike&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/cite&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;tables&#34;&gt;Tables
 &lt;/h2&gt;&lt;p&gt;Tables aren&amp;rsquo;t part of the core Markdown spec, but Hugo supports supports them out-of-the-box.&lt;/p&gt;
 &lt;table&gt;

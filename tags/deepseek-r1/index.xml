@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>DeepSeek-R1 on Yuta&#39;s blog</title>
+        <link>https://h-yx-blog.github.io/tags/deepseek-r1/</link>
+        <description>Recent content in DeepSeek-R1 on Yuta&#39;s blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Yuta Huang</copyright>
+        <lastBuildDate>Sun, 09 Feb 2025 10:08:24 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/tags/deepseek-r1/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>DeepSeek R1</title>
+        <link>https://h-yx-blog.github.io/p/deepseek-r1/</link>
+        <pubDate>Sun, 09 Feb 2025 10:08:24 +0800</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/p/deepseek-r1/</guid>
+        <description>&lt;h1 id=&#34;一-介绍&#34;&gt;一. 介绍
+&lt;/h1&gt;&lt;p&gt;1.1 DeepSeek-R1 通过强化学习（Reinforcement Learning：简称RL）提升大型语言模型（LLM）的推理能力。这项研究在如何仅依靠强化学习而不是过分依赖监督式微调的情况下，增强LLM解决复杂问题的能力上，取得了重要进展。&lt;/p&gt;
+&lt;p&gt;1.2 DeepSeek-R1系列包含两大核心成员：&lt;/p&gt;
+&lt;p&gt;①DeepSeek-R1-Zero&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;参数规模：6710亿（MoE架构，每个token激活370亿参数）&lt;/li&gt;
+&lt;li&gt;训练特点：完全基于强化学习的端到端训练&lt;/li&gt;
+&lt;li&gt;核心优势：展现出自我验证、长链推理等涌现能力&lt;/li&gt;
+&lt;li&gt;典型表现：AIME 2024基准测试71%准确率&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;②DeepSeek-R1&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;参数规模：与Zero版保持相同体量&lt;/li&gt;
+&lt;li&gt;训练创新：多阶段混合训练策略&lt;/li&gt;
+&lt;li&gt;核心改进：监督微调冷启动 + 强化学习优化&lt;/li&gt;
+&lt;li&gt;性能提升：AIME 2024准确率提升至79.8%&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;1.3 对比R1 Zero和R1&lt;/p&gt;
+&lt;p&gt;① R1 Zero和R1的主要区别&lt;/p&gt;
+&lt;p&gt;DeepSeek-R1-Zero是团队初步尝试仅用纯强化学习而不进行任何监督式微调的实验。他们从基础模型出发，直接运用强化学习，让模型通过不断试错来发展其推理能力。这种方法虽然取得了较好的成果（在 AIME 2024 测试中达到了 71% 的准确率），但在可读性和语言连贯性上存在明显不足。该模型拥有 6710 亿个参数，使用了混合专家（MoE）架构，其中每个词触发的参数约为 370 亿。此模型展现了一些新兴的推理行为，例如自我核查、反思和长链推理（CoT）。&lt;/p&gt;
+&lt;p&gt;与之对比，DeepSeek-R1采用了更复杂的多阶段训练方法。它不仅仅采用强化学习，而是先在一小组精心挑选的示例（称为“冷启动数据”）上进行监督式微调，然后再应用强化学习。这种方法克服了 DeepSeek-R1-Zero 的局限，同时取得了更优的表现。这个模型同样维持了 6710 亿的参数数量，但在回答的可读性和条理性上有所提高。&lt;/p&gt;
+&lt;p&gt;② R1 Zero和R1的共同点
+DeepSeek-R1-Zero 和 DeepSeek-R1 基于 DeepSeek-V3-Base 进行训练。&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;&lt;strong&gt;Model&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;Total Params&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;Activated Params&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;Context Length&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;DeepSeek-R1-Zero&lt;/td&gt;
+          &lt;td&gt;671B&lt;/td&gt;
+          &lt;td&gt;37B&lt;/td&gt;
+          &lt;td&gt;128K&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;DeepSeek-R1&lt;/td&gt;
+          &lt;td&gt;671B&lt;/td&gt;
+          &lt;td&gt;37B&lt;/td&gt;
+          &lt;td&gt;128K&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;训练方法概述：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;强化学习&lt;/strong&gt; ：不同于传统依赖监督学习的模型，DeepSeek-R1 大规模采用了强化学习。此训练方法利用群体相对策略优化（GRPO），重点提升精度和格式化奖励，以增强推理能力，无需依赖大量标注数据。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;蒸馏技术&lt;/strong&gt; ：为普及高效能模型，DeepSeek 也推出了 R1 的蒸馏版本，参数规模从15亿到700亿不等。这些模型采用了如Qwen和Llama等架构，表明即使是较小和更高效的模型也能包含复杂的推理能力。蒸馏过程通过使用 DeepSeek-R1 生成的合成推理数据对这些小型模型进行微调，以较低的计算成本保持高性能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;二优点&#34;&gt;二.优点
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;性能与 OpenAI-o1 相当&lt;/li&gt;
+&lt;li&gt;完全开源的模型和技术报告&lt;/li&gt;
+&lt;li&gt;MIT 许可：自由蒸馏和商业化！&lt;/li&gt;
+&lt;li&gt;从 DeepSeek-R1 提炼出来，6 个小模型完全开源（32B &amp;amp; 70B 型号与 OpenAI-o1-mini 相当）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;三-技术亮点&#34;&gt;三. 技术亮点
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;以最少的标记数据显著提高性能&lt;/li&gt;
+&lt;li&gt;组相对策略优化（GRPO）：兼顾格式与准确性的奖励机制&lt;/li&gt;
+&lt;li&gt;知识蒸馏技术：支持从1.5B到70B的参数规模适配&lt;/li&gt;
+&lt;li&gt;多架构兼容：基于Qwen/Llama等主流架构的轻量化版本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;四api&#34;&gt;四.API
+&lt;/h1&gt;&lt;p&gt;成本优势：缓存命中时输入token成本$0.14/M，较同类产品降低30%&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;&lt;strong&gt;模型&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;上下文长度&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;最大输出长度&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;输入价格（缓存命中）&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;输入价格（缓存未命中）&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;输出价格&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;deepseek-reasoner（即deppseek R1）&lt;/td&gt;
+          &lt;td&gt;64K&lt;/td&gt;
+          &lt;td&gt;8K&lt;/td&gt;
+          &lt;td&gt;0.14 美元/百万tokens&lt;/td&gt;
+          &lt;td&gt;0.55 美元/百万tokens&lt;/td&gt;
+          &lt;td&gt;2.19 美元/百万tokens&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1 id=&#34;五本地部署&#34;&gt;五.本地部署
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;推荐配置：NVIDIA GPU（推荐使用具有大量视频内存（VRAM）的 GPU，如：RTX 3090或更高） + 32GB内存 + 50GB存储空间&lt;/li&gt;
+&lt;li&gt;最低配置：CPU（支持AVX2指令集） + 8GB内存 + 12GB存储
+（能耗注意：32B+ 模型需高功率电源（1000W+）和散热系统。）
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-r1/deploy.jpg&#34;
+	width=&#34;1517&#34;
+	height=&#34;459&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-r1/deploy_hu_77329b18801eef2a.jpg 480w, https://h-yx-blog.github.io/p/deepseek-r1/deploy_hu_316908321735051e.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;本地部署&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;330&#34;
+		data-flex-basis=&#34;793px&#34;
+	
+&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;建议在使用 DeepSeek-R1 系列模型时遵循以下配置
+①将temperature 设置在 0.5-0.7 （推荐 0.6） 的范围内，以防止无休止的重复或不连贯的输出。&lt;/p&gt;
+&lt;p&gt;②避免添加系统提示符;所有说明都应包含在用户提示符中。&lt;/p&gt;
+&lt;p&gt;③对于数学问题，建议在提示中包含一条指令，例如：“请逐步推理，并将您的最终答案放在 \boxed{} 中。&lt;/p&gt;
+&lt;p&gt;④在评估模型性能时，建议进行多次测试并平均结果。&lt;/p&gt;
+&lt;h1 id=&#34;六-deepseek-r1评估结果&#34;&gt;六. DeepSeek-R1评估结果
+&lt;/h1&gt;&lt;p&gt;DeepSeek-R1各方面的评估结果如下&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-r1/result.jpg&#34;
+	width=&#34;720&#34;
+	height=&#34;720&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-r1/result_hu_a89aecc479b790b6.jpg 480w, https://h-yx-blog.github.io/p/deepseek-r1/result_hu_5970b5d2e4c2e7d7.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;结果对比&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;100&#34;
+		data-flex-basis=&#34;240px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;DeepSeek-R1在数学、代码和推理任务，性能可与 OpenAI-o1 相媲美
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-r1/resulttwo.jpg&#34;
+	width=&#34;895&#34;
+	height=&#34;533&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-r1/resulttwo_hu_d8f61149d3ccdfba.jpg 480w, https://h-yx-blog.github.io/p/deepseek-r1/resulttwo_hu_b3a84b0de6a37aa4.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;结果对比&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;167&#34;
+		data-flex-basis=&#34;403px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;蒸馏小模型32B 和 70B 模型在多项能力上实现了对标 OpenAI o1-mini 的效果。
+&lt;img src=&#34;https://h-yx-blog.github.io/p/deepseek-r1/resultthree.jpg&#34;
+	width=&#34;1171&#34;
+	height=&#34;563&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/deepseek-r1/resultthree_hu_d14261896c250f08.jpg 480w, https://h-yx-blog.github.io/p/deepseek-r1/resultthree_hu_1ad36f21ad07e101.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;结果对比&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;207&#34;
+		data-flex-basis=&#34;499px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;七局限性及未来发展&#34;&gt;七.局限性及未来发展
+&lt;/h1&gt;&lt;p&gt;若干改进领域：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模型在处理需要特定输出格式的任务时偶尔会遇到困难。&lt;/li&gt;
+&lt;li&gt;软件工程相关任务的性能还有提升空间。&lt;/li&gt;
+&lt;li&gt;在多语言环境下，语言混合带来了挑战。&lt;/li&gt;
+&lt;li&gt;少样本提示通常会导致性能下降。
+未来的研究将致力于解决这些问题，并拓展模型在函数调用、多轮交互和复杂角色扮演场景等领域的能力。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

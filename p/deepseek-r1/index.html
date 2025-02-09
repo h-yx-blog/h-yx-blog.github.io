@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一. 介绍 1.1 DeepSeek-R1 通过强化学习（Reinforcement Learning：简称RL）提升大型语言模型（LLM）的推理能力。这项研究在如何仅依靠强化学习而不是过分依赖监督式微调的情况下，增强LLM解决复杂问题的能力上，取得了重要进展。\n1.2 DeepSeek-R1系列包含两大核心成员：\n①DeepSeek-R1-Zero\n参数规模：6710亿（MoE架构，每个token激活370亿参数） 训练特点：完全基于强化学习的端到端训练 核心优势：展现出自我验证、长链推理等涌现能力 典型表现：AIME 2024基准测试71%准确率 ②DeepSeek-R1\n参数规模：与Zero版保持相同体量 训练创新：多阶段混合训练策略 核心改进：监督微调冷启动 + 强化学习优化 性能提升：AIME 2024准确率提升至79.8% 1.3 对比R1 Zero和R1\n① R1 Zero和R1的主要区别\nDeepSeek-R1-Zero是团队初步尝试仅用纯强化学习而不进行任何监督式微调的实验。他们从基础模型出发，直接运用强化学习，让模型通过不断试错来发展其推理能力。这种方法虽然取得了较好的成果（在 AIME 2024 测试中达到了 71% 的准确率），但在可读性和语言连贯性上存在明显不足。该模型拥有 6710 亿个参数，使用了混合专家（MoE）架构，其中每个词触发的参数约为 370 亿。此模型展现了一些新兴的推理行为，例如自我核查、反思和长链推理（CoT）。\n与之对比，DeepSeek-R1采用了更复杂的多阶段训练方法。它不仅仅采用强化学习，而是先在一小组精心挑选的示例（称为“冷启动数据”）上进行监督式微调，然后再应用强化学习。这种方法克服了 DeepSeek-R1-Zero 的局限，同时取得了更优的表现。这个模型同样维持了 6710 亿的参数数量，但在回答的可读性和条理性上有所提高。\n② R1 Zero和R1的共同点 DeepSeek-R1-Zero 和 DeepSeek-R1 基于 DeepSeek-V3-Base 进行训练。\nModel Total Params Activated Params Context Length DeepSeek-R1-Zero 671B 37B 128K DeepSeek-R1 671B 37B 128K 训练方法概述：\n强化学习 ：不同于传统依赖监督学习的模型，DeepSeek-R1 大规模采用了强化学习。此训练方法利用群体相对策略优化（GRPO），重点提升精度和格式化奖励，以增强推理能力，无需依赖大量标注数据。 蒸馏技术 ：为普及高效能模型，DeepSeek 也推出了 R1 的蒸馏版本，参数规模从15亿到700亿不等。这些模型采用了如Qwen和Llama等架构，表明即使是较小和更高效的模型也能包含复杂的推理能力。蒸馏过程通过使用 DeepSeek-R1 生成的合成推理数据对这些小型模型进行微调，以较低的计算成本保持高性能。 二.优点 性能与 OpenAI-o1 相当 完全开源的模型和技术报告 MIT 许可：自由蒸馏和商业化！ 从 DeepSeek-R1 提炼出来，6 个小模型完全开源（32B &amp; 70B 型号与 OpenAI-o1-mini 相当） 三. 技术亮点 以最少的标记数据显著提高性能 组相对策略优化（GRPO）：兼顾格式与准确性的奖励机制 知识蒸馏技术：支持从1.5B到70B的参数规模适配 多架构兼容：基于Qwen/Llama等主流架构的轻量化版本 四.API 成本优势：缓存命中时输入token成本$0.14/M，较同类产品降低30%\n">
+<title>DeepSeek R1</title>
+
+<link rel='canonical' href='https://h-yx-blog.github.io/p/deepseek-r1/'>
+
+<link rel="stylesheet" href="/scss/style.min.41d80fdd2e951cc26aced0647d31e0d0e72647ef4a9771fd8d41acc7a00935db.css"><meta property='og:title' content="DeepSeek R1">
+<meta property='og:description' content="一. 介绍 1.1 DeepSeek-R1 通过强化学习（Reinforcement Learning：简称RL）提升大型语言模型（LLM）的推理能力。这项研究在如何仅依靠强化学习而不是过分依赖监督式微调的情况下，增强LLM解决复杂问题的能力上，取得了重要进展。\n1.2 DeepSeek-R1系列包含两大核心成员：\n①DeepSeek-R1-Zero\n参数规模：6710亿（MoE架构，每个token激活370亿参数） 训练特点：完全基于强化学习的端到端训练 核心优势：展现出自我验证、长链推理等涌现能力 典型表现：AIME 2024基准测试71%准确率 ②DeepSeek-R1\n参数规模：与Zero版保持相同体量 训练创新：多阶段混合训练策略 核心改进：监督微调冷启动 + 强化学习优化 性能提升：AIME 2024准确率提升至79.8% 1.3 对比R1 Zero和R1\n① R1 Zero和R1的主要区别\nDeepSeek-R1-Zero是团队初步尝试仅用纯强化学习而不进行任何监督式微调的实验。他们从基础模型出发，直接运用强化学习，让模型通过不断试错来发展其推理能力。这种方法虽然取得了较好的成果（在 AIME 2024 测试中达到了 71% 的准确率），但在可读性和语言连贯性上存在明显不足。该模型拥有 6710 亿个参数，使用了混合专家（MoE）架构，其中每个词触发的参数约为 370 亿。此模型展现了一些新兴的推理行为，例如自我核查、反思和长链推理（CoT）。\n与之对比，DeepSeek-R1采用了更复杂的多阶段训练方法。它不仅仅采用强化学习，而是先在一小组精心挑选的示例（称为“冷启动数据”）上进行监督式微调，然后再应用强化学习。这种方法克服了 DeepSeek-R1-Zero 的局限，同时取得了更优的表现。这个模型同样维持了 6710 亿的参数数量，但在回答的可读性和条理性上有所提高。\n② R1 Zero和R1的共同点 DeepSeek-R1-Zero 和 DeepSeek-R1 基于 DeepSeek-V3-Base 进行训练。\nModel Total Params Activated Params Context Length DeepSeek-R1-Zero 671B 37B 128K DeepSeek-R1 671B 37B 128K 训练方法概述：\n强化学习 ：不同于传统依赖监督学习的模型，DeepSeek-R1 大规模采用了强化学习。此训练方法利用群体相对策略优化（GRPO），重点提升精度和格式化奖励，以增强推理能力，无需依赖大量标注数据。 蒸馏技术 ：为普及高效能模型，DeepSeek 也推出了 R1 的蒸馏版本，参数规模从15亿到700亿不等。这些模型采用了如Qwen和Llama等架构，表明即使是较小和更高效的模型也能包含复杂的推理能力。蒸馏过程通过使用 DeepSeek-R1 生成的合成推理数据对这些小型模型进行微调，以较低的计算成本保持高性能。 二.优点 性能与 OpenAI-o1 相当 完全开源的模型和技术报告 MIT 许可：自由蒸馏和商业化！ 从 DeepSeek-R1 提炼出来，6 个小模型完全开源（32B &amp; 70B 型号与 OpenAI-o1-mini 相当） 三. 技术亮点 以最少的标记数据显著提高性能 组相对策略优化（GRPO）：兼顾格式与准确性的奖励机制 知识蒸馏技术：支持从1.5B到70B的参数规模适配 多架构兼容：基于Qwen/Llama等主流架构的轻量化版本 四.API 成本优势：缓存命中时输入token成本$0.14/M，较同类产品降低30%\n">
+<meta property='og:url' content='https://h-yx-blog.github.io/p/deepseek-r1/'>
+<meta property='og:site_name' content='Yuta&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='大模型' /><meta property='article:tag' content='AIGC' /><meta property='article:tag' content='AI' /><meta property='article:tag' content='DeepSeek-R1' /><meta property='article:published_time' content='2025-02-09T10:08:24&#43;08:00'/><meta property='article:modified_time' content='2025-02-09T10:08:24&#43;08:00'/>
+<meta name="twitter:title" content="DeepSeek R1">
+<meta name="twitter:description" content="一. 介绍 1.1 DeepSeek-R1 通过强化学习（Reinforcement Learning：简称RL）提升大型语言模型（LLM）的推理能力。这项研究在如何仅依靠强化学习而不是过分依赖监督式微调的情况下，增强LLM解决复杂问题的能力上，取得了重要进展。\n1.2 DeepSeek-R1系列包含两大核心成员：\n①DeepSeek-R1-Zero\n参数规模：6710亿（MoE架构，每个token激活370亿参数） 训练特点：完全基于强化学习的端到端训练 核心优势：展现出自我验证、长链推理等涌现能力 典型表现：AIME 2024基准测试71%准确率 ②DeepSeek-R1\n参数规模：与Zero版保持相同体量 训练创新：多阶段混合训练策略 核心改进：监督微调冷启动 + 强化学习优化 性能提升：AIME 2024准确率提升至79.8% 1.3 对比R1 Zero和R1\n① R1 Zero和R1的主要区别\nDeepSeek-R1-Zero是团队初步尝试仅用纯强化学习而不进行任何监督式微调的实验。他们从基础模型出发，直接运用强化学习，让模型通过不断试错来发展其推理能力。这种方法虽然取得了较好的成果（在 AIME 2024 测试中达到了 71% 的准确率），但在可读性和语言连贯性上存在明显不足。该模型拥有 6710 亿个参数，使用了混合专家（MoE）架构，其中每个词触发的参数约为 370 亿。此模型展现了一些新兴的推理行为，例如自我核查、反思和长链推理（CoT）。\n与之对比，DeepSeek-R1采用了更复杂的多阶段训练方法。它不仅仅采用强化学习，而是先在一小组精心挑选的示例（称为“冷启动数据”）上进行监督式微调，然后再应用强化学习。这种方法克服了 DeepSeek-R1-Zero 的局限，同时取得了更优的表现。这个模型同样维持了 6710 亿的参数数量，但在回答的可读性和条理性上有所提高。\n② R1 Zero和R1的共同点 DeepSeek-R1-Zero 和 DeepSeek-R1 基于 DeepSeek-V3-Base 进行训练。\nModel Total Params Activated Params Context Length DeepSeek-R1-Zero 671B 37B 128K DeepSeek-R1 671B 37B 128K 训练方法概述：\n强化学习 ：不同于传统依赖监督学习的模型，DeepSeek-R1 大规模采用了强化学习。此训练方法利用群体相对策略优化（GRPO），重点提升精度和格式化奖励，以增强推理能力，无需依赖大量标注数据。 蒸馏技术 ：为普及高效能模型，DeepSeek 也推出了 R1 的蒸馏版本，参数规模从15亿到700亿不等。这些模型采用了如Qwen和Llama等架构，表明即使是较小和更高效的模型也能包含复杂的推理能力。蒸馏过程通过使用 DeepSeek-R1 生成的合成推理数据对这些小型模型进行微调，以较低的计算成本保持高性能。 二.优点 性能与 OpenAI-o1 相当 完全开源的模型和技术报告 MIT 许可：自由蒸馏和商业化！ 从 DeepSeek-R1 提炼出来，6 个小模型完全开源（32B &amp; 70B 型号与 OpenAI-o1-mini 相当） 三. 技术亮点 以最少的标记数据显著提高性能 组相对策略优化（GRPO）：兼顾格式与准确性的奖励机制 知识蒸馏技术：支持从1.5B到70B的参数规模适配 多架构兼容：基于Qwen/Llama等主流架构的轻量化版本 四.API 成本优势：缓存命中时输入token成本$0.14/M，较同类产品降低30%\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_9d08b070b84885af.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Yuta&#39;s blog</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/h-yx-blog'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#一-介绍">一. 介绍</a></li>
+    <li><a href="#二优点">二.优点</a></li>
+    <li><a href="#三-技术亮点">三. 技术亮点</a></li>
+    <li><a href="#四api">四.API</a></li>
+    <li><a href="#五本地部署">五.本地部署</a></li>
+    <li><a href="#六-deepseek-r1评估结果">六. DeepSeek-R1评估结果</a></li>
+    <li><a href="#七局限性及未来发展">七.局限性及未来发展</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" >
+                大模型
+            </a>
+        
+            <a href="/categories/deepseek/" >
+                DeepSeek
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/deepseek-r1/">DeepSeek R1</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-02-09</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="一-介绍">一. 介绍
+</h1><p>1.1 DeepSeek-R1 通过强化学习（Reinforcement Learning：简称RL）提升大型语言模型（LLM）的推理能力。这项研究在如何仅依靠强化学习而不是过分依赖监督式微调的情况下，增强LLM解决复杂问题的能力上，取得了重要进展。</p>
+<p>1.2 DeepSeek-R1系列包含两大核心成员：</p>
+<p>①DeepSeek-R1-Zero</p>
+<ul>
+<li>参数规模：6710亿（MoE架构，每个token激活370亿参数）</li>
+<li>训练特点：完全基于强化学习的端到端训练</li>
+<li>核心优势：展现出自我验证、长链推理等涌现能力</li>
+<li>典型表现：AIME 2024基准测试71%准确率</li>
+</ul>
+<p>②DeepSeek-R1</p>
+<ul>
+<li>参数规模：与Zero版保持相同体量</li>
+<li>训练创新：多阶段混合训练策略</li>
+<li>核心改进：监督微调冷启动 + 强化学习优化</li>
+<li>性能提升：AIME 2024准确率提升至79.8%</li>
+</ul>
+<p>1.3 对比R1 Zero和R1</p>
+<p>① R1 Zero和R1的主要区别</p>
+<p>DeepSeek-R1-Zero是团队初步尝试仅用纯强化学习而不进行任何监督式微调的实验。他们从基础模型出发，直接运用强化学习，让模型通过不断试错来发展其推理能力。这种方法虽然取得了较好的成果（在 AIME 2024 测试中达到了 71% 的准确率），但在可读性和语言连贯性上存在明显不足。该模型拥有 6710 亿个参数，使用了混合专家（MoE）架构，其中每个词触发的参数约为 370 亿。此模型展现了一些新兴的推理行为，例如自我核查、反思和长链推理（CoT）。</p>
+<p>与之对比，DeepSeek-R1采用了更复杂的多阶段训练方法。它不仅仅采用强化学习，而是先在一小组精心挑选的示例（称为“冷启动数据”）上进行监督式微调，然后再应用强化学习。这种方法克服了 DeepSeek-R1-Zero 的局限，同时取得了更优的表现。这个模型同样维持了 6710 亿的参数数量，但在回答的可读性和条理性上有所提高。</p>
+<p>② R1 Zero和R1的共同点
+DeepSeek-R1-Zero 和 DeepSeek-R1 基于 DeepSeek-V3-Base 进行训练。</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th><strong>Model</strong></th>
+          <th><strong>Total Params</strong></th>
+          <th><strong>Activated Params</strong></th>
+          <th><strong>Context Length</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>DeepSeek-R1-Zero</td>
+          <td>671B</td>
+          <td>37B</td>
+          <td>128K</td>
+      </tr>
+      <tr>
+          <td>DeepSeek-R1</td>
+          <td>671B</td>
+          <td>37B</td>
+          <td>128K</td>
+      </tr>
+  </tbody>
+</table></div>
+<p>训练方法概述：</p>
+<ul>
+<li><strong>强化学习</strong> ：不同于传统依赖监督学习的模型，DeepSeek-R1 大规模采用了强化学习。此训练方法利用群体相对策略优化（GRPO），重点提升精度和格式化奖励，以增强推理能力，无需依赖大量标注数据。</li>
+<li><strong>蒸馏技术</strong> ：为普及高效能模型，DeepSeek 也推出了 R1 的蒸馏版本，参数规模从15亿到700亿不等。这些模型采用了如Qwen和Llama等架构，表明即使是较小和更高效的模型也能包含复杂的推理能力。蒸馏过程通过使用 DeepSeek-R1 生成的合成推理数据对这些小型模型进行微调，以较低的计算成本保持高性能。</li>
+</ul>
+<h1 id="二优点">二.优点
+</h1><ul>
+<li>性能与 OpenAI-o1 相当</li>
+<li>完全开源的模型和技术报告</li>
+<li>MIT 许可：自由蒸馏和商业化！</li>
+<li>从 DeepSeek-R1 提炼出来，6 个小模型完全开源（32B &amp; 70B 型号与 OpenAI-o1-mini 相当）</li>
+</ul>
+<h1 id="三-技术亮点">三. 技术亮点
+</h1><ul>
+<li>以最少的标记数据显著提高性能</li>
+<li>组相对策略优化（GRPO）：兼顾格式与准确性的奖励机制</li>
+<li>知识蒸馏技术：支持从1.5B到70B的参数规模适配</li>
+<li>多架构兼容：基于Qwen/Llama等主流架构的轻量化版本</li>
+</ul>
+<h1 id="四api">四.API
+</h1><p>成本优势：缓存命中时输入token成本$0.14/M，较同类产品降低30%</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th><strong>模型</strong></th>
+          <th><strong>上下文长度</strong></th>
+          <th><strong>最大输出长度</strong></th>
+          <th><strong>输入价格（缓存命中）</strong></th>
+          <th><strong>输入价格（缓存未命中）</strong></th>
+          <th><strong>输出价格</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>deepseek-reasoner（即deppseek R1）</td>
+          <td>64K</td>
+          <td>8K</td>
+          <td>0.14 美元/百万tokens</td>
+          <td>0.55 美元/百万tokens</td>
+          <td>2.19 美元/百万tokens</td>
+      </tr>
+  </tbody>
+</table></div>
+<h1 id="五本地部署">五.本地部署
+</h1><ul>
+<li>推荐配置：NVIDIA GPU（推荐使用具有大量视频内存（VRAM）的 GPU，如：RTX 3090或更高） + 32GB内存 + 50GB存储空间</li>
+<li>最低配置：CPU（支持AVX2指令集） + 8GB内存 + 12GB存储
+（能耗注意：32B+ 模型需高功率电源（1000W+）和散热系统。）
+<img src="/p/deepseek-r1/deploy.jpg"
+	width="1517"
+	height="459"
+	srcset="/p/deepseek-r1/deploy_hu_77329b18801eef2a.jpg 480w, /p/deepseek-r1/deploy_hu_316908321735051e.jpg 1024w"
+	loading="lazy"
+	
+		alt="本地部署"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="330"
+		data-flex-basis="793px"
+	
+></li>
+</ul>
+<p>建议在使用 DeepSeek-R1 系列模型时遵循以下配置
+①将temperature 设置在 0.5-0.7 （推荐 0.6） 的范围内，以防止无休止的重复或不连贯的输出。</p>
+<p>②避免添加系统提示符;所有说明都应包含在用户提示符中。</p>
+<p>③对于数学问题，建议在提示中包含一条指令，例如：“请逐步推理，并将您的最终答案放在 \boxed{} 中。</p>
+<p>④在评估模型性能时，建议进行多次测试并平均结果。</p>
+<h1 id="六-deepseek-r1评估结果">六. DeepSeek-R1评估结果
+</h1><p>DeepSeek-R1各方面的评估结果如下</p>
+<p><img src="/p/deepseek-r1/result.jpg"
+	width="720"
+	height="720"
+	srcset="/p/deepseek-r1/result_hu_a89aecc479b790b6.jpg 480w, /p/deepseek-r1/result_hu_5970b5d2e4c2e7d7.jpg 1024w"
+	loading="lazy"
+	
+		alt="结果对比"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="100"
+		data-flex-basis="240px"
+	
+></p>
+<p>DeepSeek-R1在数学、代码和推理任务，性能可与 OpenAI-o1 相媲美
+<img src="/p/deepseek-r1/resulttwo.jpg"
+	width="895"
+	height="533"
+	srcset="/p/deepseek-r1/resulttwo_hu_d8f61149d3ccdfba.jpg 480w, /p/deepseek-r1/resulttwo_hu_b3a84b0de6a37aa4.jpg 1024w"
+	loading="lazy"
+	
+		alt="结果对比"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="167"
+		data-flex-basis="403px"
+	
+></p>
+<p>蒸馏小模型32B 和 70B 模型在多项能力上实现了对标 OpenAI o1-mini 的效果。
+<img src="/p/deepseek-r1/resultthree.jpg"
+	width="1171"
+	height="563"
+	srcset="/p/deepseek-r1/resultthree_hu_d14261896c250f08.jpg 480w, /p/deepseek-r1/resultthree_hu_1ad36f21ad07e101.jpg 1024w"
+	loading="lazy"
+	
+		alt="结果对比"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="207"
+		data-flex-basis="499px"
+	
+></p>
+<h1 id="七局限性及未来发展">七.局限性及未来发展
+</h1><p>若干改进领域：</p>
+<ul>
+<li>模型在处理需要特定输出格式的任务时偶尔会遇到困难。</li>
+<li>软件工程相关任务的性能还有提升空间。</li>
+<li>在多语言环境下，语言混合带来了挑战。</li>
+<li>少样本提示通常会导致性能下降。
+未来的研究将致力于解决这些问题，并拓展模型在函数调用、多轮交互和复杂角色扮演场景等领域的能力。</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a>
+        
+            <a href="/tags/aigc/">AIGC</a>
+        
+            <a href="/tags/ai/">AI</a>
+        
+            <a href="/tags/deepseek-r1/">DeepSeek-R1</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/deepseek-janus-pro/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">DeepSeek Janus Pro</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/deepseek%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E5%8F%8Aapi%E6%8E%A5%E5%85%A5/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">DeepSeek技术调研及api接入</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+<script src="https://giscus.app/client.js"
+        data-repo="h-yx-blog/h-yx-blog.github.io"
+        data-repo-id="R_kgDONilc6g"
+        data-category="Announcements"
+        data-category-id="DIC_kwDONilc6s4ClkCI"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="noborder_dark"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2024 - 
+        
+        2025 Yuta Huang
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
