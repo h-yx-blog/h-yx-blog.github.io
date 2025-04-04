@@ -251,6 +251,7 @@
       <ul>
         <li><a href="#背景">背景</a></li>
         <li><a href="#解决措施"><strong>解决措施</strong></a></li>
+        <li><a href="#改造后的controller写法">改造后的controller写法</a></li>
         <li><a href="#其他思路"><strong>其他思路</strong></a></li>
       </ul>
     </li>
@@ -467,6 +468,21 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">resolvers</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">userLoginInfoArgumentResolver</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="改造后的controller写法">改造后的controller写法
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@RequestMapping</span><span class="p">(</span><span class="s">&#34;/getWindowId&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="n">RMap</span><span class="w"> </span><span class="nf">getWindowId</span><span class="p">(</span><span class="nd">@RequestBody</span><span class="w"> </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">jsonObject</span><span class="p">,</span><span class="w"> </span><span class="n">UserLoginInfo</span><span class="w"> </span><span class="n">userLoginInfo</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">//业务逻辑...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="其他思路"><strong>其他思路</strong>
