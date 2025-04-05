@@ -7,7 +7,15 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Yuta Huang</copyright>
-        <lastBuildDate>Sat, 05 Apr 2025 10:36:24 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 05 Apr 2025 15:20:04 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>SearXNG</title>
+        <link>https://h-yx-blog.github.io/categories/searxng/</link>
+        <pubDate>Sat, 05 Apr 2025 15:20:04 +0800</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/categories/searxng/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>BI</title>
         <link>https://h-yx-blog.github.io/categories/bi/</link>
         <pubDate>Sat, 05 Apr 2025 10:36:24 +0800</pubDate>

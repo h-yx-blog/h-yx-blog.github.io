@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="官方文档 SearXNG\n介绍 SearXNG是一个基于Python的开源互联网元搜索引擎，它致力于聚合来自不同搜索服务和数据库的结果，为用户提供全面的信息获取渠道。此项目的独特之处在于对用户隐私的重视，它确保了在提供强大搜索能力的同时，既不追踪用户行为也不建立用户画像。\n功能特点 隐私保护：SearXNG 通过多种方式保护用户隐私，包括： 删除搜索请求中的私人数据。 阻止第三方服务（如广告）的传输。 隐藏搜索结果页面中的查询词和重定向链接。 多源聚合：SearXNG 聚合了来自超过 70 个搜索服务和数据库的结果，支持多种搜索引擎，如 Google、DuckDuckGo、Bing 等。 API支持：SearXNG提供API接口，支持联网搜索功能，可以与其他应用程序集成，实现更复杂的数据处理和分析。 多语言支持：SearXNG支持多种语言，用户可以根据需要选择不同的语言进行搜索。 高度可定制：用户可以根据自己的需求自定义搜索结果，例如只从特定的搜索引擎获取信息，或者对搜索结果进行过滤和排序。 开源与社区支持：SearXNG 是一个开源项目，所有源代码均可查看，用户可以自行修改和扩展功能。社区提供了详细的文档和教程，鼓励开发者贡献代码和翻译。 核心功能亮点： SearXNG的核心功能集中于其作为元搜索引擎的角色上，能够整合如Google、Bing、DuckDuckGo等多种搜索引擎的搜索结果，给予用户更广泛的信息来源。更重要的是，它坚持“无追踪”的原则，保障用户的网络搜索隐私，让用户在不受监控的状态下自由探索互联网。\nSearXNG支持以下具体的搜索引擎：\nGoogle DuckDuckGo Bing Yahoo Wikipedia StartPage Brave Search Qwant Arxiv 以及其他超过70种公开的搜索服务和数据库 技术实现\n架构与部署：SearXNG 支持多种部署方式，包括 Docker 镜像、安装脚本和手动安装。Docker 镜像支持 ARM64 和 ARM/v7 架构，方便在不同硬件平台上运行。 界面与用户体验：SearXNG 提供简洁直观的用户界面，支持桌面、平板和手机大屏幕显示，并提供浅色和深色主题选项。界面支持从右到左的语言，适应不同文化背景的用户。 扩展性：SearXNG 支持代理和在线 Tor 搜索，进一步增强了用户的匿名性。 使用场景 1.个人隐私保护：用户可以在本地部署 SearXNG，避免在公共网络中被追踪或分析。\n2.企业内部应用：企业可以搭建自己的搜索服务，确保数据安全。\n3.开发者工具：开发者可以利用 SearXNG 构建定制化的搜索功能，例如在 AI 应用中集成搜索插件。\n部署（Dokcer方式） 注意事项：尽量不要使用国内的服务器进行搭建，否则可能因为服务器无法访问国外某些服务，尽量放在外网、\n配置修改 修改searxng/setting.yml 文件 将secret_key为自己的秘钥，可以自己随机生成即可，修改limiter为false，增加search扩展数据返回格式 ">
+<title>联网检索SearXNG本地部署</title>
+
+<link rel='canonical' href='https://h-yx-blog.github.io/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/'>
+
+<link rel="stylesheet" href="/scss/style.min.41d80fdd2e951cc26aced0647d31e0d0e72647ef4a9771fd8d41acc7a00935db.css"><meta property='og:title' content="联网检索SearXNG本地部署">
+<meta property='og:description' content="官方文档 SearXNG\n介绍 SearXNG是一个基于Python的开源互联网元搜索引擎，它致力于聚合来自不同搜索服务和数据库的结果，为用户提供全面的信息获取渠道。此项目的独特之处在于对用户隐私的重视，它确保了在提供强大搜索能力的同时，既不追踪用户行为也不建立用户画像。\n功能特点 隐私保护：SearXNG 通过多种方式保护用户隐私，包括： 删除搜索请求中的私人数据。 阻止第三方服务（如广告）的传输。 隐藏搜索结果页面中的查询词和重定向链接。 多源聚合：SearXNG 聚合了来自超过 70 个搜索服务和数据库的结果，支持多种搜索引擎，如 Google、DuckDuckGo、Bing 等。 API支持：SearXNG提供API接口，支持联网搜索功能，可以与其他应用程序集成，实现更复杂的数据处理和分析。 多语言支持：SearXNG支持多种语言，用户可以根据需要选择不同的语言进行搜索。 高度可定制：用户可以根据自己的需求自定义搜索结果，例如只从特定的搜索引擎获取信息，或者对搜索结果进行过滤和排序。 开源与社区支持：SearXNG 是一个开源项目，所有源代码均可查看，用户可以自行修改和扩展功能。社区提供了详细的文档和教程，鼓励开发者贡献代码和翻译。 核心功能亮点： SearXNG的核心功能集中于其作为元搜索引擎的角色上，能够整合如Google、Bing、DuckDuckGo等多种搜索引擎的搜索结果，给予用户更广泛的信息来源。更重要的是，它坚持“无追踪”的原则，保障用户的网络搜索隐私，让用户在不受监控的状态下自由探索互联网。\nSearXNG支持以下具体的搜索引擎：\nGoogle DuckDuckGo Bing Yahoo Wikipedia StartPage Brave Search Qwant Arxiv 以及其他超过70种公开的搜索服务和数据库 技术实现\n架构与部署：SearXNG 支持多种部署方式，包括 Docker 镜像、安装脚本和手动安装。Docker 镜像支持 ARM64 和 ARM/v7 架构，方便在不同硬件平台上运行。 界面与用户体验：SearXNG 提供简洁直观的用户界面，支持桌面、平板和手机大屏幕显示，并提供浅色和深色主题选项。界面支持从右到左的语言，适应不同文化背景的用户。 扩展性：SearXNG 支持代理和在线 Tor 搜索，进一步增强了用户的匿名性。 使用场景 1.个人隐私保护：用户可以在本地部署 SearXNG，避免在公共网络中被追踪或分析。\n2.企业内部应用：企业可以搭建自己的搜索服务，确保数据安全。\n3.开发者工具：开发者可以利用 SearXNG 构建定制化的搜索功能，例如在 AI 应用中集成搜索插件。\n部署（Dokcer方式） 注意事项：尽量不要使用国内的服务器进行搭建，否则可能因为服务器无法访问国外某些服务，尽量放在外网、\n配置修改 修改searxng/setting.yml 文件 将secret_key为自己的秘钥，可以自己随机生成即可，修改limiter为false，增加search扩展数据返回格式 ">
+<meta property='og:url' content='https://h-yx-blog.github.io/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/'>
+<meta property='og:site_name' content='Yuta&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='AI' /><meta property='article:tag' content='联网检索' /><meta property='article:published_time' content='2025-04-05T15:20:04&#43;08:00'/><meta property='article:modified_time' content='2025-04-05T15:20:04&#43;08:00'/>
+<meta name="twitter:title" content="联网检索SearXNG本地部署">
+<meta name="twitter:description" content="官方文档 SearXNG\n介绍 SearXNG是一个基于Python的开源互联网元搜索引擎，它致力于聚合来自不同搜索服务和数据库的结果，为用户提供全面的信息获取渠道。此项目的独特之处在于对用户隐私的重视，它确保了在提供强大搜索能力的同时，既不追踪用户行为也不建立用户画像。\n功能特点 隐私保护：SearXNG 通过多种方式保护用户隐私，包括： 删除搜索请求中的私人数据。 阻止第三方服务（如广告）的传输。 隐藏搜索结果页面中的查询词和重定向链接。 多源聚合：SearXNG 聚合了来自超过 70 个搜索服务和数据库的结果，支持多种搜索引擎，如 Google、DuckDuckGo、Bing 等。 API支持：SearXNG提供API接口，支持联网搜索功能，可以与其他应用程序集成，实现更复杂的数据处理和分析。 多语言支持：SearXNG支持多种语言，用户可以根据需要选择不同的语言进行搜索。 高度可定制：用户可以根据自己的需求自定义搜索结果，例如只从特定的搜索引擎获取信息，或者对搜索结果进行过滤和排序。 开源与社区支持：SearXNG 是一个开源项目，所有源代码均可查看，用户可以自行修改和扩展功能。社区提供了详细的文档和教程，鼓励开发者贡献代码和翻译。 核心功能亮点： SearXNG的核心功能集中于其作为元搜索引擎的角色上，能够整合如Google、Bing、DuckDuckGo等多种搜索引擎的搜索结果，给予用户更广泛的信息来源。更重要的是，它坚持“无追踪”的原则，保障用户的网络搜索隐私，让用户在不受监控的状态下自由探索互联网。\nSearXNG支持以下具体的搜索引擎：\nGoogle DuckDuckGo Bing Yahoo Wikipedia StartPage Brave Search Qwant Arxiv 以及其他超过70种公开的搜索服务和数据库 技术实现\n架构与部署：SearXNG 支持多种部署方式，包括 Docker 镜像、安装脚本和手动安装。Docker 镜像支持 ARM64 和 ARM/v7 架构，方便在不同硬件平台上运行。 界面与用户体验：SearXNG 提供简洁直观的用户界面，支持桌面、平板和手机大屏幕显示，并提供浅色和深色主题选项。界面支持从右到左的语言，适应不同文化背景的用户。 扩展性：SearXNG 支持代理和在线 Tor 搜索，进一步增强了用户的匿名性。 使用场景 1.个人隐私保护：用户可以在本地部署 SearXNG，避免在公共网络中被追踪或分析。\n2.企业内部应用：企业可以搭建自己的搜索服务，确保数据安全。\n3.开发者工具：开发者可以利用 SearXNG 构建定制化的搜索功能，例如在 AI 应用中集成搜索插件。\n部署（Dokcer方式） 注意事项：尽量不要使用国内的服务器进行搭建，否则可能因为服务器无法访问国外某些服务，尽量放在外网、\n配置修改 修改searxng/setting.yml 文件 将secret_key为自己的秘钥，可以自己随机生成即可，修改limiter为false，增加search扩展数据返回格式 ">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_9d08b070b84885af.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Yuta&#39;s blog</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/h-yx-blog'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#官方文档">官方文档</a></li>
+        <li><a href="#介绍">介绍</a></li>
+        <li><a href="#功能特点">功能特点</a></li>
+        <li><a href="#使用场景">使用场景</a></li>
+        <li><a href="#部署dokcer方式">部署（Dokcer方式）</a></li>
+        <li><a href="#api接口">API接口</a></li>
+        <li><a href="#ui界面使用">UI界面使用</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/searxng/" >
+                SearXNG
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/">联网检索SearXNG本地部署</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-04-05</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="官方文档">官方文档
+</h2><p><a class="link" href="https://docs.searxng.org/"  target="_blank" rel="noopener"
+    >SearXNG</a></p>
+<h2 id="介绍">介绍
+</h2><p>SearXNG是一个基于Python的开源互联网元搜索引擎，它致力于聚合来自不同搜索服务和数据库的结果，为用户提供全面的信息获取渠道。此项目的独特之处在于对用户隐私的重视，它确保了在提供强大搜索能力的同时，既不追踪用户行为也不建立用户画像。</p>
+<h2 id="功能特点">功能特点
+</h2><ul>
+<li>隐私保护：SearXNG 通过多种方式保护用户隐私，包括：
+<ul>
+<li>删除搜索请求中的私人数据。</li>
+<li>阻止第三方服务（如广告）的传输。</li>
+<li>隐藏搜索结果页面中的查询词和重定向链接。</li>
+</ul>
+</li>
+<li>多源聚合：SearXNG 聚合了来自超过 70 个搜索服务和数据库的结果，支持多种搜索引擎，如 Google、DuckDuckGo、Bing 等。</li>
+<li>API支持：SearXNG提供API接口，支持联网搜索功能，可以与其他应用程序集成，实现更复杂的数据处理和分析。</li>
+<li>多语言支持：SearXNG支持多种语言，用户可以根据需要选择不同的语言进行搜索。</li>
+<li>高度可定制：用户可以根据自己的需求自定义搜索结果，例如只从特定的搜索引擎获取信息，或者对搜索结果进行过滤和排序。</li>
+<li>开源与社区支持：SearXNG 是一个开源项目，所有源代码均可查看，用户可以自行修改和扩展功能。社区提供了详细的文档和教程，鼓励开发者贡献代码和翻译。</li>
+</ul>
+<p><strong>核心功能亮点：</strong>
+SearXNG的核心功能集中于其作为元搜索引擎的角色上，能够整合如Google、Bing、DuckDuckGo等多种搜索引擎的搜索结果，给予用户更广泛的信息来源。更重要的是，它坚持“无追踪”的原则，保障用户的网络搜索隐私，让用户在不受监控的状态下自由探索互联网。</p>
+<p>SearXNG支持以下具体的搜索引擎：</p>
+<ul>
+<li>Google</li>
+<li>DuckDuckGo</li>
+<li>Bing</li>
+<li>Yahoo</li>
+<li>Wikipedia</li>
+<li>StartPage</li>
+<li>Brave Search</li>
+<li>Qwant</li>
+<li>Arxiv
+以及其他超过70种公开的搜索服务和数据库</li>
+</ul>
+<p>技术实现</p>
+<ul>
+<li>架构与部署：SearXNG 支持多种部署方式，包括 Docker 镜像、安装脚本和手动安装。Docker 镜像支持 ARM64 和 ARM/v7 架构，方便在不同硬件平台上运行。</li>
+<li>界面与用户体验：SearXNG 提供简洁直观的用户界面，支持桌面、平板和手机大屏幕显示，并提供浅色和深色主题选项。界面支持从右到左的语言，适应不同文化背景的用户。</li>
+<li>扩展性：SearXNG 支持代理和在线 Tor 搜索，进一步增强了用户的匿名性。</li>
+</ul>
+<h2 id="使用场景">使用场景
+</h2><p>1.个人隐私保护：用户可以在本地部署 SearXNG，避免在公共网络中被追踪或分析。</p>
+<p>2.企业内部应用：企业可以搭建自己的搜索服务，确保数据安全。</p>
+<p>3.开发者工具：开发者可以利用 SearXNG 构建定制化的搜索功能，例如在 AI 应用中集成搜索插件。</p>
+<h2 id="部署dokcer方式">部署（Dokcer方式）
+</h2><p>注意事项：尽量不要使用国内的服务器进行搭建，否则可能因为服务器无法访问国外某些服务，尽量放在外网、</p>
+<ol>
+<li>配置修改
+修改searxng/setting.yml 文件
+将secret_key为自己的秘钥，可以自己随机生成即可，修改limiter为false，增加search扩展数据返回格式</li>
+</ol>
+<p><img src="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/coonfig.jpg"
+	width="1005"
+	height="459"
+	srcset="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/coonfig_hu_228524a93e482351.jpg 480w, /p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/coonfig_hu_36b3643dcb1e18f.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="218"
+		data-flex-basis="525px"
+	
+></p>
+<ol start="2">
+<li>docker compose配置文件修改
+① 80端口如果被占用的话需要改端口，该部署方式是用Caddy替代了nginx，也是占用80端口
+<img src="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/dockerconfig.jpg"
+	width="1379"
+	height="837"
+	srcset="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/dockerconfig_hu_a06893de1956cc6f.jpg 480w, /p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/dockerconfig_hu_4efea6dd8931ae4c.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="164"
+		data-flex-basis="395px"
+	
+></li>
+</ol>
+<p>② 首次启动注释掉所有的cap_drop，下次启动则不需要注释
+<img src="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/dockerconfigtwo.png"
+	width="1401"
+	height="1061"
+	srcset="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/dockerconfigtwo_hu_3a45362950c20305.png 480w, /p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/dockerconfigtwo_hu_872326e7a059032d.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="132"
+		data-flex-basis="316px"
+	
+></p>
+<p>③ 删去127.0.0.1 ，允许外部访问
+<img src="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/dockerconfigthree.jpg"
+	width="865"
+	height="413"
+	srcset="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/dockerconfigthree_hu_33d66ab17411055b.jpg 480w, /p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/dockerconfigthree_hu_a100952dbf7d404d.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="209"
+		data-flex-basis="502px"
+	
+></p>
+<p>④ 进入 /opt/searxng/searxng-docker  目录  ，执行
+docker compose  up  -d  构建即可 </p>
+<h2 id="api接口">API接口
+</h2><p>官方文档：https://docs.searxng.org/dev/search_api.html</p>
+<p>响应结果官方文档：https://docs.searxng.org/dev/result_types/index.html</p>
+<p>引擎配置文档：https://docs.searxng.org/user/configured_engines.html#configured-engines</p>
+<p>接口地址   http://ip:8080/search
+请求方式：GET /  POST
+部分参数如下
+<img src="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/param.png"
+	width="585"
+	height="673"
+	srcset="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/param_hu_4c3ccc0a21d12461.png 480w, /p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/param_hu_b85ddc563a3c5a4f.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="86"
+		data-flex-basis="208px"
+	
+></p>
+<p>请求示例
+请求示例：http://ip:8080/search?q=DeepSeek&amp;format=json&amp;engines=baidu</p>
+<p>响应结果示例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	&#34;query&#34;: &#34;DeepSeek&#34;,
+</span></span><span class="line"><span class="cl">	&#34;number_of_results&#34;: 0,
+</span></span><span class="line"><span class="cl">	&#34;results&#34;: [
+</span></span><span class="line"><span class="cl">		{
+</span></span><span class="line"><span class="cl">			&#34;title&#34;: &#34;DeepSeek | 深度求索&#34;,
+</span></span><span class="line"><span class="cl">			&#34;url&#34;: &#34;https://www.deepseek.com&#34;,
+</span></span><span class="line"><span class="cl">			&#34;content&#34;: &#34;深度求索(DeepSeek),成立于2023年,专注于研究世界领先的通用人工智能底层模型与技术,挑战人工智能前沿性难题。基于自研训练框架、自建智算集群和万卡算力等资源,深度求索团队仅用半年时间便已发布并开源多个百亿级参数大模型,如DeepSeek-LLM通用大语言模型、DeepSeek&#34;,
+</span></span><span class="line"><span class="cl">			&#34;publishedDate&#34;: &#34;2025-03-28T01:57:32&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engine&#34;: &#34;baidu&#34;,
+</span></span><span class="line"><span class="cl">			&#34;template&#34;: &#34;default.html&#34;,
+</span></span><span class="line"><span class="cl">			&#34;parsed_url&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;https&#34;,
+</span></span><span class="line"><span class="cl">				&#34;www.deepseek.com&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;img_src&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;thumbnail&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;priority&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engines&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;baidu&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;positions&#34;: [
+</span></span><span class="line"><span class="cl">				1
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;score&#34;: 1,
+</span></span><span class="line"><span class="cl">			&#34;category&#34;: &#34;general&#34;
+</span></span><span class="line"><span class="cl">		},
+</span></span><span class="line"><span class="cl">		{
+</span></span><span class="line"><span class="cl">			&#34;title&#34;: &#34;DeepSeek(杭州深度求索人工智能基础技术研究有限公司推出的AI助手)_百 ...&#34;,
+</span></span><span class="line"><span class="cl">			&#34;url&#34;: &#34;https://baike.baidu.com/item/DeepSeek/65368136&#34;,
+</span></span><span class="line"><span class="cl">			&#34;content&#34;: &#34;随着数字经济的蓬勃发展以及各行业对高效、智能解决方案的迫切需求,以及数据量呈指数级增长,信息传播速度加快,人工智能(AI)技术成为推动行业革新的关键力量 [85],2024年12月,视觉模型DeepSeek-VL2、模型DeepSeek-V3首个版本相继发布并同步开源。2025年1月15日,DeepSeek官方App正式上线。 [4] 发展历程 播报 编辑 20...&#34;,
+</span></span><span class="line"><span class="cl">			&#34;publishedDate&#34;: &#34;2025-03-31T06:27:13&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engine&#34;: &#34;baidu&#34;,
+</span></span><span class="line"><span class="cl">			&#34;template&#34;: &#34;default.html&#34;,
+</span></span><span class="line"><span class="cl">			&#34;parsed_url&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;https&#34;,
+</span></span><span class="line"><span class="cl">				&#34;baike.baidu.com&#34;,
+</span></span><span class="line"><span class="cl">				&#34;/item/DeepSeek/65368136&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;img_src&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;thumbnail&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;priority&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engines&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;baidu&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;positions&#34;: [
+</span></span><span class="line"><span class="cl">				2
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;score&#34;: 0.5,
+</span></span><span class="line"><span class="cl">			&#34;category&#34;: &#34;general&#34;
+</span></span><span class="line"><span class="cl">		},
+</span></span><span class="line"><span class="cl">		{
+</span></span><span class="line"><span class="cl">			&#34;title&#34;: &#34;90%的人都不知道的DeepSeek高效使用技巧&#34;,
+</span></span><span class="line"><span class="cl">			&#34;url&#34;: &#34;https://mp.weixin.qq.com/s?__biz=MjM5OTc1MDA2MQ==&amp;mid=2652093947&amp;idx=1&amp;sn=2d8704d12fb99b5cb3e0eea3faccb8a6&amp;chksm=bd4312eab812ac64a4fdc3e98f50c76f1a16ba4d628f2a8e677baf779007823c58d46960047d&amp;scene=27&#34;,
+</span></span><span class="line"><span class="cl">			&#34;content&#34;: &#34;这样我就可以把自己私人的信息喂给deepseek,让它为我量身定做答案,也不用担心信息的泄密。 而且deepseek在回答我问题的时候,还会给我展示它的推理过程。 比如我想给8岁女儿推荐动画片,deepseek就会给我显示它的推理过程,也就是说AI是怎么思考这个问题的,而这个...&#34;,
+</span></span><span class="line"><span class="cl">			&#34;publishedDate&#34;: &#34;2025-02-06T23:31:00&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engine&#34;: &#34;baidu&#34;,
+</span></span><span class="line"><span class="cl">			&#34;template&#34;: &#34;default.html&#34;,
+</span></span><span class="line"><span class="cl">			&#34;parsed_url&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;https&#34;,
+</span></span><span class="line"><span class="cl">				&#34;mp.weixin.qq.com&#34;,
+</span></span><span class="line"><span class="cl">				&#34;/s&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;,
+</span></span><span class="line"><span class="cl">				&#34;__biz=MjM5OTc1MDA2MQ==&amp;mid=2652093947&amp;idx=1&amp;sn=2d8704d12fb99b5cb3e0eea3faccb8a6&amp;chksm=bd4312eab812ac64a4fdc3e98f50c76f1a16ba4d628f2a8e677baf779007823c58d46960047d&amp;scene=27&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;img_src&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;thumbnail&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;priority&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engines&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;baidu&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;positions&#34;: [
+</span></span><span class="line"><span class="cl">				3
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;score&#34;: 0.3333333333333333,
+</span></span><span class="line"><span class="cl">			&#34;category&#34;: &#34;general&#34;
+</span></span><span class="line"><span class="cl">		},
+</span></span><span class="line"><span class="cl">		{
+</span></span><span class="line"><span class="cl">			&#34;title&#34;: &#34;DeepSeek新手必看!全功能详解与实操指南,带你逆袭成AI大神&#34;,
+</span></span><span class="line"><span class="cl">			&#34;url&#34;: &#34;https://baijiahao.baidu.com/s?id=1822666430369643282&amp;wfr=spider&amp;for=pc&#34;,
+</span></span><span class="line"><span class="cl">			&#34;content&#34;: &#34;一、DeepSeek是什么 DeepSeek是一款多模态AI工具，融合了文本生成、图像创作等多种功能，致力于为用户提供无缝的创作体验。它由中国对冲基金高毅资产旗下团队打造，于2023年成立，虽然诞生时间不长，但发展迅猛，在AI领域迅速崭露头角。与传统AI应用不同，DeepSeek采用深度学习和高效的神经网络技术，极大地提升了回应...&#34;,
+</span></span><span class="line"><span class="cl">			&#34;publishedDate&#34;: &#34;2025-01-30T10:05:39&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engine&#34;: &#34;baidu&#34;,
+</span></span><span class="line"><span class="cl">			&#34;template&#34;: &#34;default.html&#34;,
+</span></span><span class="line"><span class="cl">			&#34;parsed_url&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;https&#34;,
+</span></span><span class="line"><span class="cl">				&#34;baijiahao.baidu.com&#34;,
+</span></span><span class="line"><span class="cl">				&#34;/s&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;,
+</span></span><span class="line"><span class="cl">				&#34;id=1822666430369643282&amp;wfr=spider&amp;for=pc&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;img_src&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;thumbnail&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;priority&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engines&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;baidu&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;positions&#34;: [
+</span></span><span class="line"><span class="cl">				4
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;score&#34;: 0.25,
+</span></span><span class="line"><span class="cl">			&#34;category&#34;: &#34;general&#34;
+</span></span><span class="line"><span class="cl">		},
+</span></span><span class="line"><span class="cl">		{
+</span></span><span class="line"><span class="cl">			&#34;title&#34;: &#34;DeepSeek中文读音怎么读_哔哩哔哩_bilibili&#34;,
+</span></span><span class="line"><span class="cl">			&#34;url&#34;: &#34;https://www.bilibili.com/video/BV1mJNAesE5Q&#34;,
+</span></span><span class="line"><span class="cl">			&#34;content&#34;: &#34;DeepSeek是什么? 章夏Sean 8.9万 206 【雪梨老师】普通家庭怎么用deepseek 高效学英语?最新保姆级教程来了!【建议收藏】 英语雪梨老师 4.0万 13 过年回家就是陪伴和团圆 李文凉 855 0 一分钟用人话讲明白DeepSeek为何轰动全世界! 李三金Alex看世界 50.8万 380 ...&#34;,
+</span></span><span class="line"><span class="cl">			&#34;publishedDate&#34;: &#34;2025-02-04T10:50:46&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engine&#34;: &#34;baidu&#34;,
+</span></span><span class="line"><span class="cl">			&#34;template&#34;: &#34;default.html&#34;,
+</span></span><span class="line"><span class="cl">			&#34;parsed_url&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;https&#34;,
+</span></span><span class="line"><span class="cl">				&#34;www.bilibili.com&#34;,
+</span></span><span class="line"><span class="cl">				&#34;/video/BV1mJNAesE5Q&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;img_src&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;thumbnail&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;priority&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engines&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;baidu&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;positions&#34;: [
+</span></span><span class="line"><span class="cl">				5
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;score&#34;: 0.2,
+</span></span><span class="line"><span class="cl">			&#34;category&#34;: &#34;general&#34;
+</span></span><span class="line"><span class="cl">		},
+</span></span><span class="line"><span class="cl">		{
+</span></span><span class="line"><span class="cl">			&#34;title&#34;: &#34;接入DeepSeek之后,企业什么样?|算法|智能化|deepseek|世界人工智能...&#34;,
+</span></span><span class="line"><span class="cl">			&#34;url&#34;: &#34;https://www.163.com/dy/article/JS1T4SEA0550TYQ0.html&#34;,
+</span></span><span class="line"><span class="cl">			&#34;content&#34;: &#34;“DeepSeek为道岔制造注入‘智慧基因’,实用性很强。”最近,中铁宝桥南京公司的信息化团队成功将DeepSeek-R1模型和千问大模型Qwen2.5接入ERP系统,开发了道岔智能助手。这个智能化制造新体系实现了订单管理、工艺执行、质量管控的全流程数字化升级。 “钼光大模型”“道岔智能助手”只是企业接入DeepSeek进行数字化升级的一...&#34;,
+</span></span><span class="line"><span class="cl">			&#34;publishedDate&#34;: &#34;2025-03-31T23:32:03&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engine&#34;: &#34;baidu&#34;,
+</span></span><span class="line"><span class="cl">			&#34;template&#34;: &#34;default.html&#34;,
+</span></span><span class="line"><span class="cl">			&#34;parsed_url&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;https&#34;,
+</span></span><span class="line"><span class="cl">				&#34;www.163.com&#34;,
+</span></span><span class="line"><span class="cl">				&#34;/dy/article/JS1T4SEA0550TYQ0.html&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;img_src&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;thumbnail&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;priority&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engines&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;baidu&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;positions&#34;: [
+</span></span><span class="line"><span class="cl">				6
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;score&#34;: 0.16666666666666666,
+</span></span><span class="line"><span class="cl">			&#34;category&#34;: &#34;general&#34;
+</span></span><span class="line"><span class="cl">		},
+</span></span><span class="line"><span class="cl">		{
+</span></span><span class="line"><span class="cl">			&#34;title&#34;: &#34;“DeepSeek”是怎么回答“DeepSeek”怎么念的?&#34;,
+</span></span><span class="line"><span class="cl">			&#34;url&#34;: &#34;https://baijiahao.baidu.com/s?id=1822566627381536789&amp;wfr=spider&amp;for=pc&#34;,
+</span></span><span class="line"><span class="cl">			&#34;content&#34;: &#34;“DeepSeek”作为专有名词，其发音遵循英语拼读规则。该词由“deep”与“seek”组合而成，标准英语发音为/diːp siːk/。具体发音分解如下：首音节“deep”发长音/iː/，舌尖抵下齿，双唇向两侧伸展，与单词“keep”中“ee”发音相同;辅音/p/发音时双唇闭合后突然张开，声带不振动。次音节“seek”中“see...&#34;,
+</span></span><span class="line"><span class="cl">			&#34;publishedDate&#34;: &#34;2025-01-29T07:16:22&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engine&#34;: &#34;baidu&#34;,
+</span></span><span class="line"><span class="cl">			&#34;template&#34;: &#34;default.html&#34;,
+</span></span><span class="line"><span class="cl">			&#34;parsed_url&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;https&#34;,
+</span></span><span class="line"><span class="cl">				&#34;baijiahao.baidu.com&#34;,
+</span></span><span class="line"><span class="cl">				&#34;/s&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;,
+</span></span><span class="line"><span class="cl">				&#34;id=1822566627381536789&amp;wfr=spider&amp;for=pc&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;img_src&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;thumbnail&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;priority&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engines&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;baidu&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;positions&#34;: [
+</span></span><span class="line"><span class="cl">				7
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;score&#34;: 0.14285714285714285,
+</span></span><span class="line"><span class="cl">			&#34;category&#34;: &#34;general&#34;
+</span></span><span class="line"><span class="cl">		},
+</span></span><span class="line"><span class="cl">		{
+</span></span><span class="line"><span class="cl">			&#34;title&#34;: &#34;deep seek什么意思&#34;,
+</span></span><span class="line"><span class="cl">			&#34;url&#34;: &#34;https://localsite.baidu.com/site/wjzsorv8/8cd47d9a-7797-42f3-9306-b902ded71161?qaId=5095242&amp;categoryLv1=%E6%95%99%E8%82%B2%E5%9F%B9%E8%AE%AD&amp;efs=1&amp;ch=54&amp;srcid=10014&amp;source=natural&amp;category=%E5%B0%8F%E5%AD%A6%E8%8B%B1%E8%AF%AD&amp;eduFrom=136&amp;botSourceType=46&#34;,
+</span></span><span class="line"><span class="cl">			&#34;content&#34;: &#34;“DeepSeek”对应的中文释义为“深度求索”,该词汇既包含对字面含义的技术性解读,也承载着探索未知、追求创新的精神内核。其核心价值体现在方法论与价值观的双重维度,以下从三个层面展开说明: 一、字面含义的技术解析 从构词法来看,“Deep”代表对事物本质的深度挖掘,体现系统性研究...&#34;,
+</span></span><span class="line"><span class="cl">			&#34;publishedDate&#34;: &#34;2025-01-07T18:02:45&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engine&#34;: &#34;baidu&#34;,
+</span></span><span class="line"><span class="cl">			&#34;template&#34;: &#34;default.html&#34;,
+</span></span><span class="line"><span class="cl">			&#34;parsed_url&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;https&#34;,
+</span></span><span class="line"><span class="cl">				&#34;localsite.baidu.com&#34;,
+</span></span><span class="line"><span class="cl">				&#34;/site/wjzsorv8/8cd47d9a-7797-42f3-9306-b902ded71161&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;,
+</span></span><span class="line"><span class="cl">				&#34;qaId=5095242&amp;categoryLv1=%E6%95%99%E8%82%B2%E5%9F%B9%E8%AE%AD&amp;efs=1&amp;ch=54&amp;srcid=10014&amp;source=natural&amp;category=%E5%B0%8F%E5%AD%A6%E8%8B%B1%E8%AF%AD&amp;eduFrom=136&amp;botSourceType=46&#34;,
+</span></span><span class="line"><span class="cl">				&#34;&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;img_src&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;thumbnail&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;priority&#34;: &#34;&#34;,
+</span></span><span class="line"><span class="cl">			&#34;engines&#34;: [
+</span></span><span class="line"><span class="cl">				&#34;baidu&#34;
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;positions&#34;: [
+</span></span><span class="line"><span class="cl">				8
+</span></span><span class="line"><span class="cl">			],
+</span></span><span class="line"><span class="cl">			&#34;score&#34;: 0.125,
+</span></span><span class="line"><span class="cl">			&#34;category&#34;: &#34;general&#34;
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	],
+</span></span><span class="line"><span class="cl">	&#34;answers&#34;: [],
+</span></span><span class="line"><span class="cl">	&#34;corrections&#34;: [],
+</span></span><span class="line"><span class="cl">	&#34;infoboxes&#34;: [],
+</span></span><span class="line"><span class="cl">	&#34;suggestions&#34;: [],
+</span></span><span class="line"><span class="cl">	&#34;unresponsive_engines&#34;: []
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>注意：在UI界面的配置只会影响UI的搜索功能，并不会影响API的搜索配置，如果要对API的搜索配置进行修改，需要修改配置文件 /searxng/settings.yml</p>
+<p><img src="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/uiconfig.jpg"
+	width="2559"
+	height="1277"
+	srcset="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/uiconfig_hu_cbd535b82967873.jpg 480w, /p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/uiconfig_hu_3ed1c67638c69718.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="200"
+		data-flex-basis="480px"
+	
+>
+如下，我禁用掉了startpage和qwant这两个引擎的搜索，这样搜索API在搜索时就不会调用这两个引擎的检索</p>
+<p><img src="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/apiconfig.jpg"
+	width="1419"
+	height="1119"
+	srcset="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/apiconfig_hu_8900f4a64997acc4.jpg 480w, /p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/apiconfig_hu_36302b9cd6bdf7f3.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="126"
+		data-flex-basis="304px"
+	
+></p>
+<h2 id="ui界面使用">UI界面使用
+</h2><p>快捷搜索</p>
+<p>!bang  这一列表示引擎的快捷搜素，当在搜索词前输入对应的快捷搜索词，就只会搜索对应的引擎，如 !go 就表示使用google进行搜索，这样就不会有其他引擎的搜索结果</p>
+<p><img src="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/use.jpg"
+	width="865"
+	height="405"
+	srcset="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/use_hu_a9f608ae7f594d00.jpg 480w, /p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/use_hu_7e43feddb1763caa.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="213"
+		data-flex-basis="512px"
+	
+></p>
+<p><img src="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/use2.jpg"
+	width="865"
+	height="296"
+	srcset="/p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/use2_hu_c35beef5282adcee.jpg 480w, /p/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2searxng%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/use2_hu_17fbe63eeb085299.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="292"
+		data-flex-basis="701px"
+	
+></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/ai/">AI</a>
+        
+            <a href="/tags/%E8%81%94%E7%BD%91%E6%A3%80%E7%B4%A2/">联网检索</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+<script src="https://giscus.app/client.js"
+        data-repo="h-yx-blog/h-yx-blog.github.io"
+        data-repo-id="R_kgDONilc6g"
+        data-category="Announcements"
+        data-category-id="DIC_kwDONilc6s4ClkCI"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="noborder_dark"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2024 - 
+        
+        2025 Yuta Huang
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
