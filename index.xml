@@ -7,7 +7,453 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Yuta Huang</copyright>
-        <lastBuildDate>Fri, 04 Apr 2025 10:30:20 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 05 Apr 2025 10:36:24 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>开源BI项目 Superset本地部署教程</title>
+        <link>https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/</link>
+        <pubDate>Sat, 05 Apr 2025 10:36:24 +0800</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/</guid>
+        <description>&lt;h2 id=&#34;背景&#34;&gt;背景
+&lt;/h2&gt;&lt;p&gt;为了降本，决定不再续费原来使用的阿里云的Quick BI，寻找开源免费的替代品，
+国内DataEase 的权限控制是收费，不符合需求；MetaBase的开发语言是Clojure ，目前公司没有人会该语言，有学习成本，固也不做考虑。最后选择了Superset&lt;/p&gt;
+&lt;h2 id=&#34;介绍&#34;&gt;介绍
+&lt;/h2&gt;&lt;p&gt;Superset 是一个现代数据探索和数据可视化平台。Superset 可以替代或增强许多团队的专有商业智能工具。Superset 与各种数据源很好地集成。&lt;/p&gt;
+&lt;p&gt;Superset提供：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用于快速构建图表的无代码界面&lt;/li&gt;
+&lt;li&gt;一个强大的、基于 Web 的 SQL 编辑器，用于高级查询&lt;/li&gt;
+&lt;li&gt;用于快速定义自定义维度和指标的轻量级语义层&lt;/li&gt;
+&lt;li&gt;对几乎任何 SQL 数据库或数据引擎的开箱即用支持&lt;/li&gt;
+&lt;li&gt;各种精美的可视化效果来展示您的数据，从简单的条形图到地理空间可视化效果&lt;/li&gt;
+&lt;li&gt;轻量级、可配置的缓存层，有助于减轻数据库负载&lt;/li&gt;
+&lt;li&gt;高度可扩展的安全角色和身份验证选项&lt;/li&gt;
+&lt;li&gt;用于编程自定义的 API&lt;/li&gt;
+&lt;li&gt;专为扩展而设计的云原生架构&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Superset没有对windows的官方支持，建议在linux或macos下进行部署，如下图&lt;/strong&gt;
+&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/image.png&#34;
+	width=&#34;2506&#34;
+	height=&#34;1168&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/image_hu_53850cf09c74cbf7.png 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/image_hu_776ae41fff2c8c4c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;214&#34;
+		data-flex-basis=&#34;514px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;支持的数据库&#34;&gt;支持的数据库
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/database.png&#34;
+	width=&#34;1231&#34;
+	height=&#34;2673&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/database_hu_666efa81971deb87.png 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/database_hu_97f7b581a4e6abcc.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;支持的数据库&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;46&#34;
+		data-flex-basis=&#34;110px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;dokcker方式部署&#34;&gt;Dokcker方式部署
+&lt;/h2&gt;&lt;p&gt;这里我使用的是4.1.1的rc版本，可以从github上下载源码
+&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/sourcecode.jpg&#34;
+	width=&#34;1063&#34;
+	height=&#34;971&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/sourcecode_hu_7f0a43151a9f6c61.jpg 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/sourcecode_hu_1d84a13a330dc428.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;109&#34;
+		data-flex-basis=&#34;262px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;测试环境下部署如下
+一. 修改docker-compose 配置文件&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;docker-compose-non-dev.yml  主要用于从本地分支构建一组不可变镜像，即一旦启动，本地分支无论怎么改都不会影响（本地分支如果修改了代码，则需要把镜像先停止然后删除掉镜像，最后再重新构建）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;我这里让dev配置的该文件也实现了交互式开发的效果，在该文件下我多加了一行挂载，让python程序改变后可以挂载到docker容器中，这样可以实时生效
+&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dockerinfo.jpg&#34;
+	width=&#34;1085&#34;
+	height=&#34;549&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dockerinfo_hu_9d9c4d12417f9f84.jpg 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dockerinfo_hu_6a4e817b9e871262.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;197&#34;
+		data-flex-basis=&#34;474px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;docker-compose.yml文件用于交互式开发，即本地分支代码一修改就能立即响应到容器中&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;构建镜像并启动：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker compose -f docker-compose-non-dev.yml up
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;等待镜像构建部署，如果要使用后台启动的方式，可以在docker命令的结尾加上 -d 参数&lt;/p&gt;
+&lt;h2 id=&#34;个性化配置&#34;&gt;个性化配置
+&lt;/h2&gt;&lt;h3 id=&#34;修改数据源为本地数据源不使用镜像&#34;&gt;修改数据源为本地数据源，不使用镜像
+&lt;/h3&gt;&lt;p&gt;进入 docker目录下，找到 .env文件，修改.env文件中关于数据库连接的配置&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cd /opt/superset/superset-4.1.1rc1/docker
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;修改相关数据库连接配置
+&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfig.jpg&#34;
+	width=&#34;1267&#34;
+	height=&#34;361&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfig_hu_a76def2f7551ae9d.jpg 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfig_hu_4ee369094c602577.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;350&#34;
+		data-flex-basis=&#34;842px&#34;
+	
+&gt;
+&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfigtwo.jpg&#34;
+	width=&#34;1223&#34;
+	height=&#34;373&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfigtwo_hu_b3dc4a409fe7ab86.jpg 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfigtwo_hu_18d2148f90a1db61.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;327&#34;
+		data-flex-basis=&#34;786px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;注意点：在.env文件中还有一个重要的配置如下，这里是在指定配置文件的位置，当你修改superset/config.py  配置文件无效时，可以试试修改pythonpath_dev/superset_config.py  文件，这里的配置会覆盖下的配置 superset/config.py&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;PYTHONPATH=/app/pythonpath:/app/docker/pythonpath_dev
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;环境配置&#34;&gt;环境配置
+&lt;/h3&gt;&lt;p&gt;当年启动了superset后，可能会发现右上角出现的是 Development的环境，如下
+&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/enviroment.jpg&#34;
+	width=&#34;658&#34;
+	height=&#34;318&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/enviroment_hu_4904e7103bc643cc.jpg 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/enviroment_hu_69dcfa4a3bc185f8.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;206&#34;
+		data-flex-basis=&#34;496px&#34;
+	
+&gt;
+在 superset/config.py中，以下配置可以定义Superset首页右上角的环境显示&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-gdscript3&#34; data-lang=&#34;gdscript3&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;ENVIRONMENT_TAG_CONFIG&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;s2&#34;&gt;&amp;#34;variable&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;SUPERSET_ENV&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;s2&#34;&gt;&amp;#34;values&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;s2&#34;&gt;&amp;#34;debug&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;s2&#34;&gt;&amp;#34;color&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;error.base&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;s2&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;flask-debug&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;s2&#34;&gt;&amp;#34;development&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;s2&#34;&gt;&amp;#34;color&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;error.base&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;s2&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Development&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;s2&#34;&gt;&amp;#34;production&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;s2&#34;&gt;&amp;#34;color&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;warning.base&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;s2&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Production&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;然后在  superset/docker/.env文件中可以配置激活的环境
+&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfigthree.jpg&#34;
+	width=&#34;969&#34;
+	height=&#34;647&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfigthree_hu_f2b9203358391c66.jpg 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfigthree_hu_5f8c39d040c4a495.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;149&#34;
+		data-flex-basis=&#34;359px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;开启允许导入csv功能&#34;&gt;开启允许导入CSV功能
+&lt;/h3&gt;&lt;p&gt;Superset默认不允许导入csv，在我使用过程中，发现导入csv的前提是你要先连接上数据库，且后续这个csv创建的表是会创建在你的数据库中的，所以要想上传csv，必须先连接上你的数据库，其次还需要修改如下配置。
+点击Database，编辑，勾选下放 的Allow 选项来开启csv导入&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/databaseconfig.jpg&#34;
+	width=&#34;657&#34;
+	height=&#34;1031&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/databaseconfig_hu_940a6441ecbd0384.jpg 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/databaseconfig_hu_67154111cc0c0884.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;63&#34;
+		data-flex-basis=&#34;152px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;开启定时邮件任务&#34;&gt;开启定时邮件任务
+&lt;/h3&gt;&lt;p&gt;修改以下配置为False&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ALERT_REPORTS_NOTIFICATION_DRY_RUN = False
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;一开始我修改 superset/config.py配置文件，无论怎么改都不生效，在发送定时报表时候会出现以下错误：ALERT_REPORTS_NOTIFICATION_DRY_RUN is enabled,set it to False to send notification&lt;/p&gt;
+&lt;p&gt;与上文中提到的一样，在.env文件中，有一行指定了 pythonpath，且在pythonpath_dev目录下还有一个 superset_config.py的配置文件，该配置文件的配置会覆盖 config.py的配置。
+&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/supersetconfig.jpg&#34;
+	width=&#34;2135&#34;
+	height=&#34;1117&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/supersetconfig_hu_f5d00feba03f003e.jpg 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/supersetconfig_hu_49ce97890b5916fe.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;191&#34;
+		data-flex-basis=&#34;458px&#34;
+	
+&gt;
+其次还要修改 /opt/superset/superset-4.1.1rc1/superset/config.py 下的邮箱配置
+&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/emailconfig.jpg&#34;
+	width=&#34;761&#34;
+	height=&#34;319&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/emailconfig_hu_e221586569d14a0d.jpg 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/emailconfig_hu_482efc8fe222e466.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;238&#34;
+		data-flex-basis=&#34;572px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;首页图标变更&#34;&gt;首页图标变更
+&lt;/h3&gt;&lt;p&gt;二开的情况下，免不了把icon等图标都修改为自己的logo
+修改   superset-frontend/src/assets/images 文件夹下图中的三个文件
+&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/iconinfo.jpg&#34;
+	width=&#34;2153&#34;
+	height=&#34;1085&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/iconinfo_hu_a345748b626dab3c.jpg 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/iconinfo_hu_7d323135e3806de5.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;198&#34;
+		data-flex-basis=&#34;476px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;权限&#34;&gt;权限
+&lt;/h3&gt;&lt;p&gt;默认的角色权限解释如下&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Admin：管理员拥有所有可能的权限，包括授予或撤销其他用户的权限，以及更改其他用户的切片和仪表板；&lt;/li&gt;
+&lt;li&gt;Alpha：Alpha用户可以访问所有数据源，但不能授予或撤消其他用户的访问权限。它们也仅限于改变它们所拥有的对象。Alpha用户可以添加和更改数据源。&lt;/li&gt;
+&lt;li&gt;Gamma：Gamma用户的访问权限有限。他们只能使用来自通过另一个补充角色访问的数据源的数据。他们只能查看由他们可以访问的数据源制作的切片和仪表板。目前Gamma用户无法更改或添加数据源。我们假设他们主要是内容消费者，尽管他们可以创建切片和仪表盘。另请注意，当Gamma用户查看仪表板和切片列表视图时，他们将只看到他们有权访问的对象。&lt;/li&gt;
+&lt;li&gt;sql_lab：sql_lab角色授予对sql lab的访问权限。请注意，虽然管理员用户在默认情况下可以访问所有数据库，但Alpha和Gamma用户都需要在每个数据库的基础上获得访问权限。&lt;/li&gt;
+&lt;li&gt;public：要允许注销的用户访问某些超集功能，需要自己配置权限，并将其分配给另一个角色，您希望将其权限传递给该角色。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;“Gamma”拥有大部分基础的权限，但是必须结合其他能访问数据源的角色才能访问数据。所以，可以给用户分配“Gamma”角色和针对部门分别创建的数据源角色来进行控制。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;使用案例：https://zhuanlan.zhihu.com/p/641920400&lt;/p&gt;
+&lt;h3 id=&#34;开启dashboards权限控制&#34;&gt;开启Dashboards权限控制
+&lt;/h3&gt;&lt;p&gt;官方文档：https://superset.hacker-linner.com/security/
+在docker/pythonpath_dev中的 superset_config.py中 ，添加属性&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;FEATURE_FLAGS = {&amp;#34;DASHBOARD_RBAC&amp;#34;: True}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dashboardrole.jpg&#34;
+	width=&#34;1457&#34;
+	height=&#34;689&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dashboardrole_hu_4388263e694d874d.jpg 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dashboardrole_hu_3fcda282f9077208.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;211&#34;
+		data-flex-basis=&#34;507px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;然后在Dashboard会出现以下选项，可以配置允许哪些角色访问
+&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dashboard.jpg&#34;
+	width=&#34;1195&#34;
+	height=&#34;813&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dashboard_hu_3b81706c41ec907f.jpg 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dashboard_hu_52b1cf1d9e38c848.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;146&#34;
+		data-flex-basis=&#34;352px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;开启tag&#34;&gt;开启Tag
+&lt;/h3&gt;&lt;p&gt;在 pythonpath_dev/superset_config.py中添加属性TAGGING_SYSTEM并设置为True
+&amp;ldquo;TAGGING_SYSTEM&amp;rdquo;: True&lt;/p&gt;
+&lt;p&gt;以下是完整的配置&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;FEATURE_FLAGS = {&amp;#34;ALERT_REPORTS&amp;#34;: True,&amp;#34;DASHBOARD_RBAC&amp;#34;: True,&amp;#34;TAGGING_SYSTEM&amp;#34;: True}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;效果如下&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/tag.jpg&#34;
+	width=&#34;221&#34;
+	height=&#34;739&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/tag_hu_29b10d3375b501f0.jpg 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/tag_hu_8b4d19770acbf14c.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;29&#34;
+		data-flex-basis=&#34;71px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;汉化&#34;&gt;汉化
+&lt;/h3&gt;&lt;p&gt;参考：https://blog.csdn.net/netbloomy/article/details/60965012&lt;/p&gt;
+&lt;p&gt;在  docker/pythonpath_dev/superset_config.py文件添加如下配置&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# Setup default language
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;BABEL_DEFAULT_LOCALE = &amp;#34;zh&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# Your application default translation path
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;BABEL_DEFAULT_FOLDER = &amp;#34;superset/translations&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# The allowed translation for your app
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;LANGUAGES = {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &amp;#34;en&amp;#34;: {&amp;#34;flag&amp;#34;: &amp;#34;us&amp;#34;, &amp;#34;name&amp;#34;: &amp;#34;English&amp;#34;},
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &amp;#34;zh&amp;#34;: {&amp;#34;flag&amp;#34;: &amp;#34;cn&amp;#34;, &amp;#34;name&amp;#34;: &amp;#34;Chinese&amp;#34;},
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &amp;#34;zh_TW&amp;#34;: {&amp;#34;flag&amp;#34;: &amp;#34;tw&amp;#34;, &amp;#34;name&amp;#34;: &amp;#34;Traditional Chinese&amp;#34;},
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;缺点：汉化效果不彻底，还是有较大部分为英文
+解决：自己翻译补全&lt;/p&gt;
+&lt;p&gt;superset/translations/zh/LC_MESSAGES/messages.po文件中找相应字符串，看是否已经国际化过，若没有，则在文件的尾部添加&lt;/p&gt;
+&lt;p&gt;msgid &amp;ldquo;Column&amp;rdquo;
+msgstr &amp;ldquo;列&amp;rdquo;
+msgid就是要国际化的字符串，而msgstr则是要翻译成的语言&lt;/p&gt;
+&lt;p&gt;编译messages.po文件为messages.mo
+在终端中将目录切换到superset/目录下，执行如下命令,最后重启superset
+pybabel compile -d translations&lt;/p&gt;
+&lt;h3 id=&#34;修改项目名称&#34;&gt;修改项目名称
+&lt;/h3&gt;&lt;p&gt;修改  /opt/superset/superset-4.1.1rc1/superset/config.py 修改 APP_NAME  ，改为你自己的项目名称即可】&lt;/p&gt;
+&lt;h3 id=&#34;superset的开放api路径&#34;&gt;Superset的开放API路径
+&lt;/h3&gt;&lt;p&gt;Superset开放的 API地址路径：http://你自己的ip:你自己的端口/swagger/v1&lt;/p&gt;
+&lt;h3 id=&#34;配置文件最佳实践&#34;&gt;配置文件最佳实践
+&lt;/h3&gt;&lt;p&gt;在这里，一般都是需要新建一个自己的配置文件去覆盖原有config.py文件中的一些配置参数，而不是直接在原config.py文件中修改，官方推荐的文件名：superset_config.py&lt;/p&gt;
+&lt;p&gt;上面的我配置已经是将错就错，直接修改了原配置文件&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/configpath.jpg&#34;
+	width=&#34;1185&#34;
+	height=&#34;491&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/configpath_hu_ea94bd11ffdb508e.jpg 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/configpath_hu_9d2f3ceec247a20f.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;241&#34;
+		data-flex-basis=&#34;579px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;图表操作中的数字格式化&#34;&gt;图表操作中的数字格式化
+&lt;/h3&gt;&lt;p&gt;superset中的数字格式化采用 D3 format ，一个超过百万的数字，如果不想以科学计数的方式显示，用  , .0f 则可显示为原值&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/numberformat.jpg&#34;
+	width=&#34;1947&#34;
+	height=&#34;789&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/numberformat_hu_2043acc8eec3058a.jpg 480w, https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/numberformat_hu_f15b1fdd43583f.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;246&#34;
+		data-flex-basis=&#34;592px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;D3 format 单位如下&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;y - yocto, 10⁻²⁴&lt;/li&gt;
+&lt;li&gt;z - zepto, 10⁻²¹&lt;/li&gt;
+&lt;li&gt;a - atto, 10⁻¹⁸&lt;/li&gt;
+&lt;li&gt;f - femto, 10⁻¹⁵&lt;/li&gt;
+&lt;li&gt;p - pico, 10⁻¹²&lt;/li&gt;
+&lt;li&gt;n - nano, 10⁻⁹&lt;/li&gt;
+&lt;li&gt;µ - micro, 10⁻⁶&lt;/li&gt;
+&lt;li&gt;m - milli, 10⁻³
+​-  (none) - 10⁰&lt;/li&gt;
+&lt;li&gt;k - kilo, 10³&lt;/li&gt;
+&lt;li&gt;M - mega, 10⁶&lt;/li&gt;
+&lt;li&gt;G - giga, 10⁹&lt;/li&gt;
+&lt;li&gt;T - tera, 10¹²&lt;/li&gt;
+&lt;li&gt;P - peta, 10¹⁵&lt;/li&gt;
+&lt;li&gt;E - exa, 10¹⁸&lt;/li&gt;
+&lt;li&gt;Z - zetta, 10²¹&lt;/li&gt;
+&lt;li&gt;Y - yotta, 10²⁴
+用于小数点的位数 :(常用) f 浮点型 、 % 百分比
+精确到前n位： e g r s p
+精确到前n位： b o d x 等&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>Docker私服搭建</title>
         <link>https://h-yx-blog.github.io/p/docker%E7%A7%81%E6%9C%8D%E6%90%AD%E5%BB%BA/</link>
         <pubDate>Fri, 04 Apr 2025 10:30:20 +0800</pubDate>

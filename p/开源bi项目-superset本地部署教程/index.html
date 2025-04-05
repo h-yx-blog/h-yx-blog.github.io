@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="背景 为了降本，决定不再续费原来使用的阿里云的Quick BI，寻找开源免费的替代品， 国内DataEase 的权限控制是收费，不符合需求；MetaBase的开发语言是Clojure ，目前公司没有人会该语言，有学习成本，固也不做考虑。最后选择了Superset\n介绍 Superset 是一个现代数据探索和数据可视化平台。Superset 可以替代或增强许多团队的专有商业智能工具。Superset 与各种数据源很好地集成。\nSuperset提供：\n用于快速构建图表的无代码界面 一个强大的、基于 Web 的 SQL 编辑器，用于高级查询 用于快速定义自定义维度和指标的轻量级语义层 对几乎任何 SQL 数据库或数据引擎的开箱即用支持 各种精美的可视化效果来展示您的数据，从简单的条形图到地理空间可视化效果 轻量级、可配置的缓存层，有助于减轻数据库负载 高度可扩展的安全角色和身份验证选项 用于编程自定义的 API 专为扩展而设计的云原生架构 Superset没有对windows的官方支持，建议在linux或macos下进行部署，如下图 支持的数据库 Dokcker方式部署 这里我使用的是4.1.1的rc版本，可以从github上下载源码 测试环境下部署如下 一. 修改docker-compose 配置文件\ndocker-compose-non-dev.yml 主要用于从本地分支构建一组不可变镜像，即一旦启动，本地分支无论怎么改都不会影响（本地分支如果修改了代码，则需要把镜像先停止然后删除掉镜像，最后再重新构建） 我这里让dev配置的该文件也实现了交互式开发的效果，在该文件下我多加了一行挂载，让python程序改变后可以挂载到docker容器中，这样可以实时生效 docker-compose.yml文件用于交互式开发，即本地分支代码一修改就能立即响应到容器中 构建镜像并启动：\n1 docker compose -f docker-compose-non-dev.yml up 等待镜像构建部署，如果要使用后台启动的方式，可以在docker命令的结尾加上 -d 参数\n">
+<title>开源BI项目 Superset本地部署教程</title>
+
+<link rel='canonical' href='https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/'>
+
+<link rel="stylesheet" href="/scss/style.min.41d80fdd2e951cc26aced0647d31e0d0e72647ef4a9771fd8d41acc7a00935db.css"><meta property='og:title' content="开源BI项目 Superset本地部署教程">
+<meta property='og:description' content="背景 为了降本，决定不再续费原来使用的阿里云的Quick BI，寻找开源免费的替代品， 国内DataEase 的权限控制是收费，不符合需求；MetaBase的开发语言是Clojure ，目前公司没有人会该语言，有学习成本，固也不做考虑。最后选择了Superset\n介绍 Superset 是一个现代数据探索和数据可视化平台。Superset 可以替代或增强许多团队的专有商业智能工具。Superset 与各种数据源很好地集成。\nSuperset提供：\n用于快速构建图表的无代码界面 一个强大的、基于 Web 的 SQL 编辑器，用于高级查询 用于快速定义自定义维度和指标的轻量级语义层 对几乎任何 SQL 数据库或数据引擎的开箱即用支持 各种精美的可视化效果来展示您的数据，从简单的条形图到地理空间可视化效果 轻量级、可配置的缓存层，有助于减轻数据库负载 高度可扩展的安全角色和身份验证选项 用于编程自定义的 API 专为扩展而设计的云原生架构 Superset没有对windows的官方支持，建议在linux或macos下进行部署，如下图 支持的数据库 Dokcker方式部署 这里我使用的是4.1.1的rc版本，可以从github上下载源码 测试环境下部署如下 一. 修改docker-compose 配置文件\ndocker-compose-non-dev.yml 主要用于从本地分支构建一组不可变镜像，即一旦启动，本地分支无论怎么改都不会影响（本地分支如果修改了代码，则需要把镜像先停止然后删除掉镜像，最后再重新构建） 我这里让dev配置的该文件也实现了交互式开发的效果，在该文件下我多加了一行挂载，让python程序改变后可以挂载到docker容器中，这样可以实时生效 docker-compose.yml文件用于交互式开发，即本地分支代码一修改就能立即响应到容器中 构建镜像并启动：\n1 docker compose -f docker-compose-non-dev.yml up 等待镜像构建部署，如果要使用后台启动的方式，可以在docker命令的结尾加上 -d 参数\n">
+<meta property='og:url' content='https://h-yx-blog.github.io/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/'>
+<meta property='og:site_name' content='Yuta&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Superset' /><meta property='article:published_time' content='2025-04-05T10:36:24&#43;08:00'/><meta property='article:modified_time' content='2025-04-05T10:36:24&#43;08:00'/>
+<meta name="twitter:title" content="开源BI项目 Superset本地部署教程">
+<meta name="twitter:description" content="背景 为了降本，决定不再续费原来使用的阿里云的Quick BI，寻找开源免费的替代品， 国内DataEase 的权限控制是收费，不符合需求；MetaBase的开发语言是Clojure ，目前公司没有人会该语言，有学习成本，固也不做考虑。最后选择了Superset\n介绍 Superset 是一个现代数据探索和数据可视化平台。Superset 可以替代或增强许多团队的专有商业智能工具。Superset 与各种数据源很好地集成。\nSuperset提供：\n用于快速构建图表的无代码界面 一个强大的、基于 Web 的 SQL 编辑器，用于高级查询 用于快速定义自定义维度和指标的轻量级语义层 对几乎任何 SQL 数据库或数据引擎的开箱即用支持 各种精美的可视化效果来展示您的数据，从简单的条形图到地理空间可视化效果 轻量级、可配置的缓存层，有助于减轻数据库负载 高度可扩展的安全角色和身份验证选项 用于编程自定义的 API 专为扩展而设计的云原生架构 Superset没有对windows的官方支持，建议在linux或macos下进行部署，如下图 支持的数据库 Dokcker方式部署 这里我使用的是4.1.1的rc版本，可以从github上下载源码 测试环境下部署如下 一. 修改docker-compose 配置文件\ndocker-compose-non-dev.yml 主要用于从本地分支构建一组不可变镜像，即一旦启动，本地分支无论怎么改都不会影响（本地分支如果修改了代码，则需要把镜像先停止然后删除掉镜像，最后再重新构建） 我这里让dev配置的该文件也实现了交互式开发的效果，在该文件下我多加了一行挂载，让python程序改变后可以挂载到docker容器中，这样可以实时生效 docker-compose.yml文件用于交互式开发，即本地分支代码一修改就能立即响应到容器中 构建镜像并启动：\n1 docker compose -f docker-compose-non-dev.yml up 等待镜像构建部署，如果要使用后台启动的方式，可以在docker命令的结尾加上 -d 参数\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_9d08b070b84885af.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Yuta&#39;s blog</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/h-yx-blog'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#背景">背景</a></li>
+        <li><a href="#介绍">介绍</a></li>
+        <li><a href="#支持的数据库">支持的数据库</a></li>
+        <li><a href="#dokcker方式部署">Dokcker方式部署</a></li>
+        <li><a href="#个性化配置">个性化配置</a>
+          <ul>
+            <li><a href="#修改数据源为本地数据源不使用镜像">修改数据源为本地数据源，不使用镜像</a></li>
+            <li><a href="#环境配置">环境配置</a></li>
+            <li><a href="#开启允许导入csv功能">开启允许导入CSV功能</a></li>
+            <li><a href="#开启定时邮件任务">开启定时邮件任务</a></li>
+            <li><a href="#首页图标变更">首页图标变更</a></li>
+            <li><a href="#权限">权限</a></li>
+            <li><a href="#开启dashboards权限控制">开启Dashboards权限控制</a></li>
+            <li><a href="#开启tag">开启Tag</a></li>
+            <li><a href="#汉化">汉化</a></li>
+            <li><a href="#修改项目名称">修改项目名称</a></li>
+            <li><a href="#superset的开放api路径">Superset的开放API路径</a></li>
+            <li><a href="#配置文件最佳实践">配置文件最佳实践</a></li>
+            <li><a href="#图表操作中的数字格式化">图表操作中的数字格式化</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/bi/" >
+                BI
+            </a>
+        
+            <a href="/categories/superset/" >
+                Superset
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/">开源BI项目 Superset本地部署教程</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-04-05</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="背景">背景
+</h2><p>为了降本，决定不再续费原来使用的阿里云的Quick BI，寻找开源免费的替代品，
+国内DataEase 的权限控制是收费，不符合需求；MetaBase的开发语言是Clojure ，目前公司没有人会该语言，有学习成本，固也不做考虑。最后选择了Superset</p>
+<h2 id="介绍">介绍
+</h2><p>Superset 是一个现代数据探索和数据可视化平台。Superset 可以替代或增强许多团队的专有商业智能工具。Superset 与各种数据源很好地集成。</p>
+<p>Superset提供：</p>
+<ul>
+<li>用于快速构建图表的无代码界面</li>
+<li>一个强大的、基于 Web 的 SQL 编辑器，用于高级查询</li>
+<li>用于快速定义自定义维度和指标的轻量级语义层</li>
+<li>对几乎任何 SQL 数据库或数据引擎的开箱即用支持</li>
+<li>各种精美的可视化效果来展示您的数据，从简单的条形图到地理空间可视化效果</li>
+<li>轻量级、可配置的缓存层，有助于减轻数据库负载</li>
+<li>高度可扩展的安全角色和身份验证选项</li>
+<li>用于编程自定义的 API</li>
+<li>专为扩展而设计的云原生架构</li>
+</ul>
+<p><strong>Superset没有对windows的官方支持，建议在linux或macos下进行部署，如下图</strong>
+<img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/image.png"
+	width="2506"
+	height="1168"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/image_hu_53850cf09c74cbf7.png 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/image_hu_776ae41fff2c8c4c.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="214"
+		data-flex-basis="514px"
+	
+></p>
+<h2 id="支持的数据库">支持的数据库
+</h2><p><img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/database.png"
+	width="1231"
+	height="2673"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/database_hu_666efa81971deb87.png 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/database_hu_97f7b581a4e6abcc.png 1024w"
+	loading="lazy"
+	
+		alt="支持的数据库"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="46"
+		data-flex-basis="110px"
+	
+></p>
+<h2 id="dokcker方式部署">Dokcker方式部署
+</h2><p>这里我使用的是4.1.1的rc版本，可以从github上下载源码
+<img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/sourcecode.jpg"
+	width="1063"
+	height="971"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/sourcecode_hu_7f0a43151a9f6c61.jpg 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/sourcecode_hu_1d84a13a330dc428.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="109"
+		data-flex-basis="262px"
+	
+></p>
+<p>测试环境下部署如下
+一. 修改docker-compose 配置文件</p>
+<ol>
+<li>docker-compose-non-dev.yml  主要用于从本地分支构建一组不可变镜像，即一旦启动，本地分支无论怎么改都不会影响（本地分支如果修改了代码，则需要把镜像先停止然后删除掉镜像，最后再重新构建）</li>
+</ol>
+<p>我这里让dev配置的该文件也实现了交互式开发的效果，在该文件下我多加了一行挂载，让python程序改变后可以挂载到docker容器中，这样可以实时生效
+<img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dockerinfo.jpg"
+	width="1085"
+	height="549"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dockerinfo_hu_9d9c4d12417f9f84.jpg 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dockerinfo_hu_6a4e817b9e871262.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="197"
+		data-flex-basis="474px"
+	
+></p>
+<ol start="2">
+<li>docker-compose.yml文件用于交互式开发，即本地分支代码一修改就能立即响应到容器中</li>
+</ol>
+<p>构建镜像并启动：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">docker compose -f docker-compose-non-dev.yml up
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>等待镜像构建部署，如果要使用后台启动的方式，可以在docker命令的结尾加上 -d 参数</p>
+<h2 id="个性化配置">个性化配置
+</h2><h3 id="修改数据源为本地数据源不使用镜像">修改数据源为本地数据源，不使用镜像
+</h3><p>进入 docker目录下，找到 .env文件，修改.env文件中关于数据库连接的配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cd /opt/superset/superset-4.1.1rc1/docker
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改相关数据库连接配置
+<img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfig.jpg"
+	width="1267"
+	height="361"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfig_hu_a76def2f7551ae9d.jpg 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfig_hu_4ee369094c602577.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="350"
+		data-flex-basis="842px"
+	
+>
+<img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfigtwo.jpg"
+	width="1223"
+	height="373"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfigtwo_hu_b3dc4a409fe7ab86.jpg 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfigtwo_hu_18d2148f90a1db61.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="327"
+		data-flex-basis="786px"
+	
+></p>
+<p>注意点：在.env文件中还有一个重要的配置如下，这里是在指定配置文件的位置，当你修改superset/config.py  配置文件无效时，可以试试修改pythonpath_dev/superset_config.py  文件，这里的配置会覆盖下的配置 superset/config.py</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">PYTHONPATH=/app/pythonpath:/app/docker/pythonpath_dev
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="环境配置">环境配置
+</h3><p>当年启动了superset后，可能会发现右上角出现的是 Development的环境，如下
+<img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/enviroment.jpg"
+	width="658"
+	height="318"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/enviroment_hu_4904e7103bc643cc.jpg 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/enviroment_hu_69dcfa4a3bc185f8.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="206"
+		data-flex-basis="496px"
+	
+>
+在 superset/config.py中，以下配置可以定义Superset首页右上角的环境显示</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">ENVIRONMENT_TAG_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;variable&#34;</span><span class="p">:</span> <span class="s2">&#34;SUPERSET_ENV&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;values&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;debug&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;color&#34;</span><span class="p">:</span> <span class="s2">&#34;error.base&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;flask-debug&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;development&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;color&#34;</span><span class="p">:</span> <span class="s2">&#34;error.base&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;Development&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;production&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;color&#34;</span><span class="p">:</span> <span class="s2">&#34;warning.base&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;Production&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后在  superset/docker/.env文件中可以配置激活的环境
+<img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfigthree.jpg"
+	width="969"
+	height="647"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfigthree_hu_f2b9203358391c66.jpg 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/envconfigthree_hu_5f8c39d040c4a495.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="149"
+		data-flex-basis="359px"
+	
+></p>
+<h3 id="开启允许导入csv功能">开启允许导入CSV功能
+</h3><p>Superset默认不允许导入csv，在我使用过程中，发现导入csv的前提是你要先连接上数据库，且后续这个csv创建的表是会创建在你的数据库中的，所以要想上传csv，必须先连接上你的数据库，其次还需要修改如下配置。
+点击Database，编辑，勾选下放 的Allow 选项来开启csv导入</p>
+<p><img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/databaseconfig.jpg"
+	width="657"
+	height="1031"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/databaseconfig_hu_940a6441ecbd0384.jpg 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/databaseconfig_hu_67154111cc0c0884.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="63"
+		data-flex-basis="152px"
+	
+></p>
+<h3 id="开启定时邮件任务">开启定时邮件任务
+</h3><p>修改以下配置为False</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">ALERT_REPORTS_NOTIFICATION_DRY_RUN = False
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>一开始我修改 superset/config.py配置文件，无论怎么改都不生效，在发送定时报表时候会出现以下错误：ALERT_REPORTS_NOTIFICATION_DRY_RUN is enabled,set it to False to send notification</p>
+<p>与上文中提到的一样，在.env文件中，有一行指定了 pythonpath，且在pythonpath_dev目录下还有一个 superset_config.py的配置文件，该配置文件的配置会覆盖 config.py的配置。
+<img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/supersetconfig.jpg"
+	width="2135"
+	height="1117"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/supersetconfig_hu_f5d00feba03f003e.jpg 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/supersetconfig_hu_49ce97890b5916fe.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="191"
+		data-flex-basis="458px"
+	
+>
+其次还要修改 /opt/superset/superset-4.1.1rc1/superset/config.py 下的邮箱配置
+<img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/emailconfig.jpg"
+	width="761"
+	height="319"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/emailconfig_hu_e221586569d14a0d.jpg 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/emailconfig_hu_482efc8fe222e466.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="238"
+		data-flex-basis="572px"
+	
+></p>
+<h3 id="首页图标变更">首页图标变更
+</h3><p>二开的情况下，免不了把icon等图标都修改为自己的logo
+修改   superset-frontend/src/assets/images 文件夹下图中的三个文件
+<img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/iconinfo.jpg"
+	width="2153"
+	height="1085"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/iconinfo_hu_a345748b626dab3c.jpg 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/iconinfo_hu_7d323135e3806de5.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="198"
+		data-flex-basis="476px"
+	
+></p>
+<h3 id="权限">权限
+</h3><p>默认的角色权限解释如下</p>
+<ul>
+<li>Admin：管理员拥有所有可能的权限，包括授予或撤销其他用户的权限，以及更改其他用户的切片和仪表板；</li>
+<li>Alpha：Alpha用户可以访问所有数据源，但不能授予或撤消其他用户的访问权限。它们也仅限于改变它们所拥有的对象。Alpha用户可以添加和更改数据源。</li>
+<li>Gamma：Gamma用户的访问权限有限。他们只能使用来自通过另一个补充角色访问的数据源的数据。他们只能查看由他们可以访问的数据源制作的切片和仪表板。目前Gamma用户无法更改或添加数据源。我们假设他们主要是内容消费者，尽管他们可以创建切片和仪表盘。另请注意，当Gamma用户查看仪表板和切片列表视图时，他们将只看到他们有权访问的对象。</li>
+<li>sql_lab：sql_lab角色授予对sql lab的访问权限。请注意，虽然管理员用户在默认情况下可以访问所有数据库，但Alpha和Gamma用户都需要在每个数据库的基础上获得访问权限。</li>
+<li>public：要允许注销的用户访问某些超集功能，需要自己配置权限，并将其分配给另一个角色，您希望将其权限传递给该角色。</li>
+</ul>
+<p><strong>“Gamma”拥有大部分基础的权限，但是必须结合其他能访问数据源的角色才能访问数据。所以，可以给用户分配“Gamma”角色和针对部门分别创建的数据源角色来进行控制。</strong></p>
+<p>使用案例：https://zhuanlan.zhihu.com/p/641920400</p>
+<h3 id="开启dashboards权限控制">开启Dashboards权限控制
+</h3><p>官方文档：https://superset.hacker-linner.com/security/
+在docker/pythonpath_dev中的 superset_config.py中 ，添加属性</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">FEATURE_FLAGS = {&#34;DASHBOARD_RBAC&#34;: True}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dashboardrole.jpg"
+	width="1457"
+	height="689"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dashboardrole_hu_4388263e694d874d.jpg 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dashboardrole_hu_3fcda282f9077208.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="211"
+		data-flex-basis="507px"
+	
+></p>
+<p>然后在Dashboard会出现以下选项，可以配置允许哪些角色访问
+<img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dashboard.jpg"
+	width="1195"
+	height="813"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dashboard_hu_3b81706c41ec907f.jpg 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/dashboard_hu_52b1cf1d9e38c848.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="146"
+		data-flex-basis="352px"
+	
+></p>
+<h3 id="开启tag">开启Tag
+</h3><p>在 pythonpath_dev/superset_config.py中添加属性TAGGING_SYSTEM并设置为True
+&ldquo;TAGGING_SYSTEM&rdquo;: True</p>
+<p>以下是完整的配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">FEATURE_FLAGS = {&#34;ALERT_REPORTS&#34;: True,&#34;DASHBOARD_RBAC&#34;: True,&#34;TAGGING_SYSTEM&#34;: True}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>效果如下</p>
+<p><img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/tag.jpg"
+	width="221"
+	height="739"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/tag_hu_29b10d3375b501f0.jpg 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/tag_hu_8b4d19770acbf14c.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="29"
+		data-flex-basis="71px"
+	
+></p>
+<h3 id="汉化">汉化
+</h3><p>参考：https://blog.csdn.net/netbloomy/article/details/60965012</p>
+<p>在  docker/pythonpath_dev/superset_config.py文件添加如下配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># Setup default language
+</span></span><span class="line"><span class="cl">BABEL_DEFAULT_LOCALE = &#34;zh&#34;
+</span></span><span class="line"><span class="cl"># Your application default translation path
+</span></span><span class="line"><span class="cl">BABEL_DEFAULT_FOLDER = &#34;superset/translations&#34;
+</span></span><span class="line"><span class="cl"># The allowed translation for your app
+</span></span><span class="line"><span class="cl">LANGUAGES = {
+</span></span><span class="line"><span class="cl">    &#34;en&#34;: {&#34;flag&#34;: &#34;us&#34;, &#34;name&#34;: &#34;English&#34;},
+</span></span><span class="line"><span class="cl">    &#34;zh&#34;: {&#34;flag&#34;: &#34;cn&#34;, &#34;name&#34;: &#34;Chinese&#34;},
+</span></span><span class="line"><span class="cl">    &#34;zh_TW&#34;: {&#34;flag&#34;: &#34;tw&#34;, &#34;name&#34;: &#34;Traditional Chinese&#34;},
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>缺点：汉化效果不彻底，还是有较大部分为英文
+解决：自己翻译补全</p>
+<p>superset/translations/zh/LC_MESSAGES/messages.po文件中找相应字符串，看是否已经国际化过，若没有，则在文件的尾部添加</p>
+<p>msgid &ldquo;Column&rdquo;
+msgstr &ldquo;列&rdquo;
+msgid就是要国际化的字符串，而msgstr则是要翻译成的语言</p>
+<p>编译messages.po文件为messages.mo
+在终端中将目录切换到superset/目录下，执行如下命令,最后重启superset
+pybabel compile -d translations</p>
+<h3 id="修改项目名称">修改项目名称
+</h3><p>修改  /opt/superset/superset-4.1.1rc1/superset/config.py 修改 APP_NAME  ，改为你自己的项目名称即可】</p>
+<h3 id="superset的开放api路径">Superset的开放API路径
+</h3><p>Superset开放的 API地址路径：http://你自己的ip:你自己的端口/swagger/v1</p>
+<h3 id="配置文件最佳实践">配置文件最佳实践
+</h3><p>在这里，一般都是需要新建一个自己的配置文件去覆盖原有config.py文件中的一些配置参数，而不是直接在原config.py文件中修改，官方推荐的文件名：superset_config.py</p>
+<p>上面的我配置已经是将错就错，直接修改了原配置文件</p>
+<p><img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/configpath.jpg"
+	width="1185"
+	height="491"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/configpath_hu_ea94bd11ffdb508e.jpg 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/configpath_hu_9d2f3ceec247a20f.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="241"
+		data-flex-basis="579px"
+	
+></p>
+<h3 id="图表操作中的数字格式化">图表操作中的数字格式化
+</h3><p>superset中的数字格式化采用 D3 format ，一个超过百万的数字，如果不想以科学计数的方式显示，用  , .0f 则可显示为原值</p>
+<p><img src="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/numberformat.jpg"
+	width="1947"
+	height="789"
+	srcset="/p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/numberformat_hu_2043acc8eec3058a.jpg 480w, /p/%E5%BC%80%E6%BA%90bi%E9%A1%B9%E7%9B%AE-superset%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/numberformat_hu_f15b1fdd43583f.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="246"
+		data-flex-basis="592px"
+	
+></p>
+<p>D3 format 单位如下</p>
+<ul>
+<li>y - yocto, 10⁻²⁴</li>
+<li>z - zepto, 10⁻²¹</li>
+<li>a - atto, 10⁻¹⁸</li>
+<li>f - femto, 10⁻¹⁵</li>
+<li>p - pico, 10⁻¹²</li>
+<li>n - nano, 10⁻⁹</li>
+<li>µ - micro, 10⁻⁶</li>
+<li>m - milli, 10⁻³
+​-  (none) - 10⁰</li>
+<li>k - kilo, 10³</li>
+<li>M - mega, 10⁶</li>
+<li>G - giga, 10⁹</li>
+<li>T - tera, 10¹²</li>
+<li>P - peta, 10¹⁵</li>
+<li>E - exa, 10¹⁸</li>
+<li>Z - zetta, 10²¹</li>
+<li>Y - yotta, 10²⁴
+用于小数点的位数 :(常用) f 浮点型 、 % 百分比
+精确到前n位： e g r s p
+精确到前n位： b o d x 等</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/superset/">Superset</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+<script src="https://giscus.app/client.js"
+        data-repo="h-yx-blog/h-yx-blog.github.io"
+        data-repo-id="R_kgDONilc6g"
+        data-category="Announcements"
+        data-category-id="DIC_kwDONilc6s4ClkCI"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="noborder_dark"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2024 - 
+        
+        2025 Yuta Huang
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
