@@ -7,7 +7,15 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Yuta Huang</copyright>
-        <lastBuildDate>Sat, 05 Apr 2025 15:20:04 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 21 Apr 2025 19:51:39 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Maven私服</title>
+        <link>https://h-yx-blog.github.io/categories/maven%E7%A7%81%E6%9C%8D/</link>
+        <pubDate>Mon, 21 Apr 2025 19:51:39 +0800</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/categories/maven%E7%A7%81%E6%9C%8D/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>SearXNG</title>
         <link>https://h-yx-blog.github.io/categories/searxng/</link>
         <pubDate>Sat, 05 Apr 2025 15:20:04 +0800</pubDate>
@@ -110,6 +118,22 @@
         
         <guid>https://h-yx-blog.github.io/categories/test/</guid>
         <description>&lt;img src="https://h-yx-blog.github.io/categories/test/test.png" alt="Featured image of post Test" /&gt;</description>
+        </item>
+        <item>
+        <title>تجربة</title>
+        <link>https://h-yx-blog.github.io/categories/%D8%AA%D8%AC%D8%B1%D8%A8%D8%A9/</link>
+        <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/categories/%D8%AA%D8%AC%D8%B1%D8%A8%D8%A9/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>تجربة مع فراغات</title>
+        <link>https://h-yx-blog.github.io/categories/%D8%AA%D8%AC%D8%B1%D8%A8%D8%A9-%D9%85%D8%B9-%D9%81%D8%B1%D8%A7%D8%BA%D8%A7%D8%AA/</link>
+        <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/categories/%D8%AA%D8%AC%D8%B1%D8%A8%D8%A9-%D9%85%D8%B9-%D9%81%D8%B1%D8%A7%D8%BA%D8%A7%D8%AA/</guid>
+        <description></description>
         </item>
         
     </channel>

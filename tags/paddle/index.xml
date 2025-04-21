@@ -64,34 +64,34 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;3.然后从第一张开始检查，打标文字错误的，点击方框，在右边修改
-&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.jpg&#34;
-	width=&#34;2567&#34;
-	height=&#34;1407&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3_hu_64bd58ccbcac58e8.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3_hu_9eb2fd4f1bf3bb69.jpg 1024w&#34;
+&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.1.jpg&#34;
+	width=&#34;585&#34;
+	height=&#34;691&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.1_hu_6b8554af5f03a324.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.1_hu_dc00980b3897ecb3.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;3.jpg&#34;
 	
 	
 		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;182&#34;
-		data-flex-basis=&#34;437px&#34;
+		data-flex-grow=&#34;84&#34;
+		data-flex-basis=&#34;203px&#34;
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;4.全部打标完成后，点击文件选择导出标记结果、以及导出识别结果&lt;/p&gt;
 &lt;p&gt;完成后再文件夹多出四个文件fileState，Label，rec_gt, crop_img。其中crop_img中的图片用来训练文字识别模型，fileState记录图片的打标完成与否，Label为训练文字检测模型的标签，rec_gt为训练文字识别模型的标签。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.jpg&#34;
-	width=&#34;845&#34;
-	height=&#34;365&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4_hu_a1ce120468490e70.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4_hu_d854ef8f78b4be7b.jpg 1024w&#34;
+&lt;p&gt;&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1.jpg&#34;
+	width=&#34;617&#34;
+	height=&#34;848&#34;
+	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1_hu_955f7a9f1f03634d.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1_hu_8d510a024f1a135c.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;4.jpg&#34;
 	
 	
 		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;231&#34;
-		data-flex-basis=&#34;555px&#34;
+		data-flex-grow=&#34;72&#34;
+		data-flex-basis=&#34;174px&#34;
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;5.新建文件夹train_data及子目录drivingData  （根据自己需求命名），将上面的数据放于drivingData下
@@ -172,47 +172,35 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;修改配置文件，此处我是cpu方式进行的训练，所以use_gpu参数要改为false， pretrained_model的值改为第一步下载好的训练模型的目录下的 best_acuracy所在的位置
-&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.2.jpg&#34;
-	width=&#34;1589&#34;
-	height=&#34;391&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.2_hu_e93f153b3de994ad.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.2_hu_44f4f378c189caed.jpg 1024w&#34;
+&lt;img src=&#34;https://h-yx-blog.github.io/3.2.2.jpg&#34;
+	
+	
+	
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;3.2.2&#34;
 	
 	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;406&#34;
-		data-flex-basis=&#34;975px&#34;
-	
 &gt;
-&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.3.jpg&#34;
-	width=&#34;1739&#34;
-	height=&#34;559&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.3_hu_b412d863b8e26eb6.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.3_hu_956e0e6f408da77.jpg 1024w&#34;
+&lt;img src=&#34;https://h-yx-blog.github.io/3.2.3.jpg&#34;
+	
+	
+	
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;3.2.3&#34;
 	
 	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;311&#34;
-		data-flex-basis=&#34;746px&#34;
-	
 &gt;
 继续修改配置文件，修改如下配置，改为上面制作好的数据集所在的位置
-&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.4.jpg&#34;
-	width=&#34;1247&#34;
-	height=&#34;1101&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.4_hu_6e27a137c432ea69.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.4_hu_c367770d7d9088b7.jpg 1024w&#34;
+&lt;img src=&#34;https://h-yx-blog.github.io/3.2.4.jpg&#34;
+	
+	
+	
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;3.2.4&#34;
 	
-	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;113&#34;
-		data-flex-basis=&#34;271px&#34;
 	
 &gt;
 以下是我的完整配置文件&lt;/p&gt;
@@ -507,18 +495,14 @@
 &lt;/div&gt;&lt;p&gt;如遇报错，可能是需要先安装pyyaml库   &lt;/p&gt;
 &lt;p&gt;pip install pyyaml
 训练结果如下
-&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.3.jpg&#34;
-	width=&#34;1597&#34;
-	height=&#34;693&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.3_hu_7cfeafa9326b10ce.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.3_hu_845450e28dfbdcf2.jpg 1024w&#34;
+&lt;img src=&#34;https://h-yx-blog.github.io/3.3.jpg&#34;
+	
+	
+	
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;3.3&#34;
 	
-	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;230&#34;
-		data-flex-basis=&#34;553px&#34;
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;使用best_accuracy.pdparams进行我们的模型测试，没有该文件则说明训练次数少，用latest.pdparams模型测试
@@ -534,18 +518,14 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;文字检测结果如下
-&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.4.jpg&#34;
-	width=&#34;805&#34;
-	height=&#34;220&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.4_hu_7fd366cbb04f726a.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.4_hu_6ddcd4a4ae9c5766.jpg 1024w&#34;
+&lt;img src=&#34;https://h-yx-blog.github.io/3.4.jpg&#34;
+	
+	
+	
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;3.4&#34;
 	
-	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;365&#34;
-		data-flex-basis=&#34;878px&#34;
 	
 &gt;&lt;/p&gt;
 &lt;h2 id=&#34;32-识别模型训练&#34;&gt;3.2 识别模型训练
@@ -942,60 +922,44 @@
 		data-flex-basis=&#34;174px&#34;
 	
 &gt;
-&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2.jpg&#34;
-	width=&#34;699&#34;
-	height=&#34;567&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2_hu_92c8e43685cb07db.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2_hu_215acbaa345870da.jpg 1024w&#34;
+&lt;img src=&#34;https://h-yx-blog.github.io/4.2.jpg&#34;
+	
+	
+	
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;optimizer&#34;
 	
 	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;123&#34;
-		data-flex-basis=&#34;295px&#34;
-	
 &gt;
-&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3.jpg&#34;
-	width=&#34;617&#34;
-	height=&#34;844&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3_hu_461d8f8c6d160baa.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3_hu_c4cd30ba933682bc.jpg 1024w&#34;
+&lt;img src=&#34;https://h-yx-blog.github.io/4.3.jpg&#34;
+	
+	
+	
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;architecture&#34;
 	
 	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;73&#34;
-		data-flex-basis=&#34;175px&#34;
-	
 &gt;
-&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4.jpg&#34;
-	width=&#34;628&#34;
-	height=&#34;702&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4_hu_14d41a0ea6031abb.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4_hu_9cc4ee7ea9b9ddf.jpg 1024w&#34;
+&lt;img src=&#34;https://h-yx-blog.github.io/4.4.jpg&#34;
+	
+	
+	
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;loss&#34;
 	
 	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;89&#34;
-		data-flex-basis=&#34;214px&#34;
-	
 &gt;
-&lt;img src=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5.jpg&#34;
-	width=&#34;623&#34;
-	height=&#34;874&#34;
-	srcset=&#34;https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5_hu_5e15b2a2c13e3286.jpg 480w, https://h-yx-blog.github.io/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5_hu_148fcd70420a7bc0.jpg 1024w&#34;
+&lt;img src=&#34;https://h-yx-blog.github.io/4.5.jpg&#34;
+	
+	
+	
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;dataset&#34;
 	
-	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;71&#34;
-		data-flex-basis=&#34;171px&#34;
 	
 &gt;&lt;/p&gt;
 &lt;blockquote&gt;

@@ -390,34 +390,34 @@
 	
 ></p>
 <p>3.然后从第一张开始检查，打标文字错误的，点击方框，在右边修改
-<img src="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.jpg"
-	width="2567"
-	height="1407"
-	srcset="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3_hu_64bd58ccbcac58e8.jpg 480w, /p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3_hu_9eb2fd4f1bf3bb69.jpg 1024w"
+<img src="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.1.jpg"
+	width="585"
+	height="691"
+	srcset="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.1_hu_6b8554af5f03a324.jpg 480w, /p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.1_hu_dc00980b3897ecb3.jpg 1024w"
 	loading="lazy"
 	
 		alt="3.jpg"
 	
 	
 		class="gallery-image" 
-		data-flex-grow="182"
-		data-flex-basis="437px"
+		data-flex-grow="84"
+		data-flex-basis="203px"
 	
 ></p>
 <p>4.全部打标完成后，点击文件选择导出标记结果、以及导出识别结果</p>
 <p>完成后再文件夹多出四个文件fileState，Label，rec_gt, crop_img。其中crop_img中的图片用来训练文字识别模型，fileState记录图片的打标完成与否，Label为训练文字检测模型的标签，rec_gt为训练文字识别模型的标签。</p>
-<p><img src="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.jpg"
-	width="845"
-	height="365"
-	srcset="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4_hu_a1ce120468490e70.jpg 480w, /p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4_hu_d854ef8f78b4be7b.jpg 1024w"
+<p><img src="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1.jpg"
+	width="617"
+	height="848"
+	srcset="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1_hu_955f7a9f1f03634d.jpg 480w, /p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.1_hu_8d510a024f1a135c.jpg 1024w"
 	loading="lazy"
 	
 		alt="4.jpg"
 	
 	
 		class="gallery-image" 
-		data-flex-grow="231"
-		data-flex-basis="555px"
+		data-flex-grow="72"
+		data-flex-basis="174px"
 	
 ></p>
 <p>5.新建文件夹train_data及子目录drivingData  （根据自己需求命名），将上面的数据放于drivingData下
@@ -498,47 +498,35 @@
 	
 ></p>
 <p>修改配置文件，此处我是cpu方式进行的训练，所以use_gpu参数要改为false， pretrained_model的值改为第一步下载好的训练模型的目录下的 best_acuracy所在的位置
-<img src="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.2.jpg"
-	width="1589"
-	height="391"
-	srcset="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.2_hu_e93f153b3de994ad.jpg 480w, /p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.2_hu_44f4f378c189caed.jpg 1024w"
+<img src="/3.2.2.jpg"
+	
+	
+	
 	loading="lazy"
 	
 		alt="3.2.2"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="406"
-		data-flex-basis="975px"
-	
 >
-<img src="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.3.jpg"
-	width="1739"
-	height="559"
-	srcset="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.3_hu_b412d863b8e26eb6.jpg 480w, /p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.3_hu_956e0e6f408da77.jpg 1024w"
+<img src="/3.2.3.jpg"
+	
+	
+	
 	loading="lazy"
 	
 		alt="3.2.3"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="311"
-		data-flex-basis="746px"
-	
 >
 继续修改配置文件，修改如下配置，改为上面制作好的数据集所在的位置
-<img src="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.4.jpg"
-	width="1247"
-	height="1101"
-	srcset="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.4_hu_6e27a137c432ea69.jpg 480w, /p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.2.4_hu_c367770d7d9088b7.jpg 1024w"
+<img src="/3.2.4.jpg"
+	
+	
+	
 	loading="lazy"
 	
 		alt="3.2.4"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="113"
-		data-flex-basis="271px"
 	
 >
 以下是我的完整配置文件</p>
@@ -833,18 +821,14 @@
 </div><p>如遇报错，可能是需要先安装pyyaml库   </p>
 <p>pip install pyyaml
 训练结果如下
-<img src="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.3.jpg"
-	width="1597"
-	height="693"
-	srcset="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.3_hu_7cfeafa9326b10ce.jpg 480w, /p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.3_hu_845450e28dfbdcf2.jpg 1024w"
+<img src="/3.3.jpg"
+	
+	
+	
 	loading="lazy"
 	
 		alt="3.3"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="230"
-		data-flex-basis="553px"
 	
 ></p>
 <p>使用best_accuracy.pdparams进行我们的模型测试，没有该文件则说明训练次数少，用latest.pdparams模型测试
@@ -860,18 +844,14 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>文字检测结果如下
-<img src="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.4.jpg"
-	width="805"
-	height="220"
-	srcset="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.4_hu_7fd366cbb04f726a.jpg 480w, /p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/3.4_hu_6ddcd4a4ae9c5766.jpg 1024w"
+<img src="/3.4.jpg"
+	
+	
+	
 	loading="lazy"
 	
 		alt="3.4"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="365"
-		data-flex-basis="878px"
 	
 ></p>
 <h2 id="32-识别模型训练">3.2 识别模型训练
@@ -1268,60 +1248,44 @@
 		data-flex-basis="174px"
 	
 >
-<img src="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2.jpg"
-	width="699"
-	height="567"
-	srcset="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2_hu_92c8e43685cb07db.jpg 480w, /p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.2_hu_215acbaa345870da.jpg 1024w"
+<img src="/4.2.jpg"
+	
+	
+	
 	loading="lazy"
 	
 		alt="optimizer"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="123"
-		data-flex-basis="295px"
-	
 >
-<img src="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3.jpg"
-	width="617"
-	height="844"
-	srcset="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3_hu_461d8f8c6d160baa.jpg 480w, /p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.3_hu_c4cd30ba933682bc.jpg 1024w"
+<img src="/4.3.jpg"
+	
+	
+	
 	loading="lazy"
 	
 		alt="architecture"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="73"
-		data-flex-basis="175px"
-	
 >
-<img src="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4.jpg"
-	width="628"
-	height="702"
-	srcset="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4_hu_14d41a0ea6031abb.jpg 480w, /p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.4_hu_9cc4ee7ea9b9ddf.jpg 1024w"
+<img src="/4.4.jpg"
+	
+	
+	
 	loading="lazy"
 	
 		alt="loss"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="89"
-		data-flex-basis="214px"
-	
 >
-<img src="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5.jpg"
-	width="623"
-	height="874"
-	srcset="/p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5_hu_5e15b2a2c13e3286.jpg 480w, /p/paddleocr%E8%AE%AD%E7%BB%83%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE/4.5_hu_148fcd70420a7bc0.jpg 1024w"
+<img src="/4.5.jpg"
+	
+	
+	
 	loading="lazy"
 	
 		alt="dataset"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="71"
-		data-flex-basis="171px"
 	
 ></p>
 <blockquote>

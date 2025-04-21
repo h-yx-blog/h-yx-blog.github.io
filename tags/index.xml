@@ -7,7 +7,15 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Yuta Huang</copyright>
-        <lastBuildDate>Sat, 05 Apr 2025 15:20:04 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 21 Apr 2025 19:51:39 +0800</lastBuildDate><atom:link href="https://h-yx-blog.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Maven</title>
+        <link>https://h-yx-blog.github.io/tags/maven/</link>
+        <pubDate>Mon, 21 Apr 2025 19:51:39 +0800</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/tags/maven/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>AI</title>
         <link>https://h-yx-blog.github.io/tags/ai/</link>
         <pubDate>Sat, 05 Apr 2025 15:20:04 +0800</pubDate>
@@ -157,6 +165,30 @@
         <pubDate>Fri, 27 Dec 2024 17:16:55 +0800</pubDate>
         
         <guid>https://h-yx-blog.github.io/tags/hugo/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>ماركداون</title>
+        <link>https://h-yx-blog.github.io/tags/%D9%85%D8%A7%D8%B1%D9%83%D8%AF%D8%A7%D9%88%D9%86/</link>
+        <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/tags/%D9%85%D8%A7%D8%B1%D9%83%D8%AF%D8%A7%D9%88%D9%86/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>نص</title>
+        <link>https://h-yx-blog.github.io/tags/%D9%86%D8%B5/</link>
+        <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/tags/%D9%86%D8%B5/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>وسم مع فراغات</title>
+        <link>https://h-yx-blog.github.io/tags/%D9%88%D8%B3%D9%85-%D9%85%D8%B9-%D9%81%D8%B1%D8%A7%D8%BA%D8%A7%D8%AA/</link>
+        <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://h-yx-blog.github.io/tags/%D9%88%D8%B3%D9%85-%D9%85%D8%B9-%D9%81%D8%B1%D8%A7%D8%BA%D8%A7%D8%AA/</guid>
         <description></description>
         </item>
         <item>
